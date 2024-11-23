@@ -1,0 +1,107 @@
+.wrap {
+  width: 90%;
+  margin: 120px auto;
+  max-width: 500px;
+  text-align: center;
+  padding: 30px;
+  background-color: #cae0fd;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .h1 {
+    font-size: 1.8rem;
+    color: #3137a8;
+    margin-bottom: 20px;
+  }
+
+  .inputWrap {
+    margin-top: 20px;
+    text-align: left;
+
+    .text {
+      font-size: 1rem;
+      margin-bottom: 5px;
+      color: #3137a8;
+    }
+
+    .emailVerification {
+      display: flex;
+      gap: 10px;
+
+      .input {
+        flex: 2;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 0 10px;
+        font-size: 1rem;
+      }
+
+      .button {
+        flex: 1;
+        height: 40px;
+        border-radius: 8px;
+        background-color: #3137a8;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: 0.3s;
+
+        &:hover {
+          background-color: #5561d3;
+        }
+      }
+    }
+
+    .input {
+      width: 96%;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      padding: 0 10px;
+      font-size: 1rem;
+    }
+  }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .submitButton {
+      flex: 1;
+      height: 45px;
+      background-color: #3137a8;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: 0.3s;
+
+      &:hover {
+        background-color: #5561d3;
+      }
+    }
+
+    .cancelButton {
+      flex: 1;
+      height: 45px;
+      background-color: #ccc;
+      color: black;
+      font-weight: bold;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: 0.3s;
+
+      &:hover {
+        background-color: #999;
+      }
+    }
+  }
+}

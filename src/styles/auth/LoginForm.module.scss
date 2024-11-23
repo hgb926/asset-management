@@ -51,7 +51,17 @@
       justify-content: space-between;
       margin-top: 35px;
 
-      button {
+
+
+
+        &:hover {
+          opacity: 0.9;
+        }
+
+
+      .loginButton {
+        background-color: #3137A8;
+        color: white;
         width: 48%;
         padding: 10px 0;
         border: none;
@@ -59,21 +69,20 @@
         font-size: 14px;
         font-weight: bold;
         cursor: pointer;
-
-        &:hover {
-          opacity: 0.9;
-        }
-      }
-
-      .loginButton {
-        background-color: #3137A8;
-        color: white;
       }
 
       .signupButton {
         background-color: white;
         color: #3137A8;
         border: 1px solid #3137A8;
+        width: 48%;
+        padding: 10px 0;
+        //border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
       }
     }
   }

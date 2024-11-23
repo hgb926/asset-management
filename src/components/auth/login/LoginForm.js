@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../../styles/auth/LoginForm.module.scss';
+import {Link} from "react-router-dom";
 
 const LoginForm = () => {
     return (
@@ -17,7 +18,7 @@ const LoginForm = () => {
                 {/*<p className={styles.message}>비밀번호가 올바르지 않습니다.</p>*/}
                 <div className={styles.buttons}>
                     <button className={styles.loginButton} type="submit">로그인</button>
-                    <button className={styles.signupButton} type="button">회원가입</button>
+                    <Link className={styles.signupButton} to={"/signup"}>회원가입</Link>
                 </div>
             </form>
             <p className={styles.findPw}>비밀번호 찾기</p>

@@ -13,6 +13,8 @@ const SignUp = () => {
     const [emailSuccess, setEmailSuccess] = useState("")
     const [codeValid, setCodeValid] = useState(false); // 인증 코드 검증 결과
     const [codeError, setCodeError] = useState(""); // 인증 코드 검증 에러 메시지
+    const [password, setPassword] = useState("")
+    const [nickname, setNickname] = useState("")
 
     const [formValues, setFormValues] = useState({
         email: "",
@@ -69,10 +71,13 @@ const SignUp = () => {
                 break;
             case "passwordCheck":
                 newValidations[0] = value === formValues.password;
+                if (newValidations[0]) setPassword(value);
+
                 break;
             case "nickname":
                 newValidations[0] = value.length >= 2 && value.length <= 16;
                 newValidations[1] = /^[a-zA-Z0-9가-힣]+$/.test(value);
+                if (newValidations.every(flag => flag)) setNickname(value)
                 break;
             default:
                 break;
@@ -153,6 +158,21 @@ const SignUp = () => {
         // 이메일 중복확인 끝
         setEmailValid(true);
     }, 1000);
+
+    const joinHandler = async () => {
+        if (email && password && nickname) {
+            const response = await fetch(`${AUTH_URL}/join`, {
+                method: "POST",
+                headers: {"Content-Type": "Application/json"},
+                body: JSON.stringify({
+                    email,
+                    password,
+                    nickname
+                })
+            });
+            // const responseData = await response.json();
+        }
+    }
 
 
 
@@ -249,9 +269,13 @@ const SignUp = () => {
                     />
                 </div>
                 <div className={styles.buttons}>
-                    <button type="submit" className={styles.submitButton}>
+                    <Link
+                        to={"/login"}
+                        className={styles.submitButton}
+                        onClick={joinHandler}
+                    >
                         회원가입
-                    </button>
+                    </Link>
                     <Link to={"/login"} className={styles.cancelButton}>
                         취소
                     </Link>

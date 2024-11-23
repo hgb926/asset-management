@@ -17,7 +17,9 @@ if (clientHostName === "localhost") {
 const API_BASE_URL = backendHostName;
 const APP_BASE_URL = frontendHostName;
 
+const AUTH = "/auth"
 // const ROOM = "/room";
 
 export const BASE_URL = API_BASE_URL;
+export const AUTH_URL = API_BASE_URL + AUTH;
 // export const ROOM_URL = API_BASE_URL + ROOM;

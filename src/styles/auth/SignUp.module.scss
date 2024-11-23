@@ -26,6 +26,16 @@
       font-weight: bold;
     }
 
+    .successMessage {
+      color: #324ccd;
+      margin: 0;
+    }
+
+    .errorMessage {
+      color: red;
+      margin: 0;
+    }
+
     .emailVerification {
       display: flex;
       gap: 10px;

@@ -2,8 +2,15 @@ import React, { useState, useRef } from "react";
 import styles from "../../../styles/auth/SignUp.module.scss";
 import SignUpModal from "../../../modal/SignUpModal";
 import { Link } from "react-router-dom";
+import {debounce} from "lodash";
+import {AUTH_URL} from "../../../config/host-config";
 
 const SignUp = () => {
+
+    const [emailValid, setEmailValid] = useState(false); // 검증 여부
+    const [error, setError] = useState(""); // 검증 에러 메시지
+    const [success, setSuccess] = useState("")
+
     const [formValues, setFormValues] = useState({
         email: "",
         code: "",
@@ -70,7 +77,7 @@ const SignUp = () => {
         return newValidations;
     };
 
-    const handleInputChange = (e) => {
+    const inputChangeHandler = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
 
@@ -79,28 +86,51 @@ const SignUp = () => {
         setFieldValidations({ ...fieldValidations, [name]: newValidations });
     };
 
-    const handleFocus = (field) => {
+    const focusHandler = (field) => {
         setActiveField(field);
     };
 
-    const handleBlur = () => {
+    const blurHandler = () => {
         setActiveField(null);
     };
 
-    const handleSendCode = () => {
-        if (fieldValidations.email[0]) {
-            alert("인증번호가 발송되었습니다.");
-        } else {
+    const sendCodeHandler = () => {
+        if (!fieldValidations.email[0]) {
             alert("올바른 이메일 형식을 입력해주세요.");
+        } else {
+            checkEmail(formValues.email)
         }
     };
 
+    // 이메일 검증 처리
+    const checkEmail = debounce(async (email) => {
+
+        // 중복 검사
+        const response = await fetch(`${AUTH_URL}/check-email?email=${email}`);
+        const flag = await response.json();
+
+        if (flag) {
+            setEmailValid(false);
+            setError("이미 회원가입된 이메일입니다.");
+            return;
+        } else {
+            setEmailValid(true);
+            setSuccess("인증번호가 전송되었습니다.")
+        }
+
+        // 이메일 중복확인 끝
+        setEmailValid(true);
+    }, 1000);
     return (
         <div className={styles.wrap}>
             <h1 className={styles.h1}>회원가입</h1>
             <form className={styles.form}>
                 <div className={styles.inputWrap}>
                     <label className={styles.label}>이메일</label>
+                    {emailValid ?
+                        <p className={styles.successMessage}>{success}</p> :
+                        <p className={styles.errorMessage}>{error}</p>}
+
                     <div className={styles.emailVerification}>
                         <input
                             ref={inputRefs.email}
@@ -109,14 +139,14 @@ const SignUp = () => {
                             name="email"
                             value={formValues.email}
                             placeholder="이메일을 입력하세요"
-                            onChange={handleInputChange}
-                            onFocus={() => handleFocus("email")}
-                            onBlur={handleBlur}
+                            onChange={inputChangeHandler}
+                            onFocus={() => focusHandler("email")}
+                            onBlur={blurHandler}
                         />
                         <button
                             type="button"
                             className={styles.verifyButton}
-                            onClick={handleSendCode}
+                            onClick={sendCodeHandler}
                         >
                             인증번호 전송
                         </button>
@@ -131,9 +161,9 @@ const SignUp = () => {
                         name="code"
                         value={formValues.code}
                         placeholder="인증코드를 입력하세요"
-                        onChange={handleInputChange}
-                        onFocus={() => handleFocus("code")}
-                        onBlur={handleBlur}
+                        onChange={inputChangeHandler}
+                        onFocus={() => focusHandler("code")}
+                        onBlur={blurHandler}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -145,9 +175,9 @@ const SignUp = () => {
                         name="password"
                         value={formValues.password}
                         placeholder="비밀번호를 입력하세요"
-                        onChange={handleInputChange}
-                        onFocus={() => handleFocus("password")}
-                        onBlur={handleBlur}
+                        onChange={inputChangeHandler}
+                        onFocus={() => focusHandler("password")}
+                        onBlur={blurHandler}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -159,9 +189,9 @@ const SignUp = () => {
                         name="passwordCheck"
                         value={formValues.passwordCheck}
                         placeholder="비밀번호를 다시 입력하세요"
-                        onChange={handleInputChange}
-                        onFocus={() => handleFocus("passwordCheck")}
-                        onBlur={handleBlur}
+                        onChange={inputChangeHandler}
+                        onFocus={() => focusHandler("passwordCheck")}
+                        onBlur={blurHandler}
                     />
                 </div>
                 <div className={styles.inputWrap}>
@@ -173,9 +203,9 @@ const SignUp = () => {
                         name="nickname"
                         value={formValues.nickname}
                         placeholder="닉네임을 입력하세요"
-                        onChange={handleInputChange}
-                        onFocus={() => handleFocus("nickname")}
-                        onBlur={handleBlur}
+                        onChange={inputChangeHandler}
+                        onFocus={() => focusHandler("nickname")}
+                        onBlur={blurHandler}
                     />
                 </div>
                 <div className={styles.buttons}>

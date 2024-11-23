@@ -14,6 +14,7 @@ const LoginForm = () => {
                     <label className={styles.label}>비밀번호</label>
                     <input className={styles.input} type="password" placeholder="비밀번호를 입력하세요" />
                 </div>
+                {/*<p className={styles.message}>비밀번호가 올바르지 않습니다.</p>*/}
                 <div className={styles.buttons}>
                     <button className={styles.loginButton} type="submit">로그인</button>
                     <button className={styles.signupButton} type="button">회원가입</button>

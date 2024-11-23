@@ -1,6 +1,6 @@
 .wrap {
   width: 500px;
-  margin: 100px auto;
+  margin: 180px auto;
   padding: 30px;
   border-radius: 10px;
   background-color: #CAE0FD;
@@ -41,10 +41,15 @@
       }
     }
 
+    .message {
+      color: #324ccd;
+      font-size: 14px;
+    }
+
     .buttons {
       display: flex;
       justify-content: space-between;
-      margin-top: 20px;
+      margin-top: 35px;
 
       button {
         width: 48%;

@@ -1,0 +1,39 @@
+.modal {
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 5px;
+
+  &.valid {
+    color: #3137a8; /* 파란색 */
+  }
+
+  &.invalid {
+    color: #000000; /* 검정색 */
+  }
+}
+
+.circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.checked {
+  background-color: #3137a8; /* 파란색 배경 */
+  color: white;
+}

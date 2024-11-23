@@ -1,0 +1,100 @@
+.wrap {
+  width: 500px;
+  margin: 180px auto;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #CAE0FD;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  .h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3137A8;
+    margin-bottom: 30px;
+  }
+
+  .form {
+    .inputWrap {
+      margin-bottom: 20px;
+      text-align: left;
+
+      .label {
+        display: block;
+        font-size: 14px;
+        color: #3137A8;
+        margin-bottom: 5px;
+      }
+
+      .input {
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+
+        &:focus {
+          outline: none;
+          border: 1px solid #3137A8;
+          box-shadow: 0 0 5px rgba(49, 55, 168, 0.5);
+        }
+      }
+    }
+
+    .message {
+      color: #324ccd;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 35px;
+
+
+
+
+        &:hover {
+          opacity: 0.9;
+        }
+
+
+      .loginButton {
+        background-color: #3137A8;
+        color: white;
+        width: 48%;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .signupButton {
+        background-color: white;
+        color: #3137A8;
+        border: 1px solid #3137A8;
+        width: 48%;
+        padding: 10px 0;
+        //border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .findPw {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #3137A8;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

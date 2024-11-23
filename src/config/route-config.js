@@ -8,8 +8,8 @@ export const router = createBrowserRouter([
         element: (
             <RootLayout/>
         ),
-        // children: [
-        //
-        // ]
+        children: [
+
+        ]
     }
 ])

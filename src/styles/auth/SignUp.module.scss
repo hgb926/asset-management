@@ -90,7 +90,7 @@
     .cancelButton {
       flex: 1;
       height: 45px;
-      background-color: #ccc;
+      background-color: white;
       color: black;
       font-weight: bold;
       border-radius: 8px;
@@ -98,9 +98,14 @@
       cursor: pointer;
       margin-left: 10px;
       transition: 0.3s;
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
 
       &:hover {
-        background-color: #999;
+        background-color: #dcdcdc;
       }
     }
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../../../styles/auth/SignUp.module.scss';
+import {Link} from "react-router-dom";
 
 const SignUp = () => {
     return (
@@ -22,7 +23,7 @@ const SignUp = () => {
             </div>
             <div className={styles.flex}>
                 <button className={styles.submitButton}>회원가입</button>
-                <button className={styles.cancelButton}>취소</button>
+                <Link to={'/login'} className={styles.cancelButton}>취소</Link>
             </div>
         </div>
     );

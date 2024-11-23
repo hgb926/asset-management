@@ -19,6 +19,49 @@
       margin-bottom: 20px;
       text-align: left;
 
+      .checkboxLabel {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #3137A8;
+        cursor: pointer;
+
+        .checkbox {
+          display: none; // 기본 체크박스 숨기기
+        }
+
+        .customCheckbox {
+          width: 20px;
+          height: 20px;
+          border: 1.5px solid #3137A8;
+          border-radius: 3px;
+          margin-right: 10px;
+          position: relative;
+          transition: all 0.3s;
+
+          &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: #3137a8;
+            border-radius: 3px;
+            transform: scale(0) translate(-50%, -50%);
+            transition: transform 0.3s;
+          }
+        }
+
+        .checkbox:checked + .customCheckbox::after {
+          transform: scale(1) translate(-50%, -50%);
+        }
+
+        &:hover .customCheckbox {
+          background-color: #f5f5f5;
+        }
+      }
+
       .label {
         display: block;
         font-size: 14px;
@@ -51,14 +94,6 @@
       justify-content: space-between;
       margin-top: 35px;
 
-
-
-
-        &:hover {
-          opacity: 0.9;
-        }
-
-
       .loginButton {
         background-color: #3137A8;
         color: white;
@@ -69,6 +104,10 @@
         font-size: 14px;
         font-weight: bold;
         cursor: pointer;
+
+        &:hover {
+          opacity: 0.9;
+        }
       }
 
       .signupButton {
@@ -77,12 +116,15 @@
         border: 1px solid #3137A8;
         width: 48%;
         padding: 10px 0;
-        //border: none;
         border-radius: 5px;
         font-size: 14px;
         font-weight: bold;
         cursor: pointer;
         text-decoration: none;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
       }
     }
   }

@@ -1,22 +1,34 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from "../../../styles/auth/LoginForm.module.scss";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {AUTH_URL} from "../../../config/host-config";
 
 const LoginForm = () => {
+    const navi = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [autoLogin, setAutoLogin] = useState(false);
+    const [error, setError] = useState("")
 
-    const autoLoginHandler = () => {
-        if (autoLogin) {
-            setAutoLogin(false);
-        } else {
-            setAutoLogin(true);
+
+    const loginHandler = async () => {
+        const payload=  {
+            email,
+            password,
+            autoLogin
         }
-    }
+        const response = await fetch(`${AUTH_URL}/sign-in`, {
+            method: "POST",
+            headers: {"Content-Type": "Application/json"},
+            body: JSON.stringify(payload)
+        });
 
-    const emailRef = useRef();
-    const passwordRef = useRef();
+        const responseData = await response.text();
+        if (response.status === 422) {
+            setError(responseData)
+        }
+
+    }
 
     return (
         <div className={styles.wrap}>
@@ -25,7 +37,7 @@ const LoginForm = () => {
                 <div className={styles.inputWrap}>
                     <label className={styles.label}>이메일</label>
                     <input
-                        ref={emailRef}
+                        onChange={(e) => setEmail(e.target.value)}
                         className={styles.input}
                         type="email"
                         placeholder="이메일을 입력하세요"
@@ -34,24 +46,32 @@ const LoginForm = () => {
                 <div className={styles.inputWrap}>
                     <label className={styles.label}>비밀번호</label>
                     <input
-                        ref={passwordRef}
+                        onChange={(e) => setPassword(e.target.value)}
                         className={styles.input}
                         type="password"
                         placeholder="비밀번호를 입력하세요"
                     />
                 </div>
-                {/*<p className={styles.message}>비밀번호가 올바르지 않습니다.</p>*/}
                 <div className={styles.inputWrap}>
                     <label className={styles.checkboxLabel}>
-                        <input type="checkbox" className={styles.checkbox} onClick={autoLoginHandler}/>
+                        <input
+                            type="checkbox"
+                            className={styles.checkbox}
+                            checked={autoLogin}
+                            onChange={(e) => setAutoLogin(e.target.checked)}
+                        />
                         <span className={styles.customCheckbox}></span>
                         자동로그인
                     </label>
                 </div>
+                {error ? <p className={styles.message}>{error}</p> : undefined}
                 <div className={styles.buttons}>
-                    <button className={styles.loginButton} type="submit">
+                <div
+                        className={styles.loginButton}
+                        onClick={loginHandler}
+                    >
                         로그인
-                    </button>
+                    </div>
                     <Link className={styles.signupButton} to={"/signup"}>
                         회원가입
                     </Link>

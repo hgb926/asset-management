@@ -40,7 +40,9 @@ const RootLayout = () => {
                 {!hideHeaderAndDashboard && <Dashboard />}
                 <div className={styles.outlet}>
                     <Outlet />
-                    {isAccount === "accountBook" ?
+                    {isAccount === "accountBook"
+                        && !hideHeaderAndDashboard
+                        ?
                     <AccountBook/>
                     :
                     undefined}

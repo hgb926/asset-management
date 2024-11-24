@@ -1,5 +1,57 @@
 .container {
   width: 250px; /* 고정 너비 */
-  background: #CAE0FD;
+  background: #cae0fd;
   flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
+  display: flex;
+  justify-content: center;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+
+
+  .subContainer {
+    width: 100%; /* 가로 채우기 */
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+
+    .profile {
+      text-align: center;
+
+      .welcome {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #3137a8;
+      }
+
+      .greeting {
+        font-size: 0.9rem;
+        color: #555;
+      }
+    }
+
+    .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .menuItem {
+        font-size: 1rem;
+        color: #3137a8;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: background-color 0.3s, transform 0.2s;
+        cursor: pointer;
+        text-align: center;
+        width: 80%;
+
+        &:hover {
+          background-color: #b9d8ff;
+          transform: translateY(-3px);
+        }
+      }
+    }
+  }
 }

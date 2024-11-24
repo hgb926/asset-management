@@ -1,6 +1,5 @@
 .container {
-  width: 100%;
-  height: 120px;
-  background: #CAE0FD;
+  width: 250px; /* 고정 너비 */
+  background: #9cc6f3;
   flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
 }

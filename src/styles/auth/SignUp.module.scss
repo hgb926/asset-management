@@ -20,10 +20,10 @@
     text-align: left;
 
     .label {
-      font-size: 1rem;
+      display: block;
+      font-size: 14px;
+      color: #3137A8;
       margin-bottom: 5px;
-      color: #3137a8;
-      font-weight: bold;
     }
 
     .successMessage {

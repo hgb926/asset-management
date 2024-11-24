@@ -23,12 +23,11 @@ const LoginForm = () => {
             body: JSON.stringify(payload)
         });
 
-        // 이제 성공 시에 localStorage 저장하고 navi로 메인페이지 리다이렉트!
         const responseData = await response.text();
         if (response.status === 422) {
             setError(responseData)
         } else {
-            localStorage.addItem(responseData)
+            // localStorage.addItem(responseData)
             navi("/")
         }
 

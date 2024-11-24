@@ -1,13 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from '../../styles/main/Dashboard.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import locationSlice, {locationActions} from "../store/user/LocationSlice";
+import {locationActions} from "../store/user/LocationSlice";
+import {Link} from "react-router-dom";
 
 const Dashboard = () => {
 
     const dispatch = useDispatch();
     const userData = useSelector(state => state.userInfo.userData);
     const location = useSelector(state => state.location.userLocation);
+
+    const getActiveClass = (targetLocation) => {
+        return location === targetLocation ? styles.active : ""; // 현재 상태와 비교하여 active 클래스 추가
+    };
 
     useEffect(() => {
         console.log(location)
@@ -21,28 +26,34 @@ const Dashboard = () => {
                     <p className={styles.greeting}>환영합니다</p>
                 </div>
                 <nav className={styles.menu}>
-                    {/*액티브*/}
-                    {/*나중엔 가계부 제외 나머지는 Link태그로 이동*/}
-                    <p
+                    <Link
+                        to={"/"}
                         onClick={() => dispatch(locationActions.updateUserLocation("accountBook"))}
-                        className={styles.menuItem}>
+                        className={`${styles.menuItem} ${getActiveClass("accountBook")}`}
+                    >
                         가계부
-                    </p>
-                    <p
+                    </Link>
+                    <Link
+                        to={'/analysis'}
                         onClick={() => dispatch(locationActions.updateUserLocation("analysis"))}
-                        className={styles.menuItem}>
+                        className={`${styles.menuItem} ${getActiveClass("analysis")}`}
+                    >
                         분석
-                    </p> {/*  /analysis  */}
-                    <p
+                    </Link>
+                    <Link
+                        to={'/goal'}
                         onClick={() => dispatch(locationActions.updateUserLocation("goal"))}
-                        className={styles.menuItem}>
+                        className={`${styles.menuItem} ${getActiveClass("goal")}`}
+                    >
                         목표
-                    </p> {/*  /goal  */}
-                    <p
+                    </Link>
+                    <Link
+                        to={'/challenge'}
                         onClick={() => dispatch(locationActions.updateUserLocation("challenge"))}
-                        className={styles.menuItem}>
+                        className={`${styles.menuItem} ${getActiveClass("challenge")}`}
+                    >
                         챌린지
-                    </p> {/*  /challenge  */}
+                    </Link>
                 </nav>
             </div>
         </div>

@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import styles from "../../../styles/auth/LoginForm.module.scss";
 import {Link, useNavigate} from "react-router-dom";
 import {AUTH_URL} from "../../../config/host-config";
+import {saveUserInfo} from "../../../config/auth";
 
 const LoginForm = () => {
     const navi = useNavigate();
@@ -27,11 +28,13 @@ const LoginForm = () => {
         if (response.status === 422) {
             setError(responseData)
         } else {
-            // localStorage.addItem(responseData)
+            const userId = JSON.parse(responseData).userId
+            saveUserInfo(userId)
             navi("/")
         }
-
     }
+
+
 
     return (
         <div className={styles.wrap}>

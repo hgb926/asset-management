@@ -15,5 +15,6 @@ const userInfoSlice = createSlice({
     }
 })
 
+
 export const userInfoActions = userInfoSlice.actions;
 export default userInfoSlice.reducer;

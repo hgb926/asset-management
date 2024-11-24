@@ -4,6 +4,7 @@ import Auth from "../pages/Auth";
 import SignUp from "../components/auth/signup/SignUp.js";
 import LoginForm from "../components/auth/login/LoginForm.js";
 
+
 export const router = createBrowserRouter([
     {
         path: "/",

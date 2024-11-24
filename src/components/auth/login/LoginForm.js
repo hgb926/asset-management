@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import styles from "../../../styles/auth/LoginForm.module.scss";
 import {Link, useNavigate} from "react-router-dom";
 import {AUTH_URL} from "../../../config/host-config";
@@ -23,9 +23,13 @@ const LoginForm = () => {
             body: JSON.stringify(payload)
         });
 
+        // 이제 성공 시에 localStorage 저장하고 navi로 메인페이지 리다이렉트!
         const responseData = await response.text();
         if (response.status === 422) {
             setError(responseData)
+        } else {
+            localStorage.addItem(responseData)
+            navi("/")
         }
 
     }

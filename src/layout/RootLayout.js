@@ -1,20 +1,39 @@
-import React from 'react';
-import { Outlet, useLocation } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/main/Header";
 import Dashboard from "../components/main/Dashboard";
 import styles from '../styles/main/RootLayout.module.scss';
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoActions } from "../components/store/user/UserInfoSlice";
 
 const RootLayout = () => {
+    const navi = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
+
     const hideForPaths = ["/login", "/signup"];
     const hideHeaderAndDashboard = hideForPaths.includes(location.pathname);
 
+    const userData = useSelector(state => state.userInfo.userData);
+
+    useEffect(() => {
+        if (!userData || userData.isEmpty) {
+            const storedUserData =
+                JSON.parse(localStorage.getItem("userData")) ||
+                JSON.parse(sessionStorage.getItem("userData"));
+
+            if (storedUserData) {
+                dispatch(userInfoActions.updateUser(storedUserData));
+            } else {
+                navi("/login");
+            }
+        }
+    }, [userData, dispatch, navi]);
+
     return (
         <div className={styles.container}>
-            {/* 항상 Header를 위에 배치 */}
             {!hideHeaderAndDashboard && <Header />}
             <div className={styles.mainContent}>
-                {/* Dashboard와 Outlet을 좌우로 배치 */}
                 {!hideHeaderAndDashboard && <Dashboard />}
                 <div className={styles.outlet}>
                     <Outlet />

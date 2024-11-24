@@ -6,7 +6,7 @@ import {userInfoActions} from "../store/user/UserInfoSlice";
 
 const Header = () => {
 
-    const userData = useSelector(state => state.userInfo.userData) || "user";
+    const userData = useSelector(state => state.userInfo.userData) || {};
     console.log(userData)
 
 

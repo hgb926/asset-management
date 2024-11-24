@@ -1,40 +1,56 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "../../../styles/auth/LoginForm.module.scss";
-import {Link, useNavigate} from "react-router-dom";
-import {AUTH_URL} from "../../../config/host-config";
-import {saveUserInfo} from "../../../config/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { AUTH_URL } from "../../../config/host-config";
+import { useDispatch } from "react-redux";
+import { userInfoActions } from "../../store/user/UserInfoSlice";
 
 const LoginForm = () => {
     const navi = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [autoLogin, setAutoLogin] = useState(false);
-    const [error, setError] = useState("")
-
+    const [error, setError] = useState("");
+    const dispatch = useDispatch();
 
     const loginHandler = async () => {
-        const payload=  {
+        const payload = {
             email,
             password,
-            autoLogin
-        }
+            autoLogin,
+        };
+
         const response = await fetch(`${AUTH_URL}/sign-in`, {
             method: "POST",
-            headers: {"Content-Type": "Application/json"},
-            body: JSON.stringify(payload)
+            headers: { "Content-Type": "Application/json" },
+            body: JSON.stringify(payload),
         });
 
         const responseData = await response.text();
-        if (response.status === 422) {
-            setError(responseData)
+        if (response.status === 200) {
+            const userId = JSON.parse(responseData).userId;
+            const userDetailData = await (
+                await fetch(`${AUTH_URL}/${userId}`)
+            ).json();
+            dispatch(userInfoActions.updateUser(userDetailData));
+
+            userDetailData.autoLogin
+                ?
+                localStorage.setItem(
+                    "userData",
+                    JSON.stringify(userDetailData)
+                )
+                :
+                sessionStorage.setItem(
+                    "userData",
+                    JSON.stringify(userDetailData)
+                );
+
+            navi("/");
         } else {
-            const userId = JSON.parse(responseData).userId
-            saveUserInfo(userId)
-            navi("/")
+            setError(responseData);
         }
-    }
-
-
+    };
 
     return (
         <div className={styles.wrap}>
@@ -72,7 +88,7 @@ const LoginForm = () => {
                 </div>
                 {error ? <p className={styles.message}>{error}</p> : undefined}
                 <div className={styles.buttons}>
-                <div
+                    <div
                         className={styles.loginButton}
                         onClick={loginHandler}
                     >

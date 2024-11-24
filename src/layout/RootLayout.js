@@ -1,15 +1,23 @@
 import React from 'react';
-import {Outlet} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {Outlet, useLocation} from "react-router-dom";
+import Header from "../components/main/Header";
+import Dashboard from "../components/main/Dashboard";
+import styles from '../styles/main/RootLayout.module.scss'
 
 const RootLayout = () => {
 
-    const userData = useSelector((state) => state.userInfo.userData);
-    console.log(userData)
+    const location = useLocation();
+    const hideForPaths = ["/login", "/signup"]
+    const hideHeaderAndDashboard = hideForPaths.includes(location.pathname);
+    console.log(hideHeaderAndDashboard)
 
     return (
         <div>
-            <Outlet/>
+            {!hideHeaderAndDashboard && <Header/>}
+            <div className={styles.flex}>
+                {!hideHeaderAndDashboard && <Dashboard/>}
+                <Outlet/>
+            </div>
         </div>
     );
 };

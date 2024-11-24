@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../layout/RootLayout";
-import Auth from "../pages/Auth";
 import SignUp from "../components/auth/signup/SignUp.js";
 import LoginForm from "../components/auth/login/LoginForm.js";
 

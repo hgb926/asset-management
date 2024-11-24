@@ -3,12 +3,12 @@ import {AUTH_URL} from "./host-config";
 import {userInfoActions} from "../components/store/user/UserInfoSlice";
 import store from '../components/store/index'
 
-
 const getUserToken = () => {
     const user = localStorage.getItem("userData");
     return user ? JSON.parse(user.token) : null;
 }
 
+// 아무래도 옮기는게 나을거같은데
 export const saveUserInfo = async (userId) => {
     const response = await (await fetch(`${AUTH_URL}/${userId}`)).json();
     store.dispatch(userInfoActions.updateUser(response))

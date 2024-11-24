@@ -5,6 +5,7 @@ import Dashboard from "../components/main/Dashboard";
 import styles from '../styles/main/RootLayout.module.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { userInfoActions } from "../components/store/user/UserInfoSlice";
+import AccountBook from "../components/main/accountbook/AccountBook";
 
 const RootLayout = () => {
     const navi = useNavigate();
@@ -13,6 +14,8 @@ const RootLayout = () => {
 
     const hideForPaths = ["/login", "/signup"];
     const hideHeaderAndDashboard = hideForPaths.includes(location.pathname);
+
+    const isAccount = useSelector(state => state.location.userLocation);
 
     const userData = useSelector(state => state.userInfo.userData);
 
@@ -37,6 +40,10 @@ const RootLayout = () => {
                 {!hideHeaderAndDashboard && <Dashboard />}
                 <div className={styles.outlet}>
                     <Outlet />
+                    {isAccount === "accountBook" ?
+                    <AccountBook/>
+                    :
+                    undefined}
                 </div>
             </div>
         </div>

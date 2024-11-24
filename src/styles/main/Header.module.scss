@@ -29,9 +29,22 @@
     .welcome {
       font-size: 12px;
     }
+    .welcome > span {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    .welcome > span:hover {
+      text-decoration: underline;
+      scale: 1.1;
+    }
 
     .settings {
       font-size: 1.4rem;
+    }
+    .settings:hover {
+      font-weight: bold;
+      scale: 1.1;
+      cursor: pointer;
     }
   }
 }

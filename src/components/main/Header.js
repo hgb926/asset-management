@@ -15,7 +15,11 @@ const Header = () => {
             <div className={styles.left}></div>
             <h1 className={styles.h1}>Asset Management</h1>
             <div className={styles.right}>
-                <div className={styles.welcome}>{userData.nickname}님, 환영합니다 </div>
+                <div className={styles.welcome}>
+                    <span>마이페이지</span>
+                    <span>/</span>
+                    <span>로그아웃</span>
+                </div>
                 <IoSettingsOutline className={styles.settings} />
             </div>
         </div>

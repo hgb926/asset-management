@@ -1,5 +1,52 @@
 .container {
   width: 100%;
   height: 120px;
-  background: #CAE0FD;
+  background: #9cc6f3;
+  flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
+  display: flex;
+
+  .left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .h1 {
+    color: #060c83;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+  }
+
+  .right {
+    flex: 1;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    .welcome {
+      color: #3137A8;
+      font-size: 12px;
+    }
+    .welcome > span {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    .welcome > span:hover {
+      text-decoration: underline;
+      scale: 1.1;
+    }
+
+    .settings {
+      font-size: 1.4rem;
+    }
+    .settings:hover {
+      font-weight: bold;
+      scale: 1.1;
+      cursor: pointer;
+    }
+  }
 }

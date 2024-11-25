@@ -1,9 +1,11 @@
-import {createSlice} from "@reduxjs/toolkit";
-
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    userData: []
-}
+    userData:
+        JSON.parse(localStorage.getItem("userData")) ||
+        JSON.parse(sessionStorage.getItem("userData")) ||
+        { isEmpty: true },
+};
 
 const userInfoSlice = createSlice({
     name: "userInfo",
@@ -11,10 +13,9 @@ const userInfoSlice = createSlice({
     reducers: {
         updateUser(state, action) {
             state.userData = action.payload;
-        }
-    }
-})
-
+        },
+    },
+});
 
 export const userInfoActions = userInfoSlice.actions;
 export default userInfoSlice.reducer;

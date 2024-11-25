@@ -1,3 +1,16 @@
-.flex {
+.container {
   display: flex;
+  flex-direction: column;
+  height: 100vh; /* 전체 화면을 차지하도록 설정 */
+}
+
+.mainContent {
+  display: flex;
+  flex: 1;
+}
+
+.outlet {
+  flex: 1;
+  padding: 20px;
+  background: #fff; /* Outlet 배경색 설정 */
 }

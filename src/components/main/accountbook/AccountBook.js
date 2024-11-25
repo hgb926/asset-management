@@ -1,30 +1,24 @@
 import React, { useState } from "react";
 import styles from "../../../styles/accountbook/AccountBook.module.scss"
-
 const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
+    const today = new Date(); // 오늘 날짜를 고정
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    // 현재 달의 첫 날
     const firstDayOfMonth = new Date(year, month, 1);
-    // 달력 시작 날짜를 현재 달의 첫 날의 주의 일요일로 설정
     const startDay = new Date(firstDayOfMonth);
     startDay.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay());
 
-    // 현재 달의 마지막 날
     const lastDayOfMonth = new Date(year, month + 1, 0);
-    // 달력 끝 날짜를 현재 달의 마지막 날의 주의 토요일로 설정
     const endDay = new Date(lastDayOfMonth);
     endDay.setDate(lastDayOfMonth.getDate() + (6 - lastDayOfMonth.getDay()));
 
-    /** startDay부터 endDay까지의 날짜를 주 단위로 그룹화하는 함수 */
     const groupDatesByWeek = (startDay, endDay) => {
         const weeks = [];
         let currentWeek = [];
         let currentDate = new Date(startDay);
-
 
         while (currentDate <= endDay) {
             currentWeek.push(new Date(currentDate));
@@ -67,13 +61,13 @@ const AccountBook = () => {
             </div>
             <div className={styles.calendar}>
                 <div className={styles.week}>
-                    <span className={styles.holiday}>일</span>
+                    <span>일</span>
                     <span>월</span>
                     <span>화</span>
                     <span>수</span>
                     <span>목</span>
                     <span>금</span>
-                    <span className={styles.saturday}>토</span>
+                    <span>토</span>
                 </div>
                 {weeks.map((week, index) => (
                     <div key={index} className={styles.week}>
@@ -82,7 +76,13 @@ const AccountBook = () => {
                                 key={idx}
                                 className={`${styles.day} ${
                                     date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
-                                } ${date.getDate() === currentDate.getDate() ? styles.today : ''}`}
+                                } ${
+                                    date.getDate() === today.getDate() &&
+                                    date.getMonth() === today.getMonth() &&
+                                    date.getFullYear() === today.getFullYear()
+                                        ? styles.today
+                                        : ""
+                                }`}
                             >
                                 {date.getDate()}
                             </div>

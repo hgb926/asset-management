@@ -45,8 +45,9 @@
         height: 60px;
         display: flex;
         justify-content: center;
-        align-items: center;
+        //align-items: center;
         font-size: 0.9rem;
+        cursor: pointer;
       }
 
       .day {
@@ -60,9 +61,13 @@
         }
 
         &:hover {
-          background-color: #3137a8;
-          color: white;
+          background-color: #b4c8fa;
+          //color: white;
         }
+      }
+      .today {
+        background-color: #acc0f3 !important;
+        color: white;
       }
     }
   }

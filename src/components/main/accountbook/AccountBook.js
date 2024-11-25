@@ -25,6 +25,7 @@ const AccountBook = () => {
         let currentWeek = [];
         let currentDate = new Date(startDay);
 
+
         while (currentDate <= endDay) {
             currentWeek.push(new Date(currentDate));
             if (currentWeek.length === 7 || currentDate.getDay() === 6) {
@@ -81,7 +82,7 @@ const AccountBook = () => {
                                 key={idx}
                                 className={`${styles.day} ${
                                     date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
-                                }`}
+                                } ${date.getDate() === currentDate.getDate() ? styles.today : ''}`}
                             >
                                 {date.getDate()}
                             </div>

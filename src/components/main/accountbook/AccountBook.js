@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import styles from "../../../styles/accountbook/AccountBook.module.scss"
+import styles from "../../../styles/accountbook/AccountBook.module.scss";
+import AccountModal from "../../../modal/AccountModal";
+
 const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const today = new Date(); // 오늘 날짜를 고정
+    const [selectedDate, setSelectedDate] = useState(null); // 모달에 표시할 날짜
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -76,13 +78,8 @@ const AccountBook = () => {
                                 key={idx}
                                 className={`${styles.day} ${
                                     date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
-                                } ${
-                                    date.getDate() === today.getDate() &&
-                                    date.getMonth() === today.getMonth() &&
-                                    date.getFullYear() === today.getFullYear()
-                                        ? styles.today
-                                        : ""
                                 }`}
+                                onClick={() => setSelectedDate(`${date.getMonth() + 1}월 ${date.getDate()}일`)}
                             >
                                 {date.getDate()}
                             </div>
@@ -90,6 +87,8 @@ const AccountBook = () => {
                     </div>
                 ))}
             </div>
+            {/*여기에 내역 props로 보냄*/}
+            <AccountModal selectedDate={selectedDate} onClose={() => setSelectedDate(null)} />
         </div>
     );
 };

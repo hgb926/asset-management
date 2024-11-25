@@ -1,9 +1,8 @@
 .accountBook {
-  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
-
+  width: 750px;
   .header {
     display: flex;
     justify-content: space-between;
@@ -34,23 +33,34 @@
   .calendar {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px; /* 줄 간격 최소화 */
 
     .week {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between; /* 박스 간격을 균등 배치 */
+      margin: 0; /* 기본 여백 제거 */
 
-      span, .day {
-        width: 50px;
+      span {
+        width: calc(100% / 7 - 2px);
+        height: 30px; /* span만 높이를 10px로 설정 */
+        font-size: 0.8rem; /* 글자 크기 조정 */
+        display: flex;
+        justify-content: center;
+        align-items: center; /* 텍스트 중앙 정렬 */
+        color: #07145c;
+      }
+
+
+      .day {
+        width: calc(100% / 7 - 2px);
         height: 60px;
         display: flex;
         justify-content: center;
-        //align-items: center;
+        //align-items: center; /* 텍스트 중앙 정렬 */
         font-size: 0.9rem;
         cursor: pointer;
-      }
-
-      .day {
+        margin: 2px 5px; /* 박스 간 여백 최소화 */
+        box-sizing: border-box;
         background-color: #f5f5f5;
         transition: background-color 0.3s, color 0.3s;
 
@@ -62,12 +72,18 @@
 
         &:hover {
           background-color: #b4c8fa;
-          //color: white;
         }
       }
+
       .today {
         background-color: #acc0f3 !important;
         color: white;
+      }
+      .holiday {
+        color: red;
+      }
+      .saturday {
+        color: #002df4;
       }
     }
   }

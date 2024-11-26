@@ -1,22 +1,52 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styles from "../../../styles/accountbook/AccountBook.module.scss";
-import AccountModal from "../../../modal/AccountModal";
 
 const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(null); // 모달에 표시할 날짜
+    const userData = useSelector(state => state.userInfo.userData);
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
+    // 현재 달의 첫 날
     const firstDayOfMonth = new Date(year, month, 1);
+    // 달력 시작 날짜를 현재 달의 첫 날의 주의 일요일로 설정
     const startDay = new Date(firstDayOfMonth);
     startDay.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay());
 
+    // 현재 달의 마지막 날
     const lastDayOfMonth = new Date(year, month + 1, 0);
+    // 달력 끝 날짜를 현재 달의 마지막 날의 주의 토요일로 설정
     const endDay = new Date(lastDayOfMonth);
     endDay.setDate(lastDayOfMonth.getDate() + (6 - lastDayOfMonth.getDay()));
 
+    // 데이터 그룹화 함수
+    const groupDataByDate = (data) => {
+        return data.reduce((acc, item) => {
+            const dateKey = item.importAt?.split("T")[0] || item.expenseAt?.split("T")[0];
+            if (!dateKey) return acc;
+            if (!acc[dateKey]) acc[dateKey] = [];
+            acc[dateKey].push(item);
+            return acc;
+        }, {});
+    };
+
+    const groupedImports = groupDataByDate(userData.importList || []);
+    const groupedExpenses = groupDataByDate(userData.expenseList || []);
+    const combinedData = { ...groupedImports, ...groupedExpenses };
+
+    // 다음 달 이동
+    const handleNextMonth = () => {
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    };
+
+    // 이전 달 이동
+    const handlePrevMonth = () => {
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    };
+
+    // 주 단위 그룹화 함수
     const groupDatesByWeek = (startDay, endDay) => {
         const weeks = [];
         let currentWeek = [];
@@ -39,14 +69,6 @@ const AccountBook = () => {
     };
 
     const weeks = groupDatesByWeek(startDay, endDay);
-
-    const handleNextMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-    };
-
-    const handlePrevMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-    };
 
     return (
         <div className={styles.accountBook}>
@@ -71,24 +93,36 @@ const AccountBook = () => {
                     <span>금</span>
                     <span>토</span>
                 </div>
-                {weeks.map((week, index) => (
-                    <div key={index} className={styles.week}>
-                        {week.map((date, idx) => (
-                            <div
-                                key={idx}
-                                className={`${styles.day} ${
-                                    date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
-                                }`}
-                                onClick={() => setSelectedDate(`${date.getMonth() + 1}월 ${date.getDate()}일`)}
-                            >
-                                {date.getDate()}
-                            </div>
-                        ))}
+                {weeks.map((week, weekIndex) => (
+                    <div key={weekIndex} className={styles.week}>
+                        {week.map((date, dayIndex) => {
+                            const dateKey = date.toISOString().split("T")[0];
+                            const dailyData = combinedData[dateKey] || [];
+                            const isToday = date.getDate() === currentDate.getDate() && date.getMonth() === currentDate.getMonth();
+
+                            return (
+                                <div
+                                    key={dayIndex}
+                                    className={`${styles.day} ${
+                                        date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
+                                    } ${isToday ? styles.today : ""}
+                                    ${date.getDay() === 0 ? styles.holiday : ""}
+                                    ${date.getDay() === 6 ? styles.saturday : ""}`}
+                                >
+                                    <div className={styles.date}>{date.getDate()}</div>
+                                    {dailyData.length > 0 && (
+                                        <ul className={styles.dataList}>
+                                            {dailyData.map((item, idx) => (
+                                                <li key={idx}>{item.description} - {item.amount}원</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 ))}
             </div>
-            {/*여기에 내역 props로 보냄*/}
-            <AccountModal selectedDate={selectedDate} onClose={() => setSelectedDate(null)} />
         </div>
     );
 };

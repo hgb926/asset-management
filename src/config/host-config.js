@@ -18,8 +18,11 @@ const API_BASE_URL = backendHostName;
 const APP_BASE_URL = frontendHostName;
 
 const AUTH = "/auth"
-// const ROOM = "/room";
+const IMPORT = "/import";
+const EXPENSE = "/expense"
 
 export const BASE_URL = API_BASE_URL;
 export const AUTH_URL = API_BASE_URL + AUTH;
+export const IMPORT_URL = API_BASE_URL + IMPORT;
+export const EXPENSE_URL = API_BASE_URL + EXPENSE;
 // export const ROOM_URL = API_BASE_URL + ROOM;

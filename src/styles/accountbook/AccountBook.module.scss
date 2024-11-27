@@ -68,6 +68,7 @@
           color: #3137a8;
         }
 
+
         &:hover {
           background-color: #b4c8fa;
         }
@@ -103,5 +104,11 @@
         margin-bottom: 3px;
       }
     }
+  }
+  .income {
+    color: blue !important;
+  }
+  .expense {
+    color: red!important;
   }
 }

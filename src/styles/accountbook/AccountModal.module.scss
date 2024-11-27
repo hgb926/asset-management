@@ -1,0 +1,63 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* 흐려지는 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #dde8f8;
+  border-radius: 8px;
+  padding: 20px;
+  width: 350px;
+  max-height: 500px;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close {
+  padding: 0px 10px;
+  border: none;
+  border-radius: 100%;
+  background-color: #3137a8;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  &:hover {
+    background-color: #5561d3;
+  }
+}
+
+.details {
+  margin-top: 20px;
+  text-align: left;
+
+  h3 {
+    color: #3137a8;
+    margin-bottom: 10px;
+  }
+
+  .item {
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    p {
+      margin: 5px 0;
+    }
+  }
+}

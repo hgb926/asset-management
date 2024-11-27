@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import styles from "../../../styles/accountbook/AccountBook.module.scss"
+import { useSelector } from "react-redux";
+import styles from "../../../styles/accountbook/AccountBook.module.scss";
+import AccountModal from "../../../modal/AccountModal";
 
 const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
+    const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
+
+    const userData = useSelector((state) => state.userInfo.userData);
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -51,6 +57,11 @@ const AccountBook = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     };
 
+    const handleDayClick = (date) => {
+        setSelectedDate(date);
+        setModalOpen(true);
+    };
+
     return (
         <div className={styles.accountBook}>
             <div className={styles.header}>
@@ -76,19 +87,40 @@ const AccountBook = () => {
                 </div>
                 {weeks.map((week, index) => (
                     <div key={index} className={styles.week}>
-                        {week.map((date, idx) => (
-                            <div
-                                key={idx}
-                                className={`${styles.day} ${
-                                    date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
-                                }`}
-                            >
-                                {date.getDate()}
-                            </div>
-                        ))}
+                        {week.map((date, idx) => {
+                            const dateStr = date.toISOString().split("T")[0];
+                            const dailyIncome = userData.importList?.filter(
+                                (item) => item.importAt.split("T")[0] === dateStr
+                            ).reduce((acc, curr) => acc + curr.amount, 0);
+                            const dailyExpense = userData.expenseList?.filter(
+                                (item) => item.expenseAt.split("T")[0] === dateStr
+                            ).reduce((acc, curr) => acc + curr.amount, 0);
+
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`${styles.day} ${
+                                        date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
+                                    }`}
+                                    onClick={() => handleDayClick(date)}
+                                >
+                                    <span>{date.getDate()}</span>
+                                    {dailyIncome ? <span className={styles.income}>+{dailyIncome}</span> : null}
+                                    {dailyExpense ? <span className={styles.expense}>-{dailyExpense}</span> : null}
+                                </div>
+                            );
+                        })}
                     </div>
                 ))}
             </div>
+            {modalOpen && (
+                <AccountModal
+                    selectedDate={selectedDate}
+                    importList={userData.importList}
+                    expenseList={userData.expenseList}
+                    onClose={() => setModalOpen(false)}
+                />
+            )}
         </div>
     );
 };

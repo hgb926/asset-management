@@ -6,6 +6,7 @@ import styles from '../styles/main/RootLayout.module.scss';
 import { useDispatch, useSelector } from "react-redux";
 import { userInfoActions } from "../components/store/user/UserInfoSlice";
 import AccountBook from "../components/main/accountbook/AccountBook";
+import Report from "../components/main/accountbook/Report";
 
 const RootLayout = () => {
     const navi = useNavigate();
@@ -43,7 +44,10 @@ const RootLayout = () => {
                     {isAccount === "accountBook"
                         && !hideHeaderAndDashboard
                         ?
+                        <>
+                        <Report/>
                     <AccountBook/>
+                        </>
                     :
                     undefined}
                 </div>

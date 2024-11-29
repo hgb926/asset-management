@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 4px;
 
     h2 {
       font-size: 1.5rem;
@@ -26,6 +26,32 @@
 
       &:hover {
         background-color: #5561d3;
+      }
+    }
+  }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+
+    .addBtn {
+      background: #5561d3;
+      padding: 13px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      transition: background-color 0.3s, transform 0.3s;
+
+      &:hover {
+        background-color: #3149b0; /* hover 시 배경색 변경 */
+        transform: scale(1.2); /* hover 시 크기 확대 */
+        cursor: pointer;
       }
     }
   }

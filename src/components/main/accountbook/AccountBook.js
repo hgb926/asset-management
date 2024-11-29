@@ -49,15 +49,15 @@ const AccountBook = () => {
 
     const weeks = groupDatesByWeek(startDay, endDay);
 
-    const handleNextMonth = () => {
+    const nextMonthHandler = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
     };
 
-    const handlePrevMonth = () => {
+    const prevMonthHandler = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     };
 
-    const handleDayClick = (date) => {
+    const dayClickHandler = (date) => {
         setSelectedDate(date);
         setModalOpen(true);
     };
@@ -65,15 +65,21 @@ const AccountBook = () => {
     return (
         <div className={styles.accountBook}>
             <div className={styles.header}>
-                <button className={styles.navButton} onClick={handlePrevMonth}>
+                <button className={styles.navButton} onClick={prevMonthHandler}>
                     이전 달
                 </button>
                 <h2>
                     {year}년 {month + 1}월
                 </h2>
-                <button className={styles.navButton} onClick={handleNextMonth}>
+                <button className={styles.navButton} onClick={nextMonthHandler}>
                     다음 달
                 </button>
+            </div>
+
+            <div className={styles.flex}>
+                <div></div>
+                <div></div>
+                <div className={styles.addBtn}>+</div>
             </div>
             <div className={styles.calendar}>
                 <div className={styles.week}>
@@ -102,7 +108,7 @@ const AccountBook = () => {
                                     className={`${styles.day} ${
                                         date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
                                     }`}
-                                    onClick={() => handleDayClick(date)}
+                                    onClick={() => dayClickHandler(date)}
                                 >
                                     <span>{date.getDate()}</span>
                                     {dailyIncome ? <span className={styles.income}>+{dailyIncome}</span> : null}

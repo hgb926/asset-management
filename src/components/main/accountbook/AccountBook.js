@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "../../../styles/accountbook/AccountBook.module.scss";
 import AccountModal from "../../../modal/AccountModal";
+import {EXPENSE_URL, IMPORT_URL} from "../../../config/host-config";
 
 const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -9,6 +10,9 @@ const AccountBook = () => {
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
     const [addModalOpen, setAddModalOpen] = useState(false)
     const [selectedType, setSelectedType] = useState("import");
+    const [category, setCategory] = useState("")
+    const [amount, setAmount] = useState(0)
+    const [description, setDescription] = useState("")
 
     const userData = useSelector((state) => state.userInfo.userData);
 
@@ -68,6 +72,32 @@ const AccountBook = () => {
         setAddModalOpen(true);
     }
 
+    const addAccountHandler = async () => {
+
+        const payload = {
+            category,
+            userId: userData.id,
+            amount,
+            description
+        }
+        console.log(payload)
+        if (selectedType === "import") {
+            const response = await fetch(`${IMPORT_URL}/add-import`, {
+                method: "POST",
+                headers: { "Content-Type": "Application/json" },
+                body: JSON.stringify(payload),
+            });
+            console.log(response)
+        } else {
+            const response = await fetch(`${EXPENSE_URL}/add-expense`, {
+                method: "POST",
+                headers: { "Content-Type": "Application/json" },
+                body: JSON.stringify(payload),
+            });
+            console.log(response)
+        }
+    }
+
     return (
         <div className={styles.accountBook}>
             <div className={styles.header}>
@@ -113,6 +143,8 @@ const AccountBook = () => {
                                     key={idx}
                                     className={`${styles.day} ${
                                         date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
+                                    } ${
+                                        date.toDateString() === new Date().toDateString() ? styles.today : "" // 오늘 날짜에 .today 클래스 추가
                                     }`}
                                     onClick={() => dayClickHandler(date)}
                                 >
@@ -161,17 +193,36 @@ const AccountBook = () => {
                                 <form>
                                     <label>
                                         금액:
-                                        <input type="number" placeholder="금액을 입력하세요" className={styles.input}/>
+                                        <input
+                                            type="number"
+                                            placeholder="금액을 입력하세요"
+                                            className={styles.input}
+                                            onChange={(e => setAmount(e.target.value))}
+                                        />
                                     </label>
                                     <label>
                                         카테고리:
-                                        <input type="text" placeholder="카테고리를 입력하세요" className={styles.input}/>
+                                        <input
+                                            type="text"
+                                            placeholder="카테고리를 입력하세요"
+                                            className={styles.input}
+                                            onChange={(e => setCategory(e.target.value))}
+                                        />
                                     </label>
                                     <label>
                                         세부설명:
-                                        <textarea placeholder="세부설명을 입력하세요" className={styles.textarea}></textarea>
+                                        <textarea
+                                            placeholder="세부설명을 입력하세요"
+                                            className={styles.textarea}
+                                            onChange={(e => setDescription(e.target.value))}
+                                        ></textarea>
                                     </label>
-                                    <div className={styles.confirmButton}>확인</div>
+                                    <div
+                                        className={styles.confirmButton}
+                                        onClick={addAccountHandler}
+                                    >
+                                        확인
+                                    </div>
                                     <div className={styles.cancelButton} onClick={() => setAddModalOpen(false)}>취소</div>
                                 </form>
                             </div>

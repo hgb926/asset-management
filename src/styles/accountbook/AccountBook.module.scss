@@ -165,19 +165,22 @@
   flex-direction: column;
   position: relative;
 }
-
 .addModalHeader {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* h3를 중앙에 배치 */
   align-items: center;
   margin-bottom: 20px;
+  position: relative;
 
-  h3 {
+  .h3 {
     font-size: 1.2rem;
     color: #3137a8;
+    text-align: center;
   }
 
   .closeButton {
+    position: absolute; /* 닫기 버튼을 오른쪽 위로 */
+    right: 0;
     font-size: 1.5rem;
     cursor: pointer;
     color: #3137a8;
@@ -222,39 +225,37 @@
       resize: none;
       height: 100px;
     }
-  }
-}
 
-.addModalFooter {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
 
-  .confirmButton,
-  .cancelButton {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-  }
 
-  .confirmButton {
-    background-color: #3137a8;
-    color: white;
+      .confirmButton,
+      .cancelButton {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.3s;
+        width: 50%;
+        margin: 0 auto;
+      }
 
-    &:hover {
-      background-color: #5561d3;
+      .confirmButton {
+        background: #324ccd;
+        color: white;
+
+        &:hover {
+          background-color: #5561d3;
+        }
+      }
+
+      .cancelButton {
+        background: #ddd;
+        color: black;
+
+        &:hover {
+          background-color: #bbb;
+        }
+      }
     }
-  }
-
-  .cancelButton {
-    background-color: #ddd;
-    color: #3137a8;
-
-    &:hover {
-      background-color: #bbb;
-    }
-  }
 }

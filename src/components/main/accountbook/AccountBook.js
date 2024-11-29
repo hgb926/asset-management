@@ -137,7 +137,7 @@ const AccountBook = () => {
                     <div className={styles.modalOverlay} onClick={() => setAddModalOpen(false)}>
                         <div className={styles.addModal} onClick={(e) => e.stopPropagation()}>
                             <div className={styles.addModalHeader}>
-                                <h3>새로운 내역 추가</h3>
+                                <h3 className={styles.h3}>새로운 내역 추가</h3>
                                 <span className={styles.closeButton} onClick={() => setAddModalOpen(false)}>×</span>
                             </div>
                             <div className={styles.addModalBody}>
@@ -154,11 +154,9 @@ const AccountBook = () => {
                                         세부설명:
                                         <textarea placeholder="세부설명을 입력하세요" className={styles.textarea}></textarea>
                                     </label>
+                                    <div className={styles.confirmButton}>확인</div>
+                                    <div className={styles.cancelButton} onClick={() => setAddModalOpen(false)}>취소</div>
                                 </form>
-                            </div>
-                            <div className={styles.addModalFooter}>
-                                <button className={styles.confirmButton}>확인</button>
-                                <button className={styles.cancelButton} onClick={() => setAddModalOpen(false)}>취소</button>
                             </div>
                         </div>
                     </div>

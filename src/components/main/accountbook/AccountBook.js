@@ -146,7 +146,7 @@ const AccountBook = () => {
                                     } ${
                                         date.toDateString() === new Date().toDateString() ? styles.today : "" // 오늘 날짜에 .today 클래스 추가
                                     }`}
-                                    onClick={() => dayClickHandler(date)}
+                                    onClick={() => dayClickHandler(date+1)}
                                 >
                                     <span>{date.getDate()}</span>
                                     {dailyIncome ? <span className={styles.income}>+{dailyIncome}</span> : null}

@@ -7,6 +7,7 @@ const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
+    const [addModalOpen, setAddModalOpen] = useState(false)
 
     const userData = useSelector((state) => state.userInfo.userData);
 
@@ -62,6 +63,10 @@ const AccountBook = () => {
         setModalOpen(true);
     };
 
+    const addModalOpenHandler = () => {
+        setAddModalOpen(true);
+    }
+
     return (
         <div className={styles.accountBook}>
             <div className={styles.header}>
@@ -79,7 +84,7 @@ const AccountBook = () => {
             <div className={styles.flex}>
                 <div></div>
                 <div></div>
-                <div className={styles.addBtn}>+</div>
+                <div className={styles.addBtn} onClick={addModalOpenHandler}>+</div>
             </div>
             <div className={styles.calendar}>
                 <div className={styles.week}>
@@ -127,6 +132,38 @@ const AccountBook = () => {
                     onClose={() => setModalOpen(false)}
                 />
             )}
+            {
+                addModalOpen && (
+                    <div className={styles.modalOverlay} onClick={() => setAddModalOpen(false)}>
+                        <div className={styles.addModal} onClick={(e) => e.stopPropagation()}>
+                            <div className={styles.addModalHeader}>
+                                <h3>새로운 내역 추가</h3>
+                                <span className={styles.closeButton} onClick={() => setAddModalOpen(false)}>×</span>
+                            </div>
+                            <div className={styles.addModalBody}>
+                                <form>
+                                    <label>
+                                        금액:
+                                        <input type="number" placeholder="금액을 입력하세요" className={styles.input} />
+                                    </label>
+                                    <label>
+                                        카테고리:
+                                        <input type="text" placeholder="카테고리를 입력하세요" className={styles.input} />
+                                    </label>
+                                    <label>
+                                        세부설명:
+                                        <textarea placeholder="세부설명을 입력하세요" className={styles.textarea}></textarea>
+                                    </label>
+                                </form>
+                            </div>
+                            <div className={styles.addModalFooter}>
+                                <button className={styles.confirmButton}>확인</button>
+                                <button className={styles.cancelButton} onClick={() => setAddModalOpen(false)}>취소</button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </div>
     );
 };

@@ -8,6 +8,7 @@ const AccountBook = () => {
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
     const [addModalOpen, setAddModalOpen] = useState(false)
+    const [selectedType, setSelectedType] = useState("import");
 
     const userData = useSelector((state) => state.userInfo.userData);
 
@@ -140,15 +141,31 @@ const AccountBook = () => {
                                 <h3 className={styles.h3}>새로운 내역 추가</h3>
                                 <span className={styles.closeButton} onClick={() => setAddModalOpen(false)}>×</span>
                             </div>
+
+                            <div className={styles.addModalToggle}>
+                                <div
+                                    className={`${styles.toggleOption} ${selectedType === "import" ? styles.active : ""}`}
+                                    onClick={() => setSelectedType("import")}
+                                >
+                                    수입
+                                </div>
+                                <div
+                                    className={`${styles.toggleOption} ${selectedType === "expense" ? styles.active : ""}`}
+                                    onClick={() => setSelectedType("expense")}
+                                >
+                                    지출
+                                </div>
+                            </div>
+
                             <div className={styles.addModalBody}>
                                 <form>
                                     <label>
                                         금액:
-                                        <input type="number" placeholder="금액을 입력하세요" className={styles.input} />
+                                        <input type="number" placeholder="금액을 입력하세요" className={styles.input}/>
                                     </label>
                                     <label>
                                         카테고리:
-                                        <input type="text" placeholder="카테고리를 입력하세요" className={styles.input} />
+                                        <input type="text" placeholder="카테고리를 입력하세요" className={styles.input}/>
                                     </label>
                                     <label>
                                         세부설명:
@@ -166,4 +183,5 @@ const AccountBook = () => {
     );
 };
 
+//  지출인지  수입인지 버튼
 export default AccountBook;

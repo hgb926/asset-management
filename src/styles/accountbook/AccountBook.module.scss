@@ -132,10 +132,11 @@
     }
   }
   .income {
-    color: blue !important;
+
+    color: red!important;
   }
   .expense {
-    color: red!important;
+    color: blue !important;
   }
 }
 
@@ -156,7 +157,7 @@
 .addModal {
   background: white;
   width: 350px;
-  height: 500px;
+  height: 535px;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
@@ -169,7 +170,6 @@
   display: flex;
   justify-content: center; /* h3를 중앙에 배치 */
   align-items: center;
-  margin-bottom: 20px;
   position: relative;
 
   .h3 {
@@ -258,4 +258,31 @@
         }
       }
     }
+
+}
+.addModalToggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  .toggleOption {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #ddd;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+      background: #bbb;
+    }
+
+    &.active {
+      background: #324ccd; /* 선택된 상태 */
+      color: white;
+    }
+  }
 }

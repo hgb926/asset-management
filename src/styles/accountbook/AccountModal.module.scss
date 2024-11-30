@@ -48,7 +48,7 @@
   color: #324ccd;
   font-size: 1.4rem;
   cursor: pointer;
-  transition:  0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 
   &:hover {
     color: #5561d3;
@@ -75,13 +75,11 @@
     .settings {
       color: #878686;
       cursor: pointer;
-
     }
   }
-  
+
   .menu {
     width: 60px;
-    //height: 50px;
     background: #F4F6FC;
     position: absolute;
     right: 30px;
@@ -89,6 +87,7 @@
     font-size: 0.75rem;
     border-radius: 6px;
     cursor: pointer;
+
     .menuList {
       padding: 5px 0;
     }
@@ -102,7 +101,6 @@
   }
 
   &:hover {
-    //transform: translateY(-3px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
   }
 }
@@ -133,4 +131,54 @@
 .detailTime {
   font-size: 12px;
   color: #7f8c8d;
+}
+
+/* 수정 모드용 스타일 */
+.inputCategory,
+.inputDescription,
+.inputAmount {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.confirm {
+    display: flex;
+  width: 40%;
+  margin: 10px auto 0;
+  justify-content: space-evenly;
+
+
+  .saveButton {
+    background-color: #324ccd;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #5561d3;
+    }
+
+  }
+    .cancel {
+      background-color: #324ccd;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+        &:hover {
+        background-color: #5561d3;
+      }
+    }
 }

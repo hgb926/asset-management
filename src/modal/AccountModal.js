@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import styles from "../styles/accountbook/AccountModal.module.scss";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import {EXPENSE_URL, INCOME_URL} from "../config/host-config";
-import {useDispatch, useSelector} from "react-redux";
-import {userInfoActions} from "../components/store/user/UserInfoSlice";
+import { EXPENSE_URL, INCOME_URL } from "../config/host-config";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoActions } from "../components/store/user/UserInfoSlice";
 
 const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
-    const [menuOpenIndex, setMenuOpenIndex] = useState(null); // 열린 메뉴의 인덱스
-
-    // if (!selectedDate) return null;
+    const [menuOpenIndex, setMenuOpenIndex] = useState(null);
+    const [modifyMode, setModifyMode] = useState(null); // 수정 모드
+    const [editedItem, setEditedItem] = useState({}); // 수정 중인 데이터
 
     const dispatch = useDispatch();
-    const userData = useSelector(state => state.userInfo.userData);
+    const userData = useSelector((state) => state.userInfo.userData);
 
     const [year, month, day] = selectedDate.split("-");
     const displayDate = `${month}월 ${day}일`;
@@ -29,12 +29,31 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
     );
 
     const toggleMenu = (idx) => {
-        setMenuOpenIndex((prevIndex) => (prevIndex === idx ? null : idx)); // 같은 메뉴를 클릭하면 닫음
-
+        setMenuOpenIndex((prevIndex) => (prevIndex === idx ? null : idx));
     };
 
     const closeAllMenus = () => {
-        setMenuOpenIndex(null); // 모든 메뉴 닫기
+        setMenuOpenIndex(null);
+    };
+
+    const toggleModify = (item) => {
+        const idx = item.id;
+        setModifyMode((prevIndex) => (prevIndex === idx ? null : idx));
+        setEditedItem(item); // 수정 모드가 활성화될 때 선택한 항목의 데이터로 설정
+    };
+
+    const handleInputChange = (e, field) => {
+        setEditedItem((prev) => ({
+            ...prev,
+            [field]: e.target.value,
+        }));
+    };
+
+    const saveHandler = () => {
+        // Save the edited data
+        // 여기에 API 요청 로직을 추가
+        setModifyMode(null); // 수정 모드 종료
+        alert("수정 완료!");
     };
 
     const deleteHandler = async (item) => {
@@ -42,40 +61,49 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
         if (item.type === "income") {
             await fetch(`${INCOME_URL}/${item.id}/${userData.id}`, {
                 method: "DELETE",
-                headers: {"Content-Type": "Application/json"},
-            })
-            updatedList = userData.incomeList.filter(s => s.id !== item.id)
-            dispatch(userInfoActions.updateUser({...userData, incomeList: updatedList, currentMoney: userData.currentMoney - item.amount}))
+                headers: { "Content-Type": "Application/json" },
+            });
+            updatedList = userData.incomeList.filter((s) => s.id !== item.id);
+            dispatch(
+                userInfoActions.updateUser({
+                    ...userData,
+                    incomeList: updatedList,
+                    currentMoney: userData.currentMoney - item.amount,
+                })
+            );
         } else {
             await fetch(`${EXPENSE_URL}/${item.id}/${userData.id}`, {
                 method: "DELETE",
-                headers: {"Content-Type": "Application/json"},
-            })
-            updatedList = userData.expenseList.filter(s => s.id !== item.id)
-            dispatch(userInfoActions.updateUser({...userData, expenseList: updatedList, currentMoney: userData.currentMoney + item.amount}))
+                headers: { "Content-Type": "Application/json" },
+            });
+            updatedList = userData.expenseList.filter((s) => s.id !== item.id);
+            dispatch(
+                userInfoActions.updateUser({
+                    ...userData,
+                    expenseList: updatedList,
+                    currentMoney: userData.currentMoney + item.amount,
+                })
+            );
         }
-        alert("삭제가 완료되었습니다.")
-    }
+        alert("삭제가 완료되었습니다.");
+    };
 
     return (
         <div
             className={styles.modalOverlay}
             onClick={() => {
-                closeAllMenus(); // 외부 클릭 시 모든 메뉴 닫기
-                onClose(); // 모달 닫기
+                closeAllMenus();
+                onClose();
             }}
         >
-            <div
-                className={styles.modalContent}
-                onClick={(e) => e.stopPropagation()} // 이벤트 전파 방지
-            >
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
                     <h2 className={styles.modalTitle}>{displayDate} 사용 내역</h2>
                     <button
                         className={styles.closeButton}
                         onClick={() => {
-                            closeAllMenus(); // 메뉴 닫기
-                            onClose(); // 모달 닫기
+                            closeAllMenus();
+                            onClose();
                         }}
                     >
                         ×
@@ -87,50 +115,84 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
                             <div
                                 key={index}
                                 className={styles.detailItem}
-                                onClick={(e) => e.stopPropagation()} // 내부 클릭 시 전파 방지
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <div className={styles.flex}>
-                                    <span className={styles.detailCategory}>{item.category}</span>
-                                    <BsThreeDotsVertical
-                                        onClick={(e) => {
-                                            e.stopPropagation(); // 이벤트 전파 방지
-                                            toggleMenu(index); // 해당 메뉴 토글
-                                        }}
-                                        className={styles.settings}
-                                    />
-                                </div>
-                                {menuOpenIndex === index && ( // 해당 인덱스의 메뉴가 열려 있는 경우에만 표시
-                                    <div className={styles.menu}>
-                                        <div
-                                            className={styles.menuList}
-
-                                        >
-                                            수정
+                                {modifyMode === item.id ? (
+                                    // 수정 모드
+                                    <div>
+                                        <span className={styles.detailCategory}>카테고리</span>
+                                        <input
+                                            className={styles.inputCategory}
+                                            value={editedItem.category}
+                                            onChange={(e) => handleInputChange(e, "category")}
+                                        />
+                                        <div className={styles.detailDescription}>세부사항</div>
+                                        <input
+                                            className={styles.inputDescription}
+                                            value={editedItem.description}
+                                            onChange={(e) => handleInputChange(e, "description")}
+                                        />
+                                        <span>금액</span>
+                                        <input
+                                            type="number"
+                                            className={styles.inputAmount}
+                                            value={editedItem.amount}
+                                            onChange={(e) => handleInputChange(e, "amount")}
+                                        />
+                                        <div className={styles.confirm}>
+                                            <button className={styles.saveButton} onClick={saveHandler}>
+                                                수정
+                                            </button>
+                                            <div className={styles.cancel}>취소</div>
                                         </div>
-                                        <hr className={styles.line} />
+                                    </div>
+                                ) : (
+                                    // 일반 모드
+                                    <div>
+                                        <div className={styles.flex}>
+                                            <span className={styles.detailCategory}>{item.category}</span>
+                                            <BsThreeDotsVertical
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleMenu(index);
+                                                }}
+                                                className={styles.settings}
+                                            />
+                                        </div>
+                                        {menuOpenIndex === index && (
+                                            <div className={styles.menu}>
+                                                <div
+                                                    className={styles.menuList}
+                                                    onClick={() => toggleModify(item)}
+                                                >
+                                                    수정
+                                                </div>
+                                                <hr className={styles.line} />
+                                                <div
+                                                    className={styles.menuList}
+                                                    onClick={() => deleteHandler(item)}
+                                                >
+                                                    삭제
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div className={styles.detailDescription}>{item.description}</div>
                                         <div
-                                            className={styles.menuList}
-                                            onClick={() => deleteHandler(item)}
+                                            className={`${styles.detailAmount} ${
+                                                item.type === "expense" ? styles.expense : ""
+                                            }`}
                                         >
-                                            삭제
+                                            {item.type === "income"
+                                                ? `+${item.amount.toLocaleString()}원`
+                                                : `-${item.amount.toLocaleString()}원`}
+                                        </div>
+                                        <div className={styles.detailTime}>
+                                            {item.type === "income"
+                                                ? item.incomeAt.split("T")[1].split(".")[0]
+                                                : item.expenseAt.split("T")[1].split(".")[0]}
                                         </div>
                                     </div>
                                 )}
-                                <div className={styles.detailDescription}>{item.description}</div>
-                                <div
-                                    className={`${styles.detailAmount} ${
-                                        item.type === "expense" ? styles.expense : ""
-                                    }`}
-                                >
-                                    {item.type === "income"
-                                        ? `+${item.amount.toLocaleString()}원`
-                                        : `-${item.amount.toLocaleString()}원`}
-                                </div>
-                                <div className={styles.detailTime}>
-                                    {item.type === "income"
-                                        ? item.incomeAt.split("T")[1].split(".")[0]
-                                        : item.expenseAt.split("T")[1].split(".")[0]}
-                                </div>
                             </div>
                         ))
                     ) : (

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../../../styles/accountbook/AccountBook.module.scss";
 import AccountModal from "../../../modal/AccountModal";
-import { EXPENSE_URL, IMPORT_URL } from "../../../config/host-config";
+import { EXPENSE_URL, INCOME_URL } from "../../../config/host-config";
 import {userInfoActions} from "../../store/user/UserInfoSlice";
 
 const AccountBook = () => {
@@ -98,7 +98,7 @@ const AccountBook = () => {
         console.log(payload);
         if (selectedType === "import") {
 
-            const response = await fetch(`${IMPORT_URL}/add-import`, {
+            const response = await fetch(`${INCOME_URL}/add-income`, {
                 method: "POST",
                 headers: { "Content-Type": "Application/json" },
                 body: JSON.stringify(payload),
@@ -106,10 +106,10 @@ const AccountBook = () => {
 
             if (response.ok) {
                 const newImportItem = await response.json();
-                const updatedImportList = [...userData.importList, newImportItem]
+                const updatedIncomeList = [...userData.incomeList, newImportItem]
                 const updatedUserData = {
                     ...userData,
-                    importList: updatedImportList
+                    incomeList: updatedIncomeList
                 }
                 dispatch(userInfoActions.updateUser(updatedUserData))
             }
@@ -133,6 +133,8 @@ const AccountBook = () => {
             }
         }
     };
+
+
 
     return (
         <div className={styles.accountBook}>
@@ -169,12 +171,13 @@ const AccountBook = () => {
                     <div key={index} className={styles.week}>
                         {week.map((date, idx) => {
                             const dateStr = formatDateToLocal(date); // 로컬 시간 기준으로 날짜 포맷팅
-                            const dailyIncome = userData.importList?.filter(
-                                (item) => item.importAt.split("T")[0] === dateStr
-                            ).reduce((acc, curr) => acc + curr.amount, 0);
-                            const dailyExpense = userData.expenseList?.filter(
-                                (item) => item.expenseAt.split("T")[0] === dateStr
-                            ).reduce((acc, curr) => acc + curr.amount, 0);
+                            const dailyIncome = (userData.incomeList || []) // undefined일 경우 빈 배열로 처리
+                                .filter((item) => item.incomeAt.split("T")[0] === dateStr)
+                                .reduce((acc, curr) => acc + curr.amount, 0);
+
+                            const dailyExpense = (userData.expenseList || [])
+                                .filter((item) => item.expenseAt.split("T")[0] === dateStr)
+                                .reduce((acc, curr) => acc + curr.amount, 0);
 
                             return (
                                 <div
@@ -200,7 +203,7 @@ const AccountBook = () => {
             {modalOpen && (
                 <AccountModal
                     selectedDate={selectedDate}
-                    importList={userData.importList}
+                    incomeList={userData.incomeList}
                     expenseList={userData.expenseList}
                     onClose={() => setModalOpen(false)}
                 />

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../styles/accountbook/AccountModal.module.scss";
 
-const AccountModal = ({ selectedDate, importList, expenseList, onClose }) => {
+const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
     if (!selectedDate) return null;
 
     // `selectedDate`를 안전하게 `Date` 객체로 변환
@@ -72,10 +72,10 @@ const AccountModal = ({ selectedDate, importList, expenseList, onClose }) => {
     const month = dateISO.split("-")[1]; // 월 추출
 
     console.log("Selected Date:", dateISO);
-    console.log("Import List:", importList);
+    console.log("income List:", incomeList);
 
     // 선택된 날짜의 데이터 필터링
-    const filteredIncome = importList?.filter((item) => item.importAt.split("T")[0] === dateISO) || [];
+    const filteredIncome = incomeList?.filter((item) => item.incomeAt.split("T")[0] === dateISO) || [];
     const filteredExpense = expenseList?.filter((item) => item.expenseAt.split("T")[0] === dateISO) || [];
 
     console.log("Filtered Income:", filteredIncome);
@@ -84,8 +84,8 @@ const AccountModal = ({ selectedDate, importList, expenseList, onClose }) => {
     // 수입과 지출을 하나의 배열로 합치고 시간 역순으로 정렬
     const combinedList = [...filteredIncome.map((item) => ({ ...item, type: "income" })),
         ...filteredExpense.map((item) => ({ ...item, type: "expense" }))]
-        .sort((a, b) => new Date(b.type === "income" ? b.importAt : b.expenseAt)
-            - new Date(a.type === "income" ? a.importAt : a.expenseAt));
+        .sort((a, b) => new Date(b.type === "income" ? b.incomeAt : b.expenseAt)
+            - new Date(a.type === "income" ? a.incomeAt : a.expenseAt));
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
@@ -111,7 +111,7 @@ const AccountModal = ({ selectedDate, importList, expenseList, onClose }) => {
                                 <p>
                                     시간:{" "}
                                     {item.type === "income"
-                                        ? item.importAt.split("T")[1].split(".")[0]
+                                        ? item.incomeAt.split("T")[1].split(".")[0]
                                         : item.expenseAt.split("T")[1].split(".")[0]}
                                 </p>
                             </div>

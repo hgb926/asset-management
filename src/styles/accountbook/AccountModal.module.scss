@@ -68,6 +68,17 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
+  .flex {
+    display: flex;
+    justify-content: space-between;
+
+    .settings {
+      color: #878686;
+      cursor: pointer;
+
+    }
+  }
+
   &:hover {
     //transform: translateY(-3px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);

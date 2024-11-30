@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../styles/accountbook/AccountModal.module.scss";
+import {BsThreeDotsVertical} from "react-icons/bs";
 
 const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
     if (!selectedDate) return null;
@@ -28,7 +29,9 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
                     {combinedList.length > 0 ? (
                         combinedList.map((item, index) => (
                             <div key={index} className={styles.detailItem}>
-                                <div className={styles.detailCategory}>{item.category}</div>
+                                <div className={styles.flex}>
+                                    <span className={styles.detailCategory}>{item.category}</span>
+                                    <BsThreeDotsVertical className={styles.settings}/></div>
                                 <div className={styles.detailDescription}>{item.description}</div>
                                 <div className={`${styles.detailAmount} ${item.type === "expense" ? styles.expense : ""}`}>
                                     {item.type === "income"

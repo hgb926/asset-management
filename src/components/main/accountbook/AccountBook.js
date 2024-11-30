@@ -84,7 +84,7 @@ const AccountBook = () => {
 
     const addAccountHandler = async () => {
 
-        if (!category || !amount || !description) {
+        if (!category || !amount) {
             alert("빈 값 받지않는다")
             return;
         }
@@ -240,7 +240,7 @@ const AccountBook = () => {
                                 수입
                             </div>
                             <div
-                                className={`${styles.toggleOption} ${selectedType === "expense" ? styles.active : ""}`}
+                                className={`${styles.toggleOption} ${selectedType === "expense" ? styles.expenseActive : ""}`}
                                 onClick={() => setSelectedType("expense")}
                             >
                                 지출
@@ -270,7 +270,7 @@ const AccountBook = () => {
                                 <label>
                                     세부설명:
                                     <textarea
-                                        placeholder="세부설명을 입력하세요"
+                                        placeholder="세부설명을 입력하세요 (생략 가능)"
                                         className={styles.textarea}
                                         onChange={(e) => setDescription(e.target.value)}
                                     ></textarea>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styles from "../../../styles/accountbook/AccountBook.module.scss";
 import AccountModal from "../../../modal/AccountModal";
 import { EXPENSE_URL, IMPORT_URL } from "../../../config/host-config";
+import {userInfoActions} from "../../store/user/UserInfoSlice";
 
 const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -15,6 +16,7 @@ const AccountBook = () => {
     const [description, setDescription] = useState("");
 
     const userData = useSelector((state) => state.userInfo.userData);
+    const dispatch = useDispatch();
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -95,19 +97,40 @@ const AccountBook = () => {
         };
         console.log(payload);
         if (selectedType === "import") {
+
             const response = await fetch(`${IMPORT_URL}/add-import`, {
                 method: "POST",
                 headers: { "Content-Type": "Application/json" },
                 body: JSON.stringify(payload),
             });
-            console.log(response);
+
+            if (response.ok) {
+                const newImportItem = await response.json();
+                const updatedImportList = [...userData.importList, newImportItem]
+                const updatedUserData = {
+                    ...userData,
+                    importList: updatedImportList
+                }
+                dispatch(userInfoActions.updateUser(updatedUserData))
+            }
+
         } else {
             const response = await fetch(`${EXPENSE_URL}/add-expense`, {
                 method: "POST",
                 headers: { "Content-Type": "Application/json" },
                 body: JSON.stringify(payload),
             });
-            console.log(response);
+            if (response.ok) {
+                const newExpenseItem = await response.json(); // 서버로부터 반환된 새 지출 데이터
+                const updatedExpenseList = [...userData.expenseList, newExpenseItem]; // 기존 expenseList에 새 데이터 추가
+
+                const updatedUserData = {
+                    ...userData,
+                    expenseList: updatedExpenseList,
+                };
+
+                dispatch(userInfoActions.updateUser(updatedUserData)); // Redux 상태 업데이트
+            }
         }
     };
 

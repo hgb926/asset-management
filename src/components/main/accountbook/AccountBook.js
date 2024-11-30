@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styles from "../../../styles/accountbook/AccountBook.module.scss";
 import AccountModal from "../../../modal/AccountModal";
@@ -109,7 +109,8 @@ const AccountBook = () => {
                 const updatedIncomeList = [...userData.incomeList, newImportItem]
                 const updatedUserData = {
                     ...userData,
-                    incomeList: updatedIncomeList
+                    incomeList: updatedIncomeList,
+                    currentMoney: +userData.currentMoney + +amount
                 }
                 dispatch(userInfoActions.updateUser(updatedUserData))
             }
@@ -127,12 +128,18 @@ const AccountBook = () => {
                 const updatedUserData = {
                     ...userData,
                     expenseList: updatedExpenseList,
+                    currentMoney: +userData.currentMoney - (+amount)
                 };
 
                 dispatch(userInfoActions.updateUser(updatedUserData)); // Redux 상태 업데이트
             }
         }
+        setAddModalOpen(false)
     };
+
+    useEffect(() => {
+
+    }, [userData]);
 
 
 
@@ -152,7 +159,7 @@ const AccountBook = () => {
 
             <div className={styles.flex}>
                 <div></div>
-                <div></div>
+                <div className={styles.currentMoney}>총 자산 : {userData.currentMoney.toLocaleString("ko-KR")}</div>
                 <div className={styles.addBtn} onClick={addModalOpenHandler}>
                     +
                 </div>
@@ -192,8 +199,8 @@ const AccountBook = () => {
                                     onClick={() => dayClickHandler(date)}
                                 >
                                     <span>{date.getDate()}</span>
-                                    {dailyIncome ? <span className={styles.income}>+{dailyIncome}</span> : null}
-                                    {dailyExpense ? <span className={styles.expense}>-{dailyExpense}</span> : null}
+                                    {dailyIncome ? <span className={styles.income}>+{dailyIncome.toLocaleString("ko-KR")}</span> : null}
+                                    {dailyExpense ? <span className={styles.expense}>-{dailyExpense.toLocaleString("ko-KR")}</span> : null}
                                 </div>
                             );
                         })}
@@ -275,5 +282,6 @@ const AccountBook = () => {
         </div>
     );
 };
+// 모달 없어지게 수정
 
 export default AccountBook;

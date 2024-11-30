@@ -249,11 +249,13 @@ const AccountModal = ({selectedDate, incomeList, expenseList, onClose}) => {
                                             ? `+${item.amount.toLocaleString()}원`
                                             : `-${item.amount.toLocaleString()}원`}
                                     </div>
-                                    <div className={styles.detailTime}>
+                                    {/*잔액 계산 알고리즘 만들어보기*/}
+                                    {/*<span className={styles.currentMoney}>{userData.currentMoney.toLocaleString("ko-KR")}원</span>*/}
+                                    <span className={styles.detailTime}>
                                         {item.type === "income"
                                             ? item.incomeAt.split("T")[1].split(".")[0]
                                             : item.expenseAt.split("T")[1].split(".")[0]}
-                                    </div>
+                                    </span>
                                 </div>
                             )}
                         </div>

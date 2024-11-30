@@ -78,6 +78,28 @@
 
     }
   }
+  
+  .menu {
+    width: 60px;
+    //height: 50px;
+    background: #F4F6FC;
+    position: absolute;
+    right: 30px;
+    text-align: center;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    .menuList {
+      padding: 5px 0;
+    }
+
+    .line {
+      padding: 0;
+      margin: 0 auto;
+      width: 80%;
+      color: #2a3b8f;
+    }
+  }
 
   &:hover {
     //transform: translateY(-3px);

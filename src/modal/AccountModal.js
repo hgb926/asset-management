@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "../styles/accountbook/AccountModal.module.scss";
 import {BsThreeDotsVertical} from "react-icons/bs";
 
 const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
+    const [menuOpen, setMenuOpen] = useState(false)
     if (!selectedDate) return null;
+
 
     const [year, month, day] = selectedDate.split("-");
     const displayDate = `${month}월 ${day}일`;
@@ -15,6 +17,8 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
         ...filteredExpense.map((item) => ({ ...item, type: "expense" }))]
         .sort((a, b) => new Date(b.type === "income" ? b.incomeAt : b.expenseAt)
             - new Date(a.type === "income" ? a.incomeAt : a.expenseAt));
+
+    console.log(combinedList)
 
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
@@ -31,7 +35,13 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
                             <div key={index} className={styles.detailItem}>
                                 <div className={styles.flex}>
                                     <span className={styles.detailCategory}>{item.category}</span>
-                                    <BsThreeDotsVertical className={styles.settings}/></div>
+                                    <BsThreeDotsVertical className={styles.settings}/>
+                                </div>
+                                <div className={styles.menu}>
+                                    <div className={styles.menuList}>수정</div>
+                                    <hr className={styles.line}/>
+                                    <div className={styles.menuList}>삭제</div>
+                                </div>
                                 <div className={styles.detailDescription}>{item.description}</div>
                                 <div className={`${styles.detailAmount} ${item.type === "expense" ? styles.expense : ""}`}>
                                     {item.type === "income"

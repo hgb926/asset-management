@@ -1,124 +1,265 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "../styles/accountbook/AccountModal.module.scss";
+import {BsThreeDotsVertical} from "react-icons/bs";
+import {EXPENSE_URL, INCOME_URL} from "../config/host-config";
+import {useDispatch, useSelector} from "react-redux";
+import {userInfoActions} from "../components/store/user/UserInfoSlice";
 
-const AccountModal = ({ selectedDate, importList, expenseList, onClose }) => {
-    if (!selectedDate) return null;
+const AccountModal = ({selectedDate, incomeList, expenseList, onClose}) => {
+    const [menuOpenIndex, setMenuOpenIndex] = useState(null);
+    const [modifyMode, setModifyMode] = useState(null); // 수정 모드
+    const [editedItem, setEditedItem] = useState({}); // 수정 중인 데이터
+    const [originalAmount, setOriginalAmount] = useState(0); // 수정 전 금액 저장
 
-    // `selectedDate`를 안전하게 `Date` 객체로 변환
-    let dateObject;
-    try {
-        dateObject = selectedDate instanceof Date ? selectedDate : new Date(selectedDate);
-        if (isNaN(dateObject.getTime())) throw new Error("Invalid Date");
-    } catch (error) {
-        console.error("Invalid selectedDate:", selectedDate);
-        return <div>잘못된 날짜 형식입니다.</div>;
-    }
+    const dispatch = useDispatch();
+    const userData = useSelector((state) => state.userInfo.userData);
 
-    const dayToString = (day) => {
-        switch (day) {
-            case "Sun":
-                return "일요일";
-            case "Mon":
-                return "월요일";
-            case "Tue":
-                return "화요일";
-            case "Wed":
-                return "수요일";
-            case "Thu":
-                return "목요일";
-            case "Fri":
-                return "금요일";
-            case "Sat":
-                return "토요일";
-            default:
-                return "알 수 없는 요일";
-        }
+    const [year, month, day] = selectedDate.split("-");
+    const displayDate = `${month}월 ${day}일`;
+
+    const filteredIncome = incomeList?.filter((item) => item.incomeAt.split("T")[0] === selectedDate) || [];
+    const filteredExpense = expenseList?.filter((item) => item.expenseAt.split("T")[0] === selectedDate) || [];
+
+    const combinedList = [
+        ...filteredIncome.map((item) => ({...item, type: "income"})),
+        ...filteredExpense.map((item) => ({...item, type: "expense"})),
+    ].sort(
+        (a, b) =>
+            new Date(b.type === "income" ? b.incomeAt : b.expenseAt) -
+            new Date(a.type === "income" ? a.incomeAt : a.expenseAt)
+    );
+
+    const toggleMenu = (idx) => {
+        setMenuOpenIndex((prevIndex) => (prevIndex === idx ? null : idx));
     };
 
-    const monthToString = (month) => {
-        switch (month) {
-            case "Jan":
-                return "1";
-            case "Feb":
-                return "2";
-            case "Mar":
-                return "3";
-            case "Apr":
-                return "4";
-            case "May":
-                return "5";
-            case "Jun":
-                return "6";
-            case "Jul":
-                return "7";
-            case "Aug":
-                return "8";
-            case "Sep":
-                return "9";
-            case "Oct":
-                return "10";
-            case "Nov":
-                return "11";
-            case "Dec":
-                return "12";
-            default:
-                return "Invalid Month";
-        }
+    const closeAllMenus = () => {
+        setMenuOpenIndex(null);
     };
 
-    const dateISO = dateObject.toISOString().split("T")[0]; // ISO 8601 포맷으로 변환
-    const day = dateISO.split("-")[2]; // 일자 추출
-    const dayOfTheWeek = dayToString(dateObject.toString().slice(0, 3)); // 요일 추출
-    const month = dateISO.split("-")[1]; // 월 추출
+    const toggleModify = (item) => {
+        setModifyMode((prevIndex) => (prevIndex === item.id ? null : item.id));
+        setEditedItem(item); // 수정 모드 활성화 시 선택한 항목을 `editedItem`에 저장
+        setOriginalAmount(item.amount); // 수정 전 금액 저장
+    };
 
-    console.log("Selected Date:", dateISO);
-    console.log("Import List:", importList);
+    const cancelHandler = () => {
+        setModifyMode(null); // 수정 모드 종료
+    };
 
-    // 선택된 날짜의 데이터 필터링
-    const filteredIncome = importList?.filter((item) => item.importAt.split("T")[0] === dateISO) || [];
-    const filteredExpense = expenseList?.filter((item) => item.expenseAt.split("T")[0] === dateISO) || [];
+    const saveHandler = async () => {
+        const payload = {
+            category: editedItem.category,
+            userId: userData.id,
+            description: editedItem.description,
+            amount: editedItem.amount,
+        }
+        console.log(payload)
+        if (editedItem.type === "income") {
+            const response = await fetch(`${INCOME_URL}/${editedItem.id}`, {
+                method: "PATCH",
+                headers: {"Content-Type": "Application/json"},
+                body: JSON.stringify(payload)
+            });
 
-    console.log("Filtered Income:", filteredIncome);
-    console.log("Filtered Expense:", filteredExpense);
+            if (response.ok) {
+                const updatedList = userData.incomeList.map(i => i.id === editedItem.id
+                    ? {
+                        ...i,
+                        category: editedItem.category,
+                        description: editedItem.description,
+                        amount: editedItem.amount
+                    }
+                    : i
+                );
 
-    // 수입과 지출을 하나의 배열로 합치고 시간 역순으로 정렬
-    const combinedList = [...filteredIncome.map((item) => ({ ...item, type: "income" })),
-        ...filteredExpense.map((item) => ({ ...item, type: "expense" }))]
-        .sort((a, b) => new Date(b.type === "income" ? b.importAt : b.expenseAt)
-            - new Date(a.type === "income" ? a.importAt : a.expenseAt));
+                dispatch(userInfoActions.updateUser({
+                    ...userData,
+                    incomeList: updatedList,
+                    currentMoney: userData.currentMoney - originalAmount + editedItem.amount
+                }))
+            }
+
+        } else {
+            const response = await fetch(`${EXPENSE_URL}/${editedItem.id}`, {
+                method: "PATCH",
+                headers: {"Content-Type": "Application/json"},
+                body: JSON.stringify(payload)
+            });
+            if (response.ok) {
+                const updatedList = userData.expenseList.map(e =>
+                    e.id === editedItem.id
+                    ? { ...e, category: editedItem.category, description: editedItem.description, amount: editedItem.amount}
+                        : e
+                )
+                dispatch(userInfoActions.updateUser({
+                    ...userData,
+                    expenseList: updatedList,
+                    currentMoney: userData.currentMoney + originalAmount - editedItem.amount
+                }))
+            }
+        }
+        alert("수정 완료!");
+        setModifyMode(null); // 수정 모드 종료
+    };
+
+    const deleteHandler = async (item) => {
+        let updatedList;
+        if (item.type === "income") {
+            await fetch(`${INCOME_URL}/${item.id}/${userData.id}`, {
+                method: "DELETE",
+                headers: {"Content-Type": "Application/json"},
+            });
+            updatedList = userData.incomeList.filter((s) => s.id !== item.id);
+            dispatch(
+                userInfoActions.updateUser({
+                    ...userData,
+                    incomeList: updatedList,
+                    currentMoney: userData.currentMoney - item.amount,
+                })
+            );
+        } else {
+            await fetch(`${EXPENSE_URL}/${item.id}/${userData.id}`, {
+                method: "DELETE",
+                headers: {"Content-Type": "Application/json"},
+            });
+            updatedList = userData.expenseList.filter((s) => s.id !== item.id);
+            dispatch(
+                userInfoActions.updateUser({
+                    ...userData,
+                    expenseList: updatedList,
+                    currentMoney: userData.currentMoney + item.amount,
+                })
+            );
+        }
+        alert("삭제가 완료되었습니다.");
+    };
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <div
+            className={styles.modalOverlay}
+            onClick={() => {
+                closeAllMenus();
+                onClose();
+            }}
+        >
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <span
-                    className={styles.close}
-                    onClick={onClose}
-                >×</span>
-                <h2>{month}월 {+day + 1}일 {dayOfTheWeek} 사용 내역</h2>
-
-                <div className={styles.details}>
-                    {combinedList.length > 0 ? (
-                        combinedList.map((item, index) => (
-                            <div key={index} className={styles.item}>
-                                <p>종류: {item.category}</p>
-                                <p>설명: {item.description}</p>
-                                <p>
-                                    금액:{" "}
-                                    {item.type === "income"
-                                        ? `+${item.amount}원`
-                                        : `-${item.amount}원`}
-                                </p>
-                                <p>
-                                    시간:{" "}
-                                    {item.type === "income"
-                                        ? item.importAt.split("T")[1].split(".")[0]
-                                        : item.expenseAt.split("T")[1].split(".")[0]}
-                                </p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>내역이 없습니다.</p>
-                    )}
+                <div className={styles.modalHeader}>
+                    <h2 className={styles.modalTitle}>{displayDate} 사용 내역</h2>
+                    <button
+                        className={styles.closeButton}
+                        onClick={() => {
+                            closeAllMenus();
+                            onClose();
+                        }}
+                    >
+                        ×
+                    </button>
+                </div>
+                <div className={styles.detailsContainer}>
+                    {combinedList.map((item, index) => (
+                        <div
+                            key={index}
+                            className={styles.detailItem}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {modifyMode === item.id ? (
+                                // 특정 div만 수정 모드
+                                <div>
+                                    <span className={styles.detailCategory}>카테고리</span>
+                                    <input
+                                        className={styles.inputCategory}
+                                        value={editedItem.category}
+                                        onChange={(e) =>
+                                            setEditedItem((prev) => ({
+                                                ...prev,
+                                                category: e.target.value,
+                                            }))
+                                        }
+                                    />
+                                    <div className={styles.detailDescription}>세부사항</div>
+                                    <input
+                                        className={styles.inputDescription}
+                                        value={editedItem.description}
+                                        onChange={(e) =>
+                                            setEditedItem((prev) => ({
+                                                ...prev,
+                                                description: e.target.value,
+                                            }))
+                                        }
+                                    />
+                                    <span>금액</span>
+                                    <input
+                                        type="number"
+                                        className={styles.inputAmount}
+                                        value={editedItem.amount}
+                                        onChange={(e) =>
+                                            setEditedItem((prev) => ({
+                                                ...prev,
+                                                amount: +e.target.value,
+                                            }))
+                                        }
+                                    />
+                                    <div className={styles.confirm}>
+                                        <button className={styles.saveButton} onClick={saveHandler}>
+                                            수정
+                                        </button>
+                                        <div onClick={cancelHandler} className={styles.cancel}>
+                                            취소
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                // 일반 모드
+                                <div>
+                                    <div className={styles.flex}>
+                                        <span className={styles.detailCategory}>{item.category}</span>
+                                        <BsThreeDotsVertical
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleMenu(index);
+                                            }}
+                                            className={styles.settings}
+                                        />
+                                    </div>
+                                    {menuOpenIndex === index && (
+                                        <div className={styles.menu}>
+                                            <div
+                                                className={styles.menuList}
+                                                onClick={() => toggleModify(item)}
+                                            >
+                                                수정
+                                            </div>
+                                            <hr className={styles.line} />
+                                            <div
+                                                className={styles.menuList}
+                                                onClick={() => deleteHandler(item)}
+                                            >
+                                                삭제
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className={styles.detailDescription}>{item.description}</div>
+                                    <div
+                                        className={`${styles.detailAmount} ${
+                                            item.type === "expense" ? styles.expense : ""
+                                        }`}
+                                    >
+                                        {item.type === "income"
+                                            ? `+${item.amount.toLocaleString()}원`
+                                            : `-${item.amount.toLocaleString()}원`}
+                                    </div>
+                                    {/*잔액 계산 알고리즘 만들어보기*/}
+                                    {/*<span className={styles.currentMoney}>{userData.currentMoney.toLocaleString("ko-KR")}원</span>*/}
+                                    <span className={styles.detailTime}>
+                                        {item.type === "income"
+                                            ? item.incomeAt.split("T")[1].split(".")[0]
+                                            : item.expenseAt.split("T")[1].split(".")[0]}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -29,9 +29,7 @@ const LoginForm = () => {
         const responseData = await response.text();
         if (response.status === 200) {
             const userId = JSON.parse(responseData).userId;
-            const userDetailData = await (
-                await fetch(`${AUTH_URL}/${userId}`)
-            ).json();
+            const userDetailData = await (await fetch(`${AUTH_URL}/${userId}`)).json();
             dispatch(userInfoActions.updateUser(userDetailData));
 
             userDetailData.autoLogin

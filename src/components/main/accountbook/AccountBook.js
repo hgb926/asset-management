@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import styles from "../../../styles/accountbook/AccountBook.module.scss";
 import AccountModal from "../../../modal/AccountModal";
-import { EXPENSE_URL, IMPORT_URL } from "../../../config/host-config";
+import { EXPENSE_URL, INCOME_URL } from "../../../config/host-config";
+import {userInfoActions} from "../../store/user/UserInfoSlice";
 
 const AccountBook = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -15,6 +16,7 @@ const AccountBook = () => {
     const [description, setDescription] = useState("");
 
     const userData = useSelector((state) => state.userInfo.userData);
+    const dispatch = useDispatch();
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -36,7 +38,7 @@ const AccountBook = () => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0"); // 월을 2자리로 맞춤
         const day = String(date.getDate()).padStart(2, "0"); // 일을 2자리로 맞춤
-        return `${year}-${month}-${day}`;
+        return `${year}-${month}-${day}`; // 항상 YYYY-MM-DD 형식 반환
     };
 
     /** startDay부터 endDay까지의 날짜를 주 단위로 그룹화하는 함수 */
@@ -72,15 +74,21 @@ const AccountBook = () => {
     };
 
     const dayClickHandler = (date) => {
-        setSelectedDate(date);
+        const formattedDate = formatDateToLocal(date); // YYYY-MM-DD 형식으로 변환
+        setSelectedDate(formattedDate); // 문자열로 저장
         setModalOpen(true);
     };
-
     const addModalOpenHandler = () => {
         setAddModalOpen(true);
     };
 
     const addAccountHandler = async () => {
+
+        if (!category || !amount) {
+            alert("빈 값 받지않는다")
+            return;
+        }
+
         const payload = {
             category,
             userId: userData.id,
@@ -89,21 +97,51 @@ const AccountBook = () => {
         };
         console.log(payload);
         if (selectedType === "import") {
-            const response = await fetch(`${IMPORT_URL}/add-import`, {
+
+            const response = await fetch(`${INCOME_URL}/add-income`, {
                 method: "POST",
                 headers: { "Content-Type": "Application/json" },
                 body: JSON.stringify(payload),
             });
-            console.log(response);
+
+            if (response.ok) {
+                const newImportItem = await response.json();
+                const updatedIncomeList = [...userData.incomeList, newImportItem]
+                const updatedUserData = {
+                    ...userData,
+                    incomeList: updatedIncomeList,
+                    currentMoney: +userData.currentMoney + +amount
+                }
+                dispatch(userInfoActions.updateUser(updatedUserData))
+            }
+
         } else {
             const response = await fetch(`${EXPENSE_URL}/add-expense`, {
                 method: "POST",
                 headers: { "Content-Type": "Application/json" },
                 body: JSON.stringify(payload),
             });
-            console.log(response);
+            if (response.ok) {
+                const newExpenseItem = await response.json(); // 서버로부터 반환된 새 지출 데이터
+                const updatedExpenseList = [...userData.expenseList, newExpenseItem]; // 기존 expenseList에 새 데이터 추가
+
+                const updatedUserData = {
+                    ...userData,
+                    expenseList: updatedExpenseList,
+                    currentMoney: +userData.currentMoney - (+amount)
+                };
+
+                dispatch(userInfoActions.updateUser(updatedUserData)); // Redux 상태 업데이트
+            }
         }
+        setAddModalOpen(false)
     };
+
+    useEffect(() => {
+
+    }, [userData.currentMoney, userData.incomeList, userData.expenseList]);
+
+
 
     return (
         <div className={styles.accountBook}>
@@ -121,7 +159,13 @@ const AccountBook = () => {
 
             <div className={styles.flex}>
                 <div></div>
-                <div></div>
+                {userData && typeof userData.currentMoney === "number" ? (
+                    <div className={styles.currentMoney}>
+                        총 자산 : {userData.currentMoney.toLocaleString("ko-KR")}원
+                    </div>
+                ) : (
+                    <div className={styles.currentMoney}>총 자산 : 데이터 로딩 중...</div>
+                )}
                 <div className={styles.addBtn} onClick={addModalOpenHandler}>
                     +
                 </div>
@@ -140,12 +184,14 @@ const AccountBook = () => {
                     <div key={index} className={styles.week}>
                         {week.map((date, idx) => {
                             const dateStr = formatDateToLocal(date); // 로컬 시간 기준으로 날짜 포맷팅
-                            const dailyIncome = userData.importList?.filter(
-                                (item) => item.importAt.split("T")[0] === dateStr
-                            ).reduce((acc, curr) => acc + curr.amount, 0);
-                            const dailyExpense = userData.expenseList?.filter(
-                                (item) => item.expenseAt.split("T")[0] === dateStr
-                            ).reduce((acc, curr) => acc + curr.amount, 0);
+                            const dailyIncome = (userData.incomeList || []) // undefined일 경우 빈 배열로 처리
+                                .filter((item) => item.incomeAt.split("T")[0] === dateStr)
+                                .reduce((acc, curr) => acc + curr.amount, 0);
+
+
+                            const dailyExpense = (userData.expenseList || [])
+                                .filter((item) => item.expenseAt.split("T")[0] === dateStr)
+                                .reduce((acc, curr) => acc + curr.amount, 0);
 
                             return (
                                 <div
@@ -160,8 +206,8 @@ const AccountBook = () => {
                                     onClick={() => dayClickHandler(date)}
                                 >
                                     <span>{date.getDate()}</span>
-                                    {dailyIncome ? <span className={styles.income}>+{dailyIncome}</span> : null}
-                                    {dailyExpense ? <span className={styles.expense}>-{dailyExpense}</span> : null}
+                                    {dailyIncome ? <span className={styles.income}>+{dailyIncome.toLocaleString("ko-KR")}</span> : null}
+                                    {dailyExpense ? <span className={styles.expense}>-{dailyExpense.toLocaleString("ko-KR")}</span> : null}
                                 </div>
                             );
                         })}
@@ -171,7 +217,7 @@ const AccountBook = () => {
             {modalOpen && (
                 <AccountModal
                     selectedDate={selectedDate}
-                    importList={userData.importList}
+                    incomeList={userData.incomeList}
                     expenseList={userData.expenseList}
                     onClose={() => setModalOpen(false)}
                 />
@@ -194,7 +240,7 @@ const AccountBook = () => {
                                 수입
                             </div>
                             <div
-                                className={`${styles.toggleOption} ${selectedType === "expense" ? styles.active : ""}`}
+                                className={`${styles.toggleOption} ${selectedType === "expense" ? styles.expenseActive : ""}`}
                                 onClick={() => setSelectedType("expense")}
                             >
                                 지출
@@ -224,7 +270,7 @@ const AccountBook = () => {
                                 <label>
                                     세부설명:
                                     <textarea
-                                        placeholder="세부설명을 입력하세요"
+                                        placeholder="세부설명을 입력하세요 (생략 가능)"
                                         className={styles.textarea}
                                         onChange={(e) => setDescription(e.target.value)}
                                     ></textarea>
@@ -243,5 +289,6 @@ const AccountBook = () => {
         </div>
     );
 };
+
 
 export default AccountBook;

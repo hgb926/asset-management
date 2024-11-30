@@ -13,6 +13,13 @@ const userInfoSlice = createSlice({
     reducers: {
         updateUser(state, action) {
             state.userData = action.payload;
+
+            if (action.payload.autoLogin) {
+                localStorage.setItem('userData', JSON.stringify(state.userData));
+            } else if (!action.payload.autoLogin) {
+                sessionStorage.setItem('userData', JSON.stringify(state.userData));
+            }
+
         },
     },
 });

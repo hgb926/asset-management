@@ -38,7 +38,7 @@ const AccountBook = () => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0"); // 월을 2자리로 맞춤
         const day = String(date.getDate()).padStart(2, "0"); // 일을 2자리로 맞춤
-        return `${year}-${month}-${day}`;
+        return `${year}-${month}-${day}`; // 항상 YYYY-MM-DD 형식 반환
     };
 
     /** startDay부터 endDay까지의 날짜를 주 단위로 그룹화하는 함수 */
@@ -74,10 +74,10 @@ const AccountBook = () => {
     };
 
     const dayClickHandler = (date) => {
-        setSelectedDate(date);
+        const formattedDate = formatDateToLocal(date); // YYYY-MM-DD 형식으로 변환
+        setSelectedDate(formattedDate); // 문자열로 저장
         setModalOpen(true);
     };
-
     const addModalOpenHandler = () => {
         setAddModalOpen(true);
     };
@@ -159,7 +159,13 @@ const AccountBook = () => {
 
             <div className={styles.flex}>
                 <div></div>
-                <div className={styles.currentMoney}>총 자산 : {userData.currentMoney.toLocaleString("ko-KR")}</div>
+                {userData && typeof userData.currentMoney === "number" ? (
+                    <div className={styles.currentMoney}>
+                        총 자산 : {userData.currentMoney.toLocaleString("ko-KR")}
+                    </div>
+                ) : (
+                    <div className={styles.currentMoney}>총 자산 : 데이터 로딩 중...</div>
+                )}
                 <div className={styles.addBtn} onClick={addModalOpenHandler}>
                     +
                 </div>
@@ -181,6 +187,7 @@ const AccountBook = () => {
                             const dailyIncome = (userData.incomeList || []) // undefined일 경우 빈 배열로 처리
                                 .filter((item) => item.incomeAt.split("T")[0] === dateStr)
                                 .reduce((acc, curr) => acc + curr.amount, 0);
+
 
                             const dailyExpense = (userData.expenseList || [])
                                 .filter((item) => item.expenseAt.split("T")[0] === dateStr)
@@ -282,6 +289,6 @@ const AccountBook = () => {
         </div>
     );
 };
-// 모달 없어지게 수정
+
 
 export default AccountBook;

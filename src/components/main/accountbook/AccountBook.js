@@ -161,7 +161,7 @@ const AccountBook = () => {
                 <div></div>
                 {userData && typeof userData.currentMoney === "number" ? (
                     <div className={styles.currentMoney}>
-                        총 자산 : {userData.currentMoney.toLocaleString("ko-KR")}
+                        총 자산 : {userData.currentMoney.toLocaleString("ko-KR")}원
                     </div>
                 ) : (
                     <div className={styles.currentMoney}>총 자산 : 데이터 로딩 중...</div>

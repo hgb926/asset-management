@@ -169,8 +169,8 @@
 
   }
     .cancel {
-      background-color: #324ccd;
-      color: #fff;
+      background-color: #F4F6FC;
+      color: #324ccd;
       border: none;
       padding: 8px 12px;
       border-radius: 6px;
@@ -178,7 +178,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
         &:hover {
-        background-color: #5561d3;
+        background-color: #c5c6cd;
       }
     }
 }

@@ -139,7 +139,7 @@ const AccountBook = () => {
 
     useEffect(() => {
 
-    }, [userData]);
+    }, [userData.currentMoney, userData.incomeList, userData.expenseList]);
 
 
 

@@ -3,7 +3,7 @@ import styles from "../styles/accountbook/AccountModal.module.scss";
 import {BsThreeDotsVertical} from "react-icons/bs";
 
 const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
-    const [menuOpen, setMenuOpen] = useState(false)
+    const [menuOpen, setMenuOpen] = useState({})
     if (!selectedDate) return null;
 
 
@@ -20,6 +20,17 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
 
     console.log(combinedList)
 
+    const toggleMenu = (idx) => {
+        setMenuOpen((prev) => ({
+            ...prev,
+            [idx]: !prev[idx]
+        }))
+    }
+
+    const closeAllMenus = () => {
+        setMenuOpen({})
+    }
+
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -32,16 +43,18 @@ const AccountModal = ({ selectedDate, incomeList, expenseList, onClose }) => {
                 <div className={styles.detailsContainer}>
                     {combinedList.length > 0 ? (
                         combinedList.map((item, index) => (
-                            <div key={index} className={styles.detailItem}>
+                            <div key={index} className={styles.detailItem}
+                                 onClick={(e) => e.stopPropagation()}
+                            >
                                 <div className={styles.flex}>
                                     <span className={styles.detailCategory}>{item.category}</span>
-                                    <BsThreeDotsVertical className={styles.settings}/>
+                                    <BsThreeDotsVertical onClick={() => toggleMenu(index)} className={styles.settings}/>
                                 </div>
-                                <div className={styles.menu}>
+                                {menuOpen[index] && <div className={styles.menu}>
                                     <div className={styles.menuList}>수정</div>
                                     <hr className={styles.line}/>
                                     <div className={styles.menuList}>삭제</div>
-                                </div>
+                                </div>}
                                 <div className={styles.detailDescription}>{item.description}</div>
                                 <div className={`${styles.detailAmount} ${item.type === "expense" ? styles.expense : ""}`}>
                                     {item.type === "income"

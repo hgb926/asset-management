@@ -81,6 +81,12 @@ const AccountBook = () => {
     };
 
     const addAccountHandler = async () => {
+
+        if (!category || !amount || !description) {
+            alert("빈 값 받지않는다")
+            return;
+        }
+
         const payload = {
             category,
             userId: userData.id,

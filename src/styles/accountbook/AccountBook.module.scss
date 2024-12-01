@@ -33,6 +33,8 @@
   .flex {
     display: flex;
     justify-content: space-between;
+    position: relative;
+    margin-bottom: 20px;
 
     .currentMoney {
 
@@ -52,6 +54,8 @@
       font-size: 1.3rem;
       margin-bottom: 15px;
       transition: background-color 0.3s, transform 0.3s;
+      position: absolute;
+      right: 0;
 
       &:hover {
         background-color: #3149b0; /* hover 시 배경색 변경 */

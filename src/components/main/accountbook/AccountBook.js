@@ -166,19 +166,20 @@ const AccountBook = () => {
                 ) : (
                     <div className={styles.currentMoney}>총 자산 : 데이터 로딩 중...</div>
                 )}
+                <div></div>
                 <div className={styles.addBtn} onClick={addModalOpenHandler}>
                     +
                 </div>
             </div>
             <div className={styles.calendar}>
                 <div className={styles.week}>
-                    <span>일</span>
+                    <span className={styles.holiday}>일</span>
                     <span>월</span>
                     <span>화</span>
                     <span>수</span>
                     <span>목</span>
                     <span>금</span>
-                    <span>토</span>
+                    <span className={styles.saturday}>토</span>
                 </div>
                 {weeks.map((week, index) => (
                     <div key={index} className={styles.week}>

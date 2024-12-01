@@ -97,7 +97,7 @@ const AccountBook = () => {
             description,
         };
         console.log(payload);
-        if (selectedType === "import") {
+        if (selectedType === "income") {
 
             const response = await fetch(`${INCOME_URL}/add-income`, {
                 method: "POST",

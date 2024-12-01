@@ -10,10 +10,11 @@ const AccountBook = () => {
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
     const [addModalOpen, setAddModalOpen] = useState(false);
-    const [selectedType, setSelectedType] = useState("import");
+    const [selectedType, setSelectedType] = useState("income");
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState(0);
     const [description, setDescription] = useState("");
+    const [categoryDropdown, setCategoryDropdown] = useState(false)
 
     const userData = useSelector((state) => state.userInfo.userData);
     const dispatch = useDispatch();
@@ -96,7 +97,7 @@ const AccountBook = () => {
             description,
         };
         console.log(payload);
-        if (selectedType === "import") {
+        if (selectedType === "income") {
 
             const response = await fetch(`${INCOME_URL}/add-income`, {
                 method: "POST",
@@ -141,6 +142,19 @@ const AccountBook = () => {
 
     }, [userData.currentMoney, userData.incomeList, userData.expenseList]);
 
+    const temp = [];
+    if (selectedType === "income") {
+        for (let i = 0; i < userData.incomeList.length; i++) {
+            temp.push(userData.incomeList[i].category)
+        }
+    } else {
+        for (let i = 0; i < userData.expenseList.length; i++) {
+            temp.push(userData.expenseList[i].category)
+        }
+    }
+    const categorySet = new Set([...temp]);
+
+    // categorySet.forEach((ct) => console.log(ct))
 
 
     return (
@@ -166,19 +180,20 @@ const AccountBook = () => {
                 ) : (
                     <div className={styles.currentMoney}>총 자산 : 데이터 로딩 중...</div>
                 )}
+                <div></div>
                 <div className={styles.addBtn} onClick={addModalOpenHandler}>
                     +
                 </div>
             </div>
             <div className={styles.calendar}>
                 <div className={styles.week}>
-                    <span>일</span>
+                    <span className={styles.holiday}>일</span>
                     <span>월</span>
                     <span>화</span>
                     <span>수</span>
                     <span>목</span>
                     <span>금</span>
-                    <span>토</span>
+                    <span className={styles.saturday}>토</span>
                 </div>
                 {weeks.map((week, index) => (
                     <div key={index} className={styles.week}>
@@ -234,8 +249,8 @@ const AccountBook = () => {
 
                         <div className={styles.addModalToggle}>
                             <div
-                                className={`${styles.toggleOption} ${selectedType === "import" ? styles.active : ""}`}
-                                onClick={() => setSelectedType("import")}
+                                className={`${styles.toggleOption} ${selectedType === "income" ? styles.active : ""}`}
+                                onClick={() => setSelectedType("income")}
                             >
                                 수입
                             </div>
@@ -264,9 +279,21 @@ const AccountBook = () => {
                                         type="text"
                                         placeholder="카테고리를 입력하세요"
                                         className={styles.input}
+                                        onClick={() => setCategoryDropdown(true)}
                                         onChange={(e) => setCategory(e.target.value)}
                                     />
+                                { (categoryDropdown && categorySet) &&
+                                    <div className={styles.categoryWrap}>
+                                        {Array.from(categorySet).map((ct, idx) => (
+                                            <div className={styles.category} key={idx}>
+                                                {ct}
+                                            </div>
+                                        ))}
+                                    </div>
+                                }
                                 </label>
+
+
                                 <label>
                                     세부설명:
                                     <textarea

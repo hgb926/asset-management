@@ -135,6 +135,7 @@ const AccountModal = ({selectedDate, incomeList, expenseList, onClose}) => {
         alert("삭제가 완료되었습니다.");
     };
 
+
     return (
         <div
             className={styles.modalOverlay}

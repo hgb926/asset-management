@@ -14,6 +14,7 @@ const AccountBook = () => {
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState(0);
     const [description, setDescription] = useState("");
+    const [categoryDropdown, setCategoryDropdown] = useState(false)
 
     const userData = useSelector((state) => state.userInfo.userData);
     const dispatch = useDispatch();
@@ -141,6 +142,22 @@ const AccountBook = () => {
 
     }, [userData.currentMoney, userData.incomeList, userData.expenseList]);
 
+    const dropdownCategoryHandler = () => {
+        const temp = [];
+        if (selectedType === "income") {
+            for (let i = 0; i < userData.incomeList.length; i++) {
+                temp.push(userData.incomeList[i].category)
+            }
+        } else {
+            for (let i = 0; i < userData.expenseList.length; i++) {
+                temp.push(userData.expenseList[i].category)
+            }
+        }
+        setCategoryDropdown(true)
+        return new Set([...temp]);
+
+    }
+
 
 
     return (
@@ -235,8 +252,8 @@ const AccountBook = () => {
 
                         <div className={styles.addModalToggle}>
                             <div
-                                className={`${styles.toggleOption} ${selectedType === "import" ? styles.active : ""}`}
-                                onClick={() => setSelectedType("import")}
+                                className={`${styles.toggleOption} ${selectedType === "income" ? styles.active : ""}`}
+                                onClick={() => setSelectedType("income")}
                             >
                                 수입
                             </div>
@@ -265,6 +282,7 @@ const AccountBook = () => {
                                         type="text"
                                         placeholder="카테고리를 입력하세요"
                                         className={styles.input}
+                                        onClick={dropdownCategoryHandler}
                                         onChange={(e) => setCategory(e.target.value)}
                                     />
                                 </label>

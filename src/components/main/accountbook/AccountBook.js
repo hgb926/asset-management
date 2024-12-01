@@ -145,13 +145,23 @@ const AccountBook = () => {
                                         type="text"
                                         placeholder="카테고리를 입력하세요"
                                         className={styles.input}
-                                        onClick={() => setCategoryDropdown(true)}
+                                        value={category}
+                                        onClick={() => setCategoryDropdown((prev) => !prev)}
                                         onChange={(e) => setCategory(e.target.value)}
                                     />
-                                { (categoryDropdown && categorySet) &&
+                                { (categoryDropdown && categorySet.size > 0) &&
                                     <div className={styles.categoryWrap}>
                                         {Array.from(categorySet).map((ct, idx) => (
-                                            <div className={styles.category} key={idx}>
+                                            <div
+                                                className={styles.category}
+                                                key={idx}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setCategory(ct)
+                                                    setCategoryDropdown(false)
+                                                }
+                                            }
+                                            >
                                                 {ct}
                                             </div>
                                         ))}

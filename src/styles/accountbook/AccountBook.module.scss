@@ -209,6 +209,26 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    position: relative;
+
+    .categoryWrap {
+      position: absolute;
+      z-index: 10;
+      width: 93%; // input의 너비와 맞추기
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow-y: auto;
+      left: 3%;
+
+      .category {
+        border-bottom: 1px solid #e1e1e1;
+        padding: 10px 0;
+        text-align: left;
+        text-indent: 20px;
+        font-size: 13px;
+      }
+    }
 
     label {
       font-size: 0.9rem;

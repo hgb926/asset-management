@@ -10,7 +10,7 @@ const AccountBook = () => {
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
     const [addModalOpen, setAddModalOpen] = useState(false);
-    const [selectedType, setSelectedType] = useState("import");
+    const [selectedType, setSelectedType] = useState("income");
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState(0);
     const [description, setDescription] = useState("");
@@ -142,22 +142,19 @@ const AccountBook = () => {
 
     }, [userData.currentMoney, userData.incomeList, userData.expenseList]);
 
-    const dropdownCategoryHandler = () => {
-        const temp = [];
-        if (selectedType === "income") {
-            for (let i = 0; i < userData.incomeList.length; i++) {
-                temp.push(userData.incomeList[i].category)
-            }
-        } else {
-            for (let i = 0; i < userData.expenseList.length; i++) {
-                temp.push(userData.expenseList[i].category)
-            }
+    const temp = [];
+    if (selectedType === "income") {
+        for (let i = 0; i < userData.incomeList.length; i++) {
+            temp.push(userData.incomeList[i].category)
         }
-        setCategoryDropdown(true)
-        return new Set([...temp]);
-
+    } else {
+        for (let i = 0; i < userData.expenseList.length; i++) {
+            temp.push(userData.expenseList[i].category)
+        }
     }
+    const categorySet = new Set([...temp]);
 
+    // categorySet.forEach((ct) => console.log(ct))
 
 
     return (
@@ -282,10 +279,21 @@ const AccountBook = () => {
                                         type="text"
                                         placeholder="카테고리를 입력하세요"
                                         className={styles.input}
-                                        onClick={dropdownCategoryHandler}
+                                        onClick={() => setCategoryDropdown(true)}
                                         onChange={(e) => setCategory(e.target.value)}
                                     />
+                                { (categoryDropdown && categorySet) &&
+                                    <div className={styles.categoryWrap}>
+                                        {Array.from(categorySet).map((ct, idx) => (
+                                            <div className={styles.category} key={idx}>
+                                                {ct}
+                                            </div>
+                                        ))}
+                                    </div>
+                                }
                                 </label>
+
+
                                 <label>
                                     세부설명:
                                     <textarea

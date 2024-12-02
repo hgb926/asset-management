@@ -1,7 +1,19 @@
 .reportWrap {
-  border: 1px solid black;
+
   width: 40%;
   padding-top: 30px;
+  display: flex;
+  flex-direction: column;
 
+  & > div {
+    border: 1px solid black;
+    width: 100%;
+    height: 50%;
 
+    .h2 {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+  }
 }

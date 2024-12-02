@@ -2,6 +2,7 @@ import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useSelector } from "react-redux";
 
+
 const IncomeReport = () => {
     const userData = useSelector((state) => state.userInfo.userData);
 
@@ -34,8 +35,9 @@ const IncomeReport = () => {
                 borderWidth={1}
                 borderColor={{
                     from: "color",
-                    modifiers: [["darker", 0.2]],
+                    modifiers: [["darker", 0.1]],
                 }}
+                colors={["#ACC9E8", "#FFC9B9", "#F8E9A1", "#C5E1A5"]} // 동일한 파스텔톤 색상
                 arcLinkLabelsSkipAngle={10}
                 arcLinkLabelsTextColor="#333333"
                 arcLinkLabelsThickness={2}
@@ -45,36 +47,6 @@ const IncomeReport = () => {
                     from: "color",
                     modifiers: [["darker", 2]],
                 }}
-                defs={[
-                    {
-                        id: "dots",
-                        type: "patternDots",
-                        background: "inherit",
-                        color: "rgba(255, 255, 255, 0.3)",
-                        size: 4,
-                        padding: 1,
-                        stagger: true,
-                    },
-                    {
-                        id: "lines",
-                        type: "patternLines",
-                        background: "inherit",
-                        color: "rgba(255, 255, 255, 0.3)",
-                        rotation: -45,
-                        lineWidth: 6,
-                        spacing: 10,
-                    },
-                ]}
-                fill={[
-                    {
-                        match: { id: "ruby" },
-                        id: "dots",
-                    },
-                    {
-                        match: { id: "javascript" },
-                        id: "lines",
-                    },
-                ]}
                 legends={[
                     {
                         anchor: "bottom",
@@ -85,7 +57,7 @@ const IncomeReport = () => {
                         itemsSpacing: 0,
                         itemWidth: 70,
                         itemHeight: 18,
-                        itemTextColor: "#999",
+                        itemTextColor: "#555",
                         itemDirection: "left-to-right",
                         itemOpacity: 1,
                         symbolSize: 18,

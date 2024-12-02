@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../../../styles/report/Report.module.scss'
 import IncomeReport from "../analysis/IncomeReport";
+import ExpenseReport from "../analysis/ExpenseReport";
 
 
 const Report = () => {
@@ -15,7 +16,7 @@ const Report = () => {
             <div className={styles.expenseWrap}>
                 <h2 className={styles.h2}>지출</h2>
                 <div>
-
+                    <ExpenseReport/>
                 </div>
             </div>
         </div>

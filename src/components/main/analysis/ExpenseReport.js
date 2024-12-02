@@ -2,11 +2,11 @@ import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useSelector } from "react-redux";
 
-const IncomeReport = () => {
+const ExpenseReport = () => {
     const userData = useSelector((state) => state.userInfo.userData);
 
     // 데이터 변환: 카테고리별로 그룹화
-    const pieData = userData.incomeList.reduce((acc, item) => {
+    const pieData = userData.expenseList.reduce((acc, item) => {
         const existingCategory = acc.find((data) => data.id === item.category);
         if (existingCategory) {
             existingCategory.value += item.amount;
@@ -105,4 +105,4 @@ const IncomeReport = () => {
     );
 };
 
-export default IncomeReport;
+export default ExpenseReport;

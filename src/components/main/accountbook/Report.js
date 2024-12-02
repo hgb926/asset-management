@@ -1,8 +1,10 @@
 import React from 'react';
+import styles from '../../../styles/report/Report.module.scss'
+
 
 const Report = () => {
     return (
-        <div>
+        <div className={styles.reportWrap}>
             report
         </div>
     );

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import React, {useEffect} from 'react';
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import Header from "../components/main/Header";
 import Dashboard from "../components/main/Dashboard";
 import styles from '../styles/main/RootLayout.module.scss';
-import { useDispatch, useSelector } from "react-redux";
-import { userInfoActions } from "../components/store/user/UserInfoSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {userInfoActions} from "../components/store/user/UserInfoSlice";
 import AccountBook from "../components/main/accountbook/AccountBook";
 import Report from "../components/main/accountbook/Report";
 
@@ -36,20 +36,20 @@ const RootLayout = () => {
 
     return (
         <div className={styles.container}>
-            {!hideHeaderAndDashboard && <Header />}
+            {!hideHeaderAndDashboard && <Header/>}
             <div className={styles.mainContent}>
-                {!hideHeaderAndDashboard && <Dashboard />}
+                {!hideHeaderAndDashboard && <Dashboard/>}
                 <div className={styles.outlet}>
-                    <Outlet />
+                    <Outlet/>
                     {isAccount === "accountBook"
-                        && !hideHeaderAndDashboard
+                    && !hideHeaderAndDashboard
                         ?
-                        <>
-                        <Report/>
-                    <AccountBook/>
-                        </>
-                    :
-                    undefined}
+                        <div className={styles.flex}>
+                            <AccountBook/>
+                            <Report/>
+                        </div>
+                        :
+                        undefined}
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        console.log(location)
+
     }, [location]);
 
     return (

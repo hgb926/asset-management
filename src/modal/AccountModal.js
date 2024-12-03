@@ -54,7 +54,7 @@ const AccountModal = ({selectedDate, incomeList, expenseList, onClose}) => {
             description: editedItem.description,
             amount: editedItem.amount,
         }
-        console.log(payload)
+
         if (editedItem.type === "income") {
             const response = await fetch(`${INCOME_URL}/${editedItem.id}`, {
                 method: "PATCH",

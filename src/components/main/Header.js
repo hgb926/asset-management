@@ -10,7 +10,7 @@ const Header = () => {
     const navi = useNavigate();
     const dispatch = useDispatch();
     const userData = useSelector(state => state.userInfo.userData) || {};
-    console.log(userData)
+
 
     const logoutHandler = () => {
         dispatch(userInfoActions.updateUser({ isEmpty : true}));

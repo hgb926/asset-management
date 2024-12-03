@@ -7,6 +7,7 @@ const Calendar = ({ currentDate }) => {
 
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
+    const [hoveredDate, setHoveredDate] = useState(null)
 
     const userData = useSelector((state) => state.userInfo.userData);
 
@@ -58,10 +59,13 @@ const Calendar = ({ currentDate }) => {
     };
 
     const dayClickHandler = (date) => {
+        if (date > new Date()) return;
         const formattedDate = formatDateToLocal(date); // YYYY-MM-DD 형식으로 변환
         setSelectedDate(formattedDate); // 문자열로 저장
         setModalOpen(true);
     };
+
+
 
 //     해볼것:  미래 일자는 클릭,hover 안되게끔
     return (
@@ -92,13 +96,18 @@ const Calendar = ({ currentDate }) => {
                             return (
                                 <div
                                     key={idx}
+                                    onMouseOver={() => setHoveredDate(dateStr)}
+                                    onMouseOut={() => setHoveredDate(null)}
                                     className={`${styles.day} ${
                                         date.getMonth() === currentDate.getMonth() ? styles.currentMonth : ""
                                     } ${
                                         formatDateToLocal(date) === formatDateToLocal(new Date())
                                             ? styles.today
                                             : ""
-                                    }`}
+                                    } ${
+                                     hoveredDate === dateStr ? styles.active : ""   
+                                    }
+                                    `}
                                     onClick={() => dayClickHandler(date)}
                                 >
                                     <span>{date.getDate()}</span>

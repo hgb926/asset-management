@@ -105,14 +105,13 @@
         }
 
 
-        &:hover {
-          background-color: #b4c8fa;
-        }
-
         .date {
           font-weight: bold;
           margin-bottom: 5px;
         }
+      }
+      .active {
+        background-color: #b4c8fa !important;
       }
 
       .today {

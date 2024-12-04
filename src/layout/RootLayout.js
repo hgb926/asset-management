@@ -16,8 +16,6 @@ const RootLayout = () => {
     const hideForPaths = ["/login", "/signup"];
     const hideHeaderAndDashboard = hideForPaths.includes(location.pathname);
 
-    const isAccount = useSelector(state => state.location.userLocation);
-
     const userData = useSelector(state => state.userInfo.userData);
 
     useEffect(() => {
@@ -42,7 +40,6 @@ const RootLayout = () => {
                 <div className={styles.outlet}>
                     <Outlet/>
                     {location.pathname === "/"
-                    && isAccount === "accountBook"
                     && !hideHeaderAndDashboard
                         ?
                         <div className={styles.flex}>

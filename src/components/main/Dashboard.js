@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from '../../styles/main/Dashboard.module.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {locationActions} from "../store/user/LocationSlice";
+import {useSelector} from "react-redux";
 import {Link, useLocation} from "react-router-dom";
 
 const Dashboard = () => {

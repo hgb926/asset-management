@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../styles/main/Header.module.scss'
 import {IoSettingsOutline} from "react-icons/io5";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {userInfoActions} from "../store/user/UserInfoSlice";
 import {useNavigate} from "react-router-dom";
 
@@ -9,8 +9,7 @@ const Header = () => {
 
     const navi = useNavigate();
     const dispatch = useDispatch();
-    const userData = useSelector(state => state.userInfo.userData) || {};
-    console.log(userData)
+
 
     const logoutHandler = () => {
         dispatch(userInfoActions.updateUser({ isEmpty : true}));

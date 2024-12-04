@@ -34,7 +34,7 @@ const AccountBook = () => {
             amount,
             description,
         };
-        console.log(payload);
+
         if (selectedType === "income") {
 
             const response = await fetch(`${INCOME_URL}/add-income`, {

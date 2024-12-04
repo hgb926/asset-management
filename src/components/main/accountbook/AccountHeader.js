@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from "../../../styles/accountbook/AccountBook.module.scss";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 
-const AccountHeader = ({ currentDate, setCurrentDate, onAddModalOpen}) => {
 
-    const [addModalOpen, setAddModalOpen] = useState(false);
+const AccountHeader = ({currentDate, setCurrentDate, onAddModalOpen}) => {
+
 
     const userData = useSelector((state) => state.userInfo.userData);
-    const dispatch = useDispatch();
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -20,9 +19,6 @@ const AccountHeader = ({ currentDate, setCurrentDate, onAddModalOpen}) => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
     };
 
-    const addModalOpenHandler = () => {
-        setAddModalOpen(true);
-    };
 
     return (
         <>
@@ -49,7 +45,7 @@ const AccountHeader = ({ currentDate, setCurrentDate, onAddModalOpen}) => {
                 )}
                 <div></div>
                 <div className={styles.addBtn} onClick={onAddModalOpen}>
-                    +
+                +
                 </div>
             </div>
         </>

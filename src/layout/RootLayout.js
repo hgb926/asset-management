@@ -41,7 +41,8 @@ const RootLayout = () => {
                 {!hideHeaderAndDashboard && <Dashboard/>}
                 <div className={styles.outlet}>
                     <Outlet/>
-                    {isAccount === "accountBook"
+                    {location.pathname === "/"
+                    && isAccount === "accountBook"
                     && !hideHeaderAndDashboard
                         ?
                         <div className={styles.flex}>

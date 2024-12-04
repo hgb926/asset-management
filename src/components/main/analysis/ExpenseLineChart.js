@@ -21,7 +21,7 @@ const ExpenseLineChart = () => {
     const transformedData = [
         {
             id: 'Daily Expense',
-            color: 'hsl(65, 70%, 50%)', // 임의의 색상
+            color: 'hsl(226,72%,45%)', // 임의의 색상
             data: Object.keys(dailyExpenses).map((date) => ({
                 x: date, // 날짜
                 y: dailyExpenses[date], // 합산 금액

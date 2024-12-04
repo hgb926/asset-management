@@ -1,9 +1,10 @@
 import React from 'react';
+import ExpenseLineChart from "./ExpenseLineChart";
 
 const Analysis = () => {
     return (
         <div>
-            Analysis
+            <ExpenseLineChart/>
         </div>
     );
 };

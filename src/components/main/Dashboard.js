@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import styles from '../../styles/main/Dashboard.module.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {locationActions} from "../store/user/LocationSlice";

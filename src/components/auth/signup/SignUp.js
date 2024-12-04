@@ -161,7 +161,7 @@ const SignUp = () => {
 
     const joinHandler = async () => {
         if (email && password && nickname) {
-            const response = await fetch(`${AUTH_URL}/join`, {
+            await fetch(`${AUTH_URL}/join`, {
                 method: "POST",
                 headers: {"Content-Type": "Application/json"},
                 body: JSON.stringify({

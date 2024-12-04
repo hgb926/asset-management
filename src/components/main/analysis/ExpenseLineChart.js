@@ -56,12 +56,12 @@ const ExpenseLineChart = () => {
     // Nivo Line Chart 형식으로 변환
     const transformedData = [
         {
-            id: 'Current Money',
+            id: '잔액',
             color: 'hsl(220, 70%, 50%)',
             data: currentMoneyData,
         },
         {
-            id: 'Daily Expense',
+            id: '하루 총 소비',
             color: 'hsl(10, 70%, 50%)',
             data: dailyExpenseData,
         },
@@ -70,7 +70,7 @@ const ExpenseLineChart = () => {
     return (
         <ResponsiveLine
             data={transformedData}
-            margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            margin={{ top: 50, right:200, bottom: 100, left: 100 }}
             xScale={{ type: 'time', format: '%Y-%m-%d', precision: 'day' }}
             yScale={{
                 type: 'linear',
@@ -92,7 +92,7 @@ const ExpenseLineChart = () => {
                 tickRotation: 0,
                 legend: '금액 (원)',
                 legendOffset: -40,
-                legendPosition: 'middle',
+                legendPosition: 'top',
             }}
             pointSize={6}
             pointBorderWidth={1}

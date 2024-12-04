@@ -1,83 +1,65 @@
 import React from 'react';
-import {useSelector} from "react-redux";
-import { ResponsiveLine } from '@nivo/line'
+import { useSelector } from 'react-redux';
+import { ResponsiveLine } from '@nivo/line';
 
 const ExpenseLineChart = () => {
-
-    const userData = useSelector(state => state.userInfo.userData);
+    const userData = useSelector((state) => state.userInfo.userData);
     const expenseList = userData.expenseList;
 
-    const transformedData = expenseList.reduce((result, expense) => {
-        const categoryIndex = result.findIndex(item => item.id === expense.category);
-        if (categoryIndex === -1) {
-            result.push({
-                id: expense.category,
-                color: "hsl(65, 70%, 50%)", // 임의의 색상
-                data: [
-                    {
-                        x: expense.expenseAt.split("T")[0], // 날짜 부분만 추출
-                        y: expense.amount
-                    }
-                ]
-            });
+    // 데이터를 날짜별로 합산
+    const dailyExpenses = expenseList.reduce((acc, expense) => {
+        const date = expense.expenseAt.split('T')[0]; // YYYY-MM-DD 형식
+        if (!acc[date]) {
+            acc[date] = expense.amount; // 새로운 날짜 추가
         } else {
-            const dateIndex = result[categoryIndex].data.findIndex(item => item.x === expense.expenseAt.split("T")[0]);
-            if (dateIndex === -1) {
-                result[categoryIndex].data.push({
-                    x: expense.expenseAt.split("T")[0],
-                    y: expense.amount
-                });
-            } else {
-                result[categoryIndex].data[dateIndex].y += expense.amount;
-            }
+            acc[date] += expense.amount; // 기존 날짜에 금액 추가
         }
-        return result;
-    }, []);
+        return acc;
+    }, {});
 
-    console.log(transformedData);
-    // 렌더링 안됨.
+    // Nivo Line Chart 형식으로 변환
+    const transformedData = [
+        {
+            id: 'Daily Expense',
+            color: 'hsl(65, 70%, 50%)', // 임의의 색상
+            data: Object.keys(dailyExpenses).map((date) => ({
+                x: date, // 날짜
+                y: dailyExpenses[date], // 합산 금액
+            })),
+        },
+    ];
 
     return (
         <ResponsiveLine
             data={transformedData}
-            margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-            xScale={{ type: 'point' }}
+            margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            xScale={{ type: 'time', format: '%Y-%m-%d', precision: 'day' }}
             yScale={{
                 type: 'linear',
-                min: 'auto',
-                max: 'auto',
-                stacked: true,
-                reverse: false
+                min: 0, // 최소값 명시
+                max: 'auto', // 최대값 자동
+                stacked: false,
+                reverse: false,
             }}
-            yFormat=" >-.2f"
-            axisTop={null}
-            axisRight={null}
             axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'transportation',
+                format: '%b %d', // 날짜 형식
+                tickValues: 'every 1 days', // 매일 표시
+                legend: '날짜',
                 legendOffset: 36,
                 legendPosition: 'middle',
-                truncateTickAt: 0
             }}
             axisLeft={{
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: 'count',
+                legend: '지출 금액',
                 legendOffset: -40,
                 legendPosition: 'middle',
-                truncateTickAt: 0
             }}
-            pointSize={10}
-            pointColor={{ theme: 'background' }}
-            pointBorderWidth={2}
-            pointBorderColor={{ from: 'serieColor' }}
-            pointLabel="data.yFormatted"
-            pointLabelYOffset={-12}
-            enableTouchCrosshair={true}
-            useMesh={true}
+            pointSize={6}
+            pointBorderWidth={1}
+            enableSlices="x" // 확대 방지 및 슬라이스 활성화
+            useMesh={false} // 터치 영역 비활성화
             legends={[
                 {
                     anchor: 'bottom-right',
@@ -92,17 +74,7 @@ const ExpenseLineChart = () => {
                     itemOpacity: 0.75,
                     symbolSize: 12,
                     symbolShape: 'circle',
-                    symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                    effects: [
-                        {
-                            on: 'hover',
-                            style: {
-                                itemBackground: 'rgba(0, 0, 0, .03)',
-                                itemOpacity: 1
-                            }
-                        }
-                    ]
-                }
+                },
             ]}
         />
     );

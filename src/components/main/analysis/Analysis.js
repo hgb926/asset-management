@@ -1,9 +1,10 @@
 import React from 'react';
 import ExpenseLineChart from "./ExpenseLineChart";
+import styles from '../../../styles/analysis/Analysis.module.scss'
 
 const Analysis = () => {
     return (
-        <div>
+        <div className={styles.container}>
             <ExpenseLineChart/>
         </div>
     );

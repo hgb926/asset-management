@@ -7,7 +7,6 @@ const Dashboard = () => {
 
     const userData = useSelector(state => state.userInfo.userData);
     const location = useLocation();
-    console.log(location.pathname)
 
     const getActiveClass = (targetLocation) => {
         return location.pathname === targetLocation ? styles.active : ""; // 현재 상태와 비교하여 active 클래스 추가

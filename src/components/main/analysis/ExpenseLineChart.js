@@ -5,27 +5,65 @@ import { ResponsiveLine } from '@nivo/line';
 const ExpenseLineChart = () => {
     const userData = useSelector((state) => state.userInfo.userData);
     const expenseList = userData.expenseList;
+    const incomeList = userData.incomeList;
+    const initialMoney = userData.currentMoney;
 
-    // 데이터를 날짜별로 합산
+    // 날짜별 지출 합산
     const dailyExpenses = expenseList.reduce((acc, expense) => {
         const date = expense.expenseAt.split('T')[0]; // YYYY-MM-DD 형식
         if (!acc[date]) {
-            acc[date] = expense.amount; // 새로운 날짜 추가
+            acc[date] = expense.amount;
         } else {
-            acc[date] += expense.amount; // 기존 날짜에 금액 추가
+            acc[date] += expense.amount;
         }
         return acc;
     }, {});
 
+    // 날짜별 수입 합산
+    const dailyIncome = incomeList.reduce((acc, income) => {
+        const date = income.incomeAt.split('T')[0];
+        if (!acc[date]) {
+            acc[date] = income.amount;
+        } else {
+            acc[date] += income.amount;
+        }
+        return acc;
+    }, {});
+
+    // 날짜 정렬
+    const allDates = Array.from(
+        new Set([
+            ...Object.keys(dailyExpenses),
+            ...Object.keys(dailyIncome),
+        ])
+    ).sort();
+
+    // 날짜별 currentMoney 계산
+    let runningBalance = initialMoney;
+    const currentMoneyData = allDates.map((date) => {
+        const income = dailyIncome[date] || 0;
+        const expense = dailyExpenses[date] || 0;
+        runningBalance += income - expense;
+        return { x: date, y: runningBalance };
+    });
+
+    // 하루별 총 지출 데이터 변환
+    const dailyExpenseData = allDates.map((date) => ({
+        x: date,
+        y: dailyExpenses[date] || 0, // 해당 날짜 지출이 없으면 0
+    }));
+
     // Nivo Line Chart 형식으로 변환
     const transformedData = [
         {
+            id: 'Current Money',
+            color: 'hsl(220, 70%, 50%)',
+            data: currentMoneyData,
+        },
+        {
             id: 'Daily Expense',
-            color: 'hsl(226,72%,45%)', // 임의의 색상
-            data: Object.keys(dailyExpenses).map((date) => ({
-                x: date, // 날짜
-                y: dailyExpenses[date], // 합산 금액
-            })),
+            color: 'hsl(10, 70%, 50%)',
+            data: dailyExpenseData,
         },
     ];
 
@@ -37,12 +75,12 @@ const ExpenseLineChart = () => {
             yScale={{
                 type: 'linear',
                 min: 0, // 최소값 명시
-                max: 'auto', // 최대값 자동
+                max: 'auto',
                 stacked: false,
                 reverse: false,
             }}
             axisBottom={{
-                format: '%b %d', // 날짜 형식
+                format: '%m-%d', // 날짜 형식
                 tickValues: 'every 1 days', // 매일 표시
                 legend: '날짜',
                 legendOffset: 36,
@@ -52,14 +90,14 @@ const ExpenseLineChart = () => {
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
-                legend: '지출 금액',
+                legend: '금액 (원)',
                 legendOffset: -40,
                 legendPosition: 'middle',
             }}
             pointSize={6}
             pointBorderWidth={1}
-            enableSlices="x" // 확대 방지 및 슬라이스 활성화
-            useMesh={false} // 터치 영역 비활성화
+            enableSlices="x"
+            useMesh={true}
             legends={[
                 {
                     anchor: 'bottom-right',

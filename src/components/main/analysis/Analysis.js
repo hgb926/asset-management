@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpenseLineChart from "./ExpenseLineChart";
+import ExpenseLineChart from "./ExpenseLineChart.js";
 import styles from '../../../styles/analysis/Analysis.module.scss'
 
 const Analysis = () => {

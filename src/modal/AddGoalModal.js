@@ -1,11 +1,11 @@
 import React from 'react';
 
-const GoalChart = () => {
+const AddGoalModal = () => {
     return (
         <div>
-            GoalChart
+            addGoal
         </div>
     );
 };
 
-export default GoalChart;
+export default AddGoalModal;

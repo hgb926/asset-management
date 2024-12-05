@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../../styles/report/Report.module.scss'
-import IncomeReport from "../analysis/IncomeReport";
-import ExpenseReport from "../analysis/ExpenseReport";
+import IncomeReport from "../analysis/IncomeReport.js";
+import ExpenseReport from "../analysis/ExpenseReport.js";
 
 
 const Report = () => {

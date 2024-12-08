@@ -68,7 +68,7 @@ const ExpenseLineChart = () => {
     ];
 
     return (
-        <div style={{height: '500px', width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'}}>
+        <div style={{height: '450px', width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'}}>
             <ResponsiveLine
                 data={transformedData}
                 margin={{top: 50, right: 200, bottom: 100, left: 100}}
@@ -80,6 +80,7 @@ const ExpenseLineChart = () => {
                     legend: '날짜',
                     legendOffset: 36,
                     legendPosition: 'middle',
+                    legendItemHeight: "28"
                 }}
                 axisLeft={{
                     tickSize: 5,
@@ -88,13 +89,16 @@ const ExpenseLineChart = () => {
                     legend: '금액 (원)',
                     legendOffset: -40,
                     legendPosition: 'top',
+
                 }}
-                pointSize={8}
+                pointSize={6}
                 pointColor="white"
                 pointBorderWidth={2}
                 pointBorderColor={{from: 'serieColor'}}
                 enableSlices="x"
                 useMesh={true}
+                colors={{ scheme: "tableau10"}}
+
                 legends={[
                     {
                         anchor: 'bottom-right',

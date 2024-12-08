@@ -12,8 +12,8 @@
 }
 
 .modalWrap {
-  width: 350px;
-  height: 575px;
+  width: 450px;
+  height: 615px;
   position: relative;
   background: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -133,6 +133,41 @@
     &.expenseActive {
       background: #324ccd; /* 선택된 상태 */
       color: white;
+    }
+  }
+}
+.btnWrap {
+  display: flex;
+  justify-content: space-evenly;
+
+  .confirmButton,
+  .cancelButton {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+    width: 20%;
+    margin: 20px auto;
+    text-align: center;
+  }
+
+  .confirmButton {
+    background: #324ccd;
+    color: white;
+
+    &:hover {
+      background-color: #5561d3;
+    }
+  }
+
+  .cancelButton {
+    background: #ddd;
+    color: black;
+
+    &:hover {
+      background-color: #bbb;
     }
   }
 }

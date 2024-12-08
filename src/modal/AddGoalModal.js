@@ -124,6 +124,14 @@ const AddGoalModal = ({ modalHandler }) => {
                         // onFocus={() => focusHandler("passwordCheck")}
                     />
                 </div>
+                <div className={styles.btnWrap}>
+                    <div className={styles.confirmButton}>
+                        확인
+                    </div>
+                    <div className={styles.cancelButton} onClick={() => modalHandler(false)}>
+                        취소
+                    </div>
+                </div>
             </div>
         </div>,
         document.getElementById("modal-root") // Portal로 렌더링

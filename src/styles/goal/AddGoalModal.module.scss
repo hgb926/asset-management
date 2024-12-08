@@ -13,7 +13,7 @@
 
 .modalWrap {
   width: 350px;
-  height: 535px;
+  height: 575px;
   position: relative;
   background: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -40,6 +40,99 @@
 
     &:hover {
       color: #5561d3;
+    }
+
+
+      }
+
+    }
+
+.inputWrap {
+  margin-top: 20px;
+  text-align: left;
+
+  .label {
+    display: block;
+    font-size: 14px;
+    color: #3137A8;
+    margin-bottom: 5px;
+    //text-align: center;
+  }
+
+  .successMessage {
+    color: #324ccd;
+    margin: 0;
+  }
+
+  .errorMessage {
+    color: red;
+    margin: 0;
+  }
+
+
+
+    .verifyButton {
+      flex: 1;
+      height: 40px;
+      border-radius: 8px;
+      background-color: #3137a8;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s;
+      margin-top: 5px;
+
+      &:hover {
+        background-color: #5561d3;
+      }
+    }
+  }
+.input {
+  flex: 2;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 0 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  width: 92%;
+
+  &:focus {
+    border-color: #3137a8;
+    outline: none;
+  }
+}
+
+
+.addModalToggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 15px;
+
+  .toggleOption {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #ddd;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+      background: #bbb;
+    }
+
+    &.active {
+      background: #e74c3c;
+      color: white;
+    }
+    &.expenseActive {
+      background: #324ccd; /* 선택된 상태 */
+      color: white;
     }
   }
 }

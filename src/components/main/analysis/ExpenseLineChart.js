@@ -68,53 +68,51 @@ const ExpenseLineChart = () => {
     ];
 
     return (
-        <ResponsiveLine
-            data={transformedData}
-            margin={{ top: 50, right:200, bottom: 100, left: 100 }}
-            xScale={{ type: 'time', format: '%Y-%m-%d', precision: 'day' }}
-            yScale={{
-                type: 'linear',
-                min: 0, // 최소값 명시
-                max: 'auto',
-                stacked: false,
-                reverse: false,
-            }}
-            axisBottom={{
-                format: '%m-%d', // 날짜 형식
-                tickValues: 'every 1 days', // 매일 표시
-                legend: '날짜',
-                legendOffset: 36,
-                legendPosition: 'middle',
-            }}
-            axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: '금액 (원)',
-                legendOffset: -40,
-                legendPosition: 'top',
-            }}
-            pointSize={6}
-            pointBorderWidth={1}
-            enableSlices="x"
-            useMesh={true}
-            legends={[
-                {
-                    anchor: 'bottom-right',
-                    direction: 'column',
-                    justify: false,
-                    translateX: 100,
-                    translateY: 0,
-                    itemsSpacing: 0,
-                    itemDirection: 'left-to-right',
-                    itemWidth: 80,
-                    itemHeight: 20,
-                    itemOpacity: 0.75,
-                    symbolSize: 12,
-                    symbolShape: 'circle',
-                },
-            ]}
-        />
+        <div style={{height: '500px', width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'}}>
+            <ResponsiveLine
+                data={transformedData}
+                margin={{top: 50, right: 200, bottom: 100, left: 100}}
+                xScale={{type: 'time', format: '%Y-%m-%d', precision: 'day'}}
+                yScale={{type: 'linear', min: 0, max: 'auto', stacked: false}}
+                axisBottom={{
+                    format: '%m-%d',
+                    tickValues: 'every 1 days',
+                    legend: '날짜',
+                    legendOffset: 36,
+                    legendPosition: 'middle',
+                }}
+                axisLeft={{
+                    tickSize: 5,
+                    tickPadding: 5,
+                    tickRotation: 0,
+                    legend: '금액 (원)',
+                    legendOffset: -40,
+                    legendPosition: 'top',
+                }}
+                pointSize={8}
+                pointColor="white"
+                pointBorderWidth={2}
+                pointBorderColor={{from: 'serieColor'}}
+                enableSlices="x"
+                useMesh={true}
+                legends={[
+                    {
+                        anchor: 'bottom-right',
+                        direction: 'column',
+                        justify: false,
+                        translateX: 100,
+                        translateY: 0,
+                        itemsSpacing: 10,
+                        itemDirection: 'left-to-right',
+                        itemWidth: 80,
+                        itemHeight: 20,
+                        itemOpacity: 0.75,
+                        symbolSize: 12,
+                        symbolShape: 'circle',
+                    },
+                ]}
+            />
+        </div>
     );
 };
 

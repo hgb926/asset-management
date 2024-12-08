@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import ReactDOM from "react-dom";
 import styles from "../styles/goal/AddGoalModal.module.scss";
+import DateRangePicker from "../components/main/goal/DateRangePicker";
 
 const AddGoalModal = ({ modalHandler }) => {
 
@@ -98,32 +99,12 @@ const AddGoalModal = ({ modalHandler }) => {
                         className={styles.input}
                         type="number"
                         name="targetAmount"
+                        placeholder={"숫자만 입력해주세요 ex) 700000"}
                         // onChange={inputChangeHandler}
                         // onFocus={() => focusHandler("passwordCheck")}
                     />
                 </div>
-                <div className={styles.inputWrap}>
-                    <label className={styles.label}>시작일</label>
-                    <input
-                        ref={inputRefs.startDate}
-                        className={styles.input}
-                        type="date"
-                        name="startDate"
-                        // onChange={inputChangeHandler}
-                        // onFocus={() => focusHandler("passwordCheck")}
-                    />
-                </div>
-                <div className={styles.inputWrap}>
-                    <label className={styles.label}>종료일</label>
-                    <input
-                        ref={inputRefs.endDate}
-                        className={styles.input}
-                        type="date"
-                        name="endDate"
-                        // onChange={inputChangeHandler}
-                        // onFocus={() => focusHandler("passwordCheck")}
-                    />
-                </div>
+                <DateRangePicker/>
                 <div className={styles.btnWrap}>
                     <div className={styles.confirmButton}>
                         확인

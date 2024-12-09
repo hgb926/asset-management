@@ -2,4 +2,26 @@
   width: 100%;
   border: 1px solid black;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+
+  .navButton {
+    background: #3137a8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: #5561d3;
+    }
+  }
+  .h2 {
+    font-size: 1.5rem;
+    color: #3137a8;
+  }
 }

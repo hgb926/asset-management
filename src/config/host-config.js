@@ -20,9 +20,11 @@ const API_BASE_URL = backendHostName;
 const AUTH = "/auth"
 const INCOME = "/income";
 const EXPENSE = "/expense"
+const GOAL = "/goal"
 
 // export const BASE_URL = API_BASE_URL;
 export const AUTH_URL = API_BASE_URL + AUTH;
 export const INCOME_URL = API_BASE_URL + INCOME;
 export const EXPENSE_URL = API_BASE_URL + EXPENSE;
+export const GOAL_URL = API_BASE_URL + GOAL;
 // export const ROOM_URL = API_BASE_URL + ROOM;

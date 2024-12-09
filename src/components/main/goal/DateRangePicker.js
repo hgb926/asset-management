@@ -28,6 +28,7 @@ const DateRangePicker = ({ dayPickerHandler }) => {
             <div className={styles.datePickerWrapper}>
                 <label className={styles.label}>시작일</label>
                 <DatePicker
+                    value={startDate}
                     selected={startDate}
                     onChange={handleStartDateChange}
                     dateFormat="yyyy-MM-dd"

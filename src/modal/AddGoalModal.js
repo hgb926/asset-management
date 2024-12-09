@@ -13,7 +13,7 @@ const AddGoalModal = ({modalHandler}) => {
     const [category, setCategory] = useState("")
     const [description, setDescription] = useState("")
     const [targetAmount, setTargetAmount] = useState(0);
-    const [startDate, setStartDate] = useState("")
+    const [startDate, setStartDate] = useState(new Date())
     const [endDate, setEndDate] = useState("")
     const [selectedType, setSelectedType] = useState("income");
 
@@ -87,6 +87,11 @@ const AddGoalModal = ({modalHandler}) => {
     }
 
     const addGoalHandler = async () => {
+
+        if (!selectedType || !category || !description || !targetAmount || !startDate || !endDate) {
+            alert("빈 값 받지않는다!")
+            return
+        }
         const payload = {
             userId: userData.id,
             category,
@@ -96,19 +101,7 @@ const AddGoalModal = ({modalHandler}) => {
             startDate,
             endDate
         }
-        console.log(payload)
-        if (!category || !description || !targetAmount || !startDate || !endDate) {
-            alert("빈 값 받지않는다!")
-            return
-        }
-        // const payload = {
-        //     userId: userData.id,
-        //     category,
-        //     description,
-        //     targetAmount,
-        //     startDate,
-        //     endDate
-        // }
+
         const response = await fetch(`${GOAL_URL}/goal`, {
             method: "POST",
             headers: { "Content-Type": "Application/json" },
@@ -122,11 +115,12 @@ const AddGoalModal = ({modalHandler}) => {
             }
             dispatch(userInfoActions.updateUser(updatedUserData))
             alert("목표가 성공적으로 등록되었습니다")
+            modalHandler(false)
         } else {
             alert("등록 실패!")
         }
     }
-
+// 렌더링
 
     return ReactDOM.createPortal(
         <div
@@ -174,7 +168,7 @@ const AddGoalModal = ({modalHandler}) => {
                         className={styles.input}
                         type="text"
                         name="description"
-                        placeholder={selectedType === 'income' ? "ex) 한달 내 700,000만원 저축" : "ex) 이번달 식비 500,000 만원"}
+                        placeholder={selectedType === 'income' ? "ex) 세달 내 백만원 저축" : "ex) 이번달 식비 오십만원만!"}
                         onChange={inputChangeHandler}
                     />
                 </div>

@@ -16,3 +16,22 @@
     transform: scale(1.05);
   }
 }
+
+.small {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #3137a8;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3137a8;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #3137a8;
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+}

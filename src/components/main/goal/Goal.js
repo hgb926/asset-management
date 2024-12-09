@@ -14,13 +14,13 @@ const Goal = () => {
         <>
             {
                 goalList.length > 0 ? (
-                    <>
+                    <div className={styles.container}>
                         <GoalHeader />
-                        <div className={styles.goalWrap}>
+                        <div className={styles.middleWrap}>
                             <GoalChart />
                             <GoalDescription />
                         </div>
-                    </>
+                    </div>
                 ) : <HaveNotGoal/>
             }
         </>
@@ -28,3 +28,4 @@ const Goal = () => {
 };
 
 export default Goal;
+

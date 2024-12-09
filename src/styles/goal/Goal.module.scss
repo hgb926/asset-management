@@ -1,3 +1,9 @@
-.goalWrap {
-  display: flex;
+.container {
+
+  width: 80%;
+  margin: 30px auto 0;
+
+  .middleWrap {
+    display: flex;
+  }
 }

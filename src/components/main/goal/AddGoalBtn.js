@@ -17,6 +17,7 @@ const AddGoalBtn = () => {
         <>
             {
                 goalList.length > 0 ? (
+
                     <div
                         className={styles.small}
                         onClick={() => setOpenModal(true)}

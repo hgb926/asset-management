@@ -28,6 +28,7 @@ const Goal = () => {
             );
         }
     };
+    // 이제 렌더링
 
     return (
         <>
@@ -40,8 +41,8 @@ const Goal = () => {
                             goalList={goalList}
                         />
                         <div className={styles.middleWrap}>
-                            <GoalChart currentGoal={currentGoal}/>
                             <GoalDescription currentGoal={currentGoal}/>
+                            <GoalChart currentGoal={currentGoal}/>
                         </div>
                     </div>
                 ) : <HaveNotGoal/>

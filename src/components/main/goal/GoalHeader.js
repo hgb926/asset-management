@@ -12,29 +12,33 @@ const GoalHeader = ({ currentGoal, changeCurrentGoal, goalList }) => {
     };
 
     return (
-        <div className={styles.headerContainer}>
-            <button
-                className={styles.navButton}
-                onClick={() => changeCurrentGoal('prev')}
-            >
-                이전 목표
-            </button>
-            <h2 className={styles.h2}>
-                {formatHeaderText(
-                    currentGoal.category,
-                    currentGoal.type,
-                    currentGoal.targetAmount
-                )}
-            </h2>
-            <button
-                className={styles.navButton}
-                onClick={() => changeCurrentGoal('next')}
-            >
-                다음 목표
-            </button>
+        <>
+            <div className={styles.headerContainer}>
+                <button
+                    className={styles.navButton}
+                    onClick={() => changeCurrentGoal('prev')}
+                >
+                    이전 목표
+                </button>
+                <h2 className={styles.h2}>
+                    {formatHeaderText(
+                        currentGoal.category,
+                        currentGoal.type,
+                        currentGoal.targetAmount
+                    )}
+                </h2>
+                <button
+                    className={styles.navButton}
+                    onClick={() => changeCurrentGoal('next')}
+                >
+                    다음 목표
+                </button>
 
-            <AddGoalBtn />
-        </div>
+            </div>
+            <div className={styles.forBottom}>
+                <AddGoalBtn/>
+            </div>
+        </>
     );
 };
 

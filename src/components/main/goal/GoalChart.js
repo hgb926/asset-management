@@ -1,6 +1,7 @@
 import React from 'react';
 
-const GoalChart = () => {
+const GoalChart = ({ currentGoal }) => {
+    console.log(currentGoal)
     return (
         <div>
             GoalChart

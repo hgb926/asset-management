@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import styles from "../../../styles/goal/AddGoalBtn.module.scss";
 import AddGoalModal from "../../../modal/AddGoalModal";
 import {useSelector} from "react-redux";
-import goal from "./Goal";
+
 
 
 const AddGoalBtn = () => {
     const { goalList } = useSelector(state => state.userInfo.userData)
     const [openModal, setOpenModal] = useState(false);
-    console.log(goalList)
 
     const modalHandler = (flag) => {
         setOpenModal(flag);

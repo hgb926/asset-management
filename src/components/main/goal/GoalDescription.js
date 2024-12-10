@@ -1,9 +1,10 @@
 import React from 'react';
+import styles from '../../../styles/goal/GoalDescription.module.scss'
 
-const GoalDescription = () => {
+const GoalDescription = ({ currentGoal }) => {
     return (
         <div>
-            GoalDescription
+            {currentGoal.type}
         </div>
     );
 };

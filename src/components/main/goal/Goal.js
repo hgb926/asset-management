@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import GoalHeader from "./GoalHeader";
-import GoalChart from "./GoalChart";
+import GoalAnalysis from "./GoalAnalysis";
 import GoalDescription from "./GoalDescription";
 import styles from '../../../styles/goal/Goal.module.scss';
 import { useSelector } from "react-redux";
@@ -28,7 +28,7 @@ const Goal = () => {
             );
         }
     };
-    // 이제 렌더링
+
 
     return (
         <>
@@ -42,7 +42,7 @@ const Goal = () => {
                         />
                         <div className={styles.middleWrap}>
                             <GoalDescription currentGoal={currentGoal}/>
-                            <GoalChart currentGoal={currentGoal}/>
+                            <GoalAnalysis currentGoal={currentGoal}/>
                         </div>
                     </div>
                 ) : <HaveNotGoal/>

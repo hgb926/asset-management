@@ -84,12 +84,13 @@ const Calendar = ({ currentDate }) => {
                     <div key={index} className={styles.week}>
                         {week.map((date, idx) => {
                             const dateStr = formatDateToLocal(date); // 로컬 시간 기준으로 날짜 포맷팅
-                            const dailyIncome = (userData.incomeList || []) // undefined일 경우 빈 배열로 처리
+                            const dailyIncome = (userData.incomeList || [])
+                                .filter((item) => item.incomeAt && typeof item.incomeAt === "string") // incomeAt 유효성 검사
                                 .filter((item) => item.incomeAt.split("T")[0] === dateStr)
                                 .reduce((acc, curr) => acc + curr.amount, 0);
 
-
                             const dailyExpense = (userData.expenseList || [])
+                                .filter((item) => item.expenseAt && typeof item.expenseAt === "string") // expenseAt 유효성 검사
                                 .filter((item) => item.expenseAt.split("T")[0] === dateStr)
                                 .reduce((acc, curr) => acc + curr.amount, 0);
 

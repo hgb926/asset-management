@@ -12,6 +12,7 @@ const Goal = () => {
     const userData = useSelector(state => state.userInfo.userData);
     const goalList = userData.goalList;
 
+
     const [currentIndex, setCurrentIndex] = useState(0); // 현재 목표의 인덱스를 저.
 
     const currentGoal = goalList[currentIndex]; // 현재 목표를 가져옴

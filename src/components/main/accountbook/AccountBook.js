@@ -34,6 +34,7 @@ const AccountBook = () => {
             amount,
             description,
         };
+        console.log(payload)
 
         if (selectedType === "income") {
 
@@ -45,6 +46,7 @@ const AccountBook = () => {
 
             if (response.ok) {
                 const newImportItem = await response.json();
+                console.log(newImportItem)
                 const updatedIncomeList = [...userData.incomeList, newImportItem]
                 const updatedUserData = {
                     ...userData,

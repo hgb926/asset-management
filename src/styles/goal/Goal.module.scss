@@ -5,6 +5,9 @@
 
   .middleWrap {
     display: flex;
-    border: 1px solid black;
+    border-radius: 12px;
+    border: 1px solid #d9eaf7; /* 파란색 계열의 경계선 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
   }
 }

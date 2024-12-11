@@ -81,3 +81,35 @@
   font-size: 1.4rem;
   color: black;
 }
+.speechBubble {
+  position: relative;
+  background: #f3f5ff; /* 연한 파란색 배경 */
+  color: #3137A8; /* 글씨 색상 */
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 15px 20px; /* 내부 여백 */
+  border-radius: 12px; /* 둥근 모서리 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+  text-align: center;
+  margin: 10px auto;
+  display: inline-block; /* 중앙 정렬 */
+
+  /* 아래쪽에 꼬리 추가 */
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -10px; /* 아래쪽으로 꼬리를 배치 */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: #f3f5ff transparent transparent transparent; /* 꼬리 색상 */
+  }
+}
+
+.totalDate {
+  text-align: right;
+  font-weight: 400;
+  font-size: 13px;
+  color: #454545;
+}

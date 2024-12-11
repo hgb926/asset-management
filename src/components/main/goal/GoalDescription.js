@@ -6,6 +6,8 @@ import {RiEmotionHappyLine} from "react-icons/ri";
 const GoalDescription = ({currentGoal}) => {
     const formattedStartDate = new Date(currentGoal.startDate).toLocaleDateString('ko-KR');
     const formattedEndDate = new Date(currentGoal.endDate).toLocaleDateString('ko-KR');
+    let totalDate = new Date(currentGoal.startDate).getTime() - new Date(currentGoal.endDate).getTime()
+    totalDate = Math.abs(totalDate / (1000 * 60 * 60 * 24))
     const today = new Date();
     const endDate = new Date(currentGoal.endDate);
     const remainingDays = Math.max(0, Math.ceil((endDate - today) / (1000 * 60 * 60 * 24)));
@@ -41,20 +43,24 @@ const GoalDescription = ({currentGoal}) => {
                 {/*    <span className={styles.progressHighlight}>{currentGoal.currentProgress}%</span>*/}
                 {/*</p>*/}
                 <p>
-                    <strong>기간:</strong> {formattedStartDate} ~ {formattedEndDate}
+                    <strong>기간:</strong>
+                    <div> {formattedStartDate} ~ {formattedEndDate}
+                    </div>
+                        <div className={styles.totalDate}>({totalDate}일)</div>
+
                 </p>
                 <p className={styles.motivation}>
                     {currentGoal.currentProgress < 50
                         ?
                         <>
-                            <div>목표를 향해 꾸준히 나아가고 있어요!
+                            <div className={styles.speechBubble}>목표를 향해 꾸준히 나아가고 있어요!
                                 <br/>조금만 더 힘내세요!
                             </div>
                             <IoMdHappy className={styles.emotion}/>
                         </>
 
                         : <>
-                            <div>목표가 눈앞에 있습니다! 계속 달려봐요!
+                            <div className={styles.speechBubble}>목표가 눈앞에 있습니다! 계속 달려봐요!
                             </div>
                             <RiEmotionHappyLine className={styles.emotion}/>
                         </>

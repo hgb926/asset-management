@@ -1,0 +1,87 @@
+.analysisWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  border-left: 1px solid #D9EAF7;
+  width: 50%;
+}
+
+.progressContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.progressTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3137A8;
+  margin-top: 0;
+}
+
+.progressBar {
+  height: 20px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress {
+  height: 100%;
+  background: #3137A8;
+  transition: width 0.5s ease;
+}
+
+.progressText {
+  font-size: 1rem;
+  color: #333;
+}
+
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 292px;
+}
+
+.chartTitle {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #3137A8;
+  margin-bottom: 0;
+}
+
+.chart {
+  width: 100%; /* 원하는 너비 설정 */
+  height: 216px; /* 원하는 높이 설정 */
+  background: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > div {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.tipsContainer {
+  display: flex;
+
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tips {
+  font-size: 1rem;
+  color: #333;
+}
+
+.motivation {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #4caf50;
+}

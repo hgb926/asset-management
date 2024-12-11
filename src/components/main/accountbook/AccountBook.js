@@ -15,77 +15,87 @@ const AccountBook = () => {
     const [amount, setAmount] = useState(0);
     const [description, setDescription] = useState("");
     const [categoryDropdown, setCategoryDropdown] = useState(false)
+    const [aboutGoal, setAboutGoal] = useState(false)
 
     const userData = useSelector((state) => state.userInfo.userData);
     const dispatch = useDispatch();
 
 
-
     const addAccountHandler = async () => {
-
         if (!category || !amount) {
-            alert("빈 값 받지않는다")
+            alert("빈 값 받지 않습니다.");
             return;
         }
 
         const payload = {
             category,
             userId: userData.id,
-            amount,
+            amount: +amount, // 숫자로 변환
             description,
         };
 
-        if (selectedType === "income") {
+        const isIncome = selectedType === "income";
+        const apiUrl = isIncome ? `${INCOME_URL}/add-income` : `${EXPENSE_URL}/add-expense`;
+        const adjustment = isIncome ? +amount : -amount; // 수입은 더하고, 지출은 뺀다
 
-            const response = await fetch(`${INCOME_URL}/add-income`, {
-                method: "POST",
-                headers: { "Content-Type": "Application/json" },
-                body: JSON.stringify(payload),
-            });
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "Application/json" },
+            body: JSON.stringify(payload),
+        });
 
-            if (response.ok) {
-                const newImportItem = await response.json();
-                const updatedIncomeList = [...userData.incomeList, newImportItem]
-                const updatedUserData = {
-                    ...userData,
-                    incomeList: updatedIncomeList,
-                    currentMoney: +userData.currentMoney + +amount
+        if (response.ok) {
+            const newItem = await response.json(); // 서버로부터 반환된 새 항목
+            const updatedList = isIncome
+                ? [...userData.incomeList, newItem]
+                : [...userData.expenseList, newItem];
+
+            // 목표 갱신 로직
+            const updatedGoalList = userData.goalList.map((goal) => {
+                if (goal.category === category) {
+                    const updatedInfluencedMoney = goal.influencedMoney + +amount; // 기존 영향을 받은 금액 + 현재 금액
+                    const updatedProgress = Math.min(
+                        100,
+                        Math.round((updatedInfluencedMoney / goal.targetAmount) * 1000) / 10 // 진행률 계산 (0~100, 소수점 한자리)
+                    );
+
+                    return {
+                        ...goal,
+                        influencedMoney: updatedInfluencedMoney,
+                        currentProgress: updatedProgress,
+                    };
                 }
-                dispatch(userInfoActions.updateUser(updatedUserData))
-            }
-
-        } else {
-            const response = await fetch(`${EXPENSE_URL}/add-expense`, {
-                method: "POST",
-                headers: { "Content-Type": "Application/json" },
-                body: JSON.stringify(payload),
+                return goal;
             });
-            if (response.ok) {
-                const newExpenseItem = await response.json(); // 서버로부터 반환된 새 지출 데이터
-                const updatedExpenseList = [...userData.expenseList, newExpenseItem]; // 기존 expenseList에 새 데이터 추가
 
-                const updatedUserData = {
-                    ...userData,
-                    expenseList: updatedExpenseList,
-                    currentMoney: +userData.currentMoney - (+amount)
-                };
+            // 사용자 데이터 업데이트
+            const updatedUserData = {
+                ...userData,
+                incomeList: isIncome ? updatedList : userData.incomeList,
+                expenseList: !isIncome ? updatedList : userData.expenseList,
+                currentMoney: +userData.currentMoney + adjustment, // 현재 잔액 갱신
+                goalList: updatedGoalList, // 목표 리스트 갱신
+            };
 
-                dispatch(userInfoActions.updateUser(updatedUserData)); // Redux 상태 업데이트
-            }
+            // Redux와 localStorage에 업데이트
+            dispatch(userInfoActions.updateUser(updatedUserData));
+            localStorage.setItem("userData", JSON.stringify(updatedUserData)); // localStorage에 저장
         }
-        setAddModalOpen(false)
+
+        setAddModalOpen(false); // 모달 닫기
     };
+
 
     useEffect(() => {
 
     }, [userData.currentMoney, userData.incomeList, userData.expenseList]);
 
     const temp = [];
-    if (selectedType === "income") {
+    if (selectedType === "income" && userData?.incomeList) {
         for (let i = 0; i < userData.incomeList.length; i++) {
             temp.push(userData.incomeList[i].category)
         }
-    } else {
+    } else if (selectedType === "expense" && userData?.expenseList) {
         for (let i = 0; i < userData.expenseList.length; i++) {
             temp.push(userData.expenseList[i].category)
         }

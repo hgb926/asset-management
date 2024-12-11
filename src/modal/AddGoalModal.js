@@ -120,7 +120,6 @@ const AddGoalModal = ({modalHandler}) => {
             alert("등록 실패!")
         }
     }
-// 렌더링
 
     return ReactDOM.createPortal(
         <div

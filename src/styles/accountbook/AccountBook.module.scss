@@ -70,6 +70,10 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    border-radius: 12px;
+    border: 1px solid #d9eaf7; /* 파란색 계열의 경계선 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
 
     .week {
       display: flex;
@@ -221,6 +225,8 @@
       overflow-y: auto;
       left: 3%;
       max-height: 130px;
+      opacity: 0.8;
+      font-weight: 600;
 
       .category {
         border-bottom: 1px solid #e1e1e1;

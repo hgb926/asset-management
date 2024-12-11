@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import GoalHeader from "./GoalHeader";
-import GoalChart from "./GoalChart";
+import GoalAnalysis from "./GoalAnalysis";
 import GoalDescription from "./GoalDescription";
 import styles from '../../../styles/goal/Goal.module.scss';
 import { useSelector } from "react-redux";
@@ -11,6 +11,7 @@ const Goal = () => {
 
     const userData = useSelector(state => state.userInfo.userData);
     const goalList = userData.goalList;
+
 
     const [currentIndex, setCurrentIndex] = useState(0); // 현재 목표의 인덱스를 저.
 
@@ -28,7 +29,7 @@ const Goal = () => {
             );
         }
     };
-    // 이제 렌더링
+
 
     return (
         <>
@@ -42,7 +43,7 @@ const Goal = () => {
                         />
                         <div className={styles.middleWrap}>
                             <GoalDescription currentGoal={currentGoal}/>
-                            <GoalChart currentGoal={currentGoal}/>
+                            <GoalAnalysis currentGoal={currentGoal}/>
                         </div>
                     </div>
                 ) : <HaveNotGoal/>

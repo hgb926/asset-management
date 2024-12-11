@@ -21,10 +21,10 @@
 }
 
 .chartWrap {
-  //background: white;
-  //padding: 2rem;
-  border-radius: 10px;
-  //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 800px;
+  border-radius: 12px;
+  border: 1px solid #d9eaf7; /* 파란색 계열의 경계선 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 475px;
 }

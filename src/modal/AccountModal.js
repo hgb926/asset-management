@@ -14,15 +14,19 @@ const AccountModal = ({selectedDate, incomeList, expenseList, onClose}) => {
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.userInfo.userData);
 
-    const [month, day] = selectedDate.split("-");
-    const displayDate = `${month}월 ${day}일`;
+    console.log(selectedDate)
+    const [year, month, day] = selectedDate.split("-");
+    const displayDate = `${year}년 ${month}월 ${day}일`;
 
-    const filteredIncome = incomeList?.filter((item) => item.incomeAt.split("T")[0] === selectedDate) || [];
-    const filteredExpense = expenseList?.filter((item) => item.expenseAt.split("T")[0] === selectedDate) || [];
+    const filteredIncome =
+        incomeList?.filter((item) => item.incomeAt && typeof item.incomeAt === "string" && item.incomeAt.split("T")[0] === selectedDate) || [];
+
+    const filteredExpense =
+        expenseList?.filter((item) => item.expenseAt && typeof item.expenseAt === "string" && item.expenseAt.split("T")[0] === selectedDate) || [];
 
     const combinedList = [
-        ...filteredIncome.map((item) => ({...item, type: "income"})),
-        ...filteredExpense.map((item) => ({...item, type: "expense"})),
+        ...filteredIncome.map((item) => ({ ...item, type: "income" })),
+        ...filteredExpense.map((item) => ({ ...item, type: "expense" })),
     ].sort(
         (a, b) =>
             new Date(b.type === "income" ? b.incomeAt : b.expenseAt) -

@@ -8,6 +8,7 @@ const Calendar = ({ currentDate }) => {
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
     const [hoveredDate, setHoveredDate] = useState(null)
+    let mostExpenseDay;
 
     const userData = useSelector((state) => state.userInfo.userData);
 
@@ -44,7 +45,6 @@ const Calendar = ({ currentDate }) => {
         if (currentWeek.length > 0) {
             weeks.push(currentWeek);
         }
-
         return weeks;
     };
 
@@ -84,14 +84,16 @@ const Calendar = ({ currentDate }) => {
                     <div key={index} className={styles.week}>
                         {week.map((date, idx) => {
                             const dateStr = formatDateToLocal(date); // 로컬 시간 기준으로 날짜 포맷팅
-                            const dailyIncome = (userData.incomeList || []) // undefined일 경우 빈 배열로 처리
+                            const dailyIncome = (userData.incomeList || [])
+                                .filter((item) => item.incomeAt && typeof item.incomeAt === "string") // incomeAt 유효성 검사
                                 .filter((item) => item.incomeAt.split("T")[0] === dateStr)
                                 .reduce((acc, curr) => acc + curr.amount, 0);
 
-
                             const dailyExpense = (userData.expenseList || [])
+                                .filter((item) => item.expenseAt && typeof item.expenseAt === "string") // expenseAt 유효성 검사
                                 .filter((item) => item.expenseAt.split("T")[0] === dateStr)
                                 .reduce((acc, curr) => acc + curr.amount, 0);
+
 
                             return (
                                 <div

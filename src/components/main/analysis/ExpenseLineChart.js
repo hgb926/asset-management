@@ -96,7 +96,7 @@ const ExpenseLineChart = () => {
                     legendOffset: -40,
                     legendPosition: 'top',
                 }}
-                pointSize={6}
+                pointSize={5}
                 pointColor="white"
                 pointBorderWidth={2}
                 pointBorderColor={{ from: 'serieColor' }}

@@ -8,6 +8,7 @@ const Calendar = ({ currentDate }) => {
     const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
     const [modalOpen, setModalOpen] = useState(false); // 모달 열림 여부
     const [hoveredDate, setHoveredDate] = useState(null)
+    let mostExpenseDay;
 
     const userData = useSelector((state) => state.userInfo.userData);
 
@@ -44,7 +45,6 @@ const Calendar = ({ currentDate }) => {
         if (currentWeek.length > 0) {
             weeks.push(currentWeek);
         }
-
         return weeks;
     };
 
@@ -93,6 +93,7 @@ const Calendar = ({ currentDate }) => {
                                 .filter((item) => item.expenseAt && typeof item.expenseAt === "string") // expenseAt 유효성 검사
                                 .filter((item) => item.expenseAt.split("T")[0] === dateStr)
                                 .reduce((acc, curr) => acc + curr.amount, 0);
+
 
                             return (
                                 <div

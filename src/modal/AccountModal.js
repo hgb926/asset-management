@@ -14,8 +14,9 @@ const AccountModal = ({selectedDate, incomeList, expenseList, onClose}) => {
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.userInfo.userData);
 
-    const [month, day] = selectedDate.split("-");
-    const displayDate = `${month}월 ${day}일`;
+    console.log(selectedDate)
+    const [year, month, day] = selectedDate.split("-");
+    const displayDate = `${year}년 ${month}월 ${day}일`;
 
     const filteredIncome =
         incomeList?.filter((item) => item.incomeAt && typeof item.incomeAt === "string" && item.incomeAt.split("T")[0] === selectedDate) || [];

@@ -91,11 +91,11 @@ const AccountBook = () => {
     }, [userData.currentMoney, userData.incomeList, userData.expenseList]);
 
     const temp = [];
-    if (selectedType === "income") {
+    if (selectedType === "income" && userData?.incomeList) {
         for (let i = 0; i < userData.incomeList.length; i++) {
             temp.push(userData.incomeList[i].category)
         }
-    } else {
+    } else if (selectedType === "expense" && userData?.expenseList) {
         for (let i = 0; i < userData.expenseList.length; i++) {
             temp.push(userData.expenseList[i].category)
         }

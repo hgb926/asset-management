@@ -6,8 +6,11 @@ import { useSelector } from "react-redux";
 const IncomeReport = () => {
     const userData = useSelector((state) => state.userInfo.userData);
 
-    // 데이터 변환: 카테고리별로 그룹화
-    const pieData = userData.incomeList.reduce((acc, item) => {
+    // 방어 코드: userData 또는 incomeList가 없을 때 기본값 설정
+    const incomeList = userData?.incomeList || [];
+
+    // 데이터 변환: 카테고리별 그룹화
+    const pieData = incomeList.reduce((acc, item) => {
         const existingCategory = acc.find((data) => data.id === item.category);
         if (existingCategory) {
             existingCategory.value += item.amount;

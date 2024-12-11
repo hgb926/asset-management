@@ -6,7 +6,7 @@
   gap: 15px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 50%;
-
+  margin-right: 40px;
 }
 
 .goalCategory {
@@ -20,10 +20,12 @@
 .goalDescription {
   text-align: center;
   font-size: 1.1rem;
-  color: #333;
+  color: #3137A8;
   line-height: 1.6;
   margin-bottom: 15px;
+  font-weight: 600;
 }
+
 
 .goalDetails {
   display: flex;
@@ -36,6 +38,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #3137A8; /* 파란색 강조 */
 }
 
 .goalDetails strong {
@@ -44,9 +47,16 @@
 }
 
 .amountHighlight {
+  font-weight: 500;
+  color: #3137A8; /* 파란색 강조 */
+  font-size: 1.1rem;
+}
+
+.bold {
   font-weight: bold;
   color: #3137A8; /* 파란색 강조 */
   font-size: 1.1rem;
+
 }
 
 .progressHighlight {
@@ -65,4 +75,9 @@
   color: #e53935; /* 빨간색 */
   font-weight: bold;
   font-size: 1.2rem;
+}
+
+.emotion {
+  font-size: 1.4rem;
+  color: black;
 }

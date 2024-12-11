@@ -22,7 +22,7 @@ const GoalAnalysis = ({ currentGoal }) => {
         {
             id: '현재 사용 금액',
             value: currentGoal.influencedMoney,
-            color: currentGoal.type === "expense" ? '#CAE0FD' : '#E74B3C',
+            color: currentGoal.type === "expense" ? '#2688f6' : '#E74B3C',
         },
         {
             id: '남은 목표 금액',

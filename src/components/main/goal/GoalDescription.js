@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from '../../../styles/goal/GoalDescription.module.scss';
+import {IoMdHappy} from "react-icons/io";
+import {RiEmotionHappyLine} from "react-icons/ri";
 
-const GoalDescription = ({ currentGoal }) => {
+const GoalDescription = ({currentGoal}) => {
     const formattedStartDate = new Date(currentGoal.startDate).toLocaleDateString('ko-KR');
     const formattedEndDate = new Date(currentGoal.endDate).toLocaleDateString('ko-KR');
     const today = new Date();
@@ -29,23 +31,34 @@ const GoalDescription = ({ currentGoal }) => {
                         {currentGoal.influencedMoney.toLocaleString('ko-KR')}원
                     </span>
                 </p>
-                {/* 추가 메시지 */}
-                <div className={styles.tipsContainer}>
-                    <p className={styles.tips}>
-                        목표까지 하루 평균 필요한 금액: <strong>{dailyRequired.toLocaleString('ko-KR')}원</strong>
-                    </p>
-                </div>
                 <p>
-                    <strong>현재 진행률:</strong>
-                    <span className={styles.progressHighlight}>{currentGoal.currentProgress}%</span>
+                    <strong>목표까지 하루 평균 지출 금액:</strong>
+                    <span className={styles.bold}>{dailyRequired.toLocaleString('ko-KR')}원</span>
                 </p>
+
+                {/*<p>*/}
+                {/*    <strong>현재 진행률:</strong>*/}
+                {/*    <span className={styles.progressHighlight}>{currentGoal.currentProgress}%</span>*/}
+                {/*</p>*/}
                 <p>
                     <strong>기간:</strong> {formattedStartDate} ~ {formattedEndDate}
                 </p>
                 <p className={styles.motivation}>
                     {currentGoal.currentProgress < 50
-                        ? '목표를 향해 꾸준히 나아가고 있어요! 조금만 더 힘내세요!'
-                        : '목표가 눈앞에 있습니다! 계속 달려봐요!'}
+                        ?
+                        <>
+                            <div>목표를 향해 꾸준히 나아가고 있어요!
+                                <br/>조금만 더 힘내세요!
+                            </div>
+                            <IoMdHappy className={styles.emotion}/>
+                        </>
+
+                        : <>
+                            <div>목표가 눈앞에 있습니다! 계속 달려봐요!
+                            </div>
+                            <RiEmotionHappyLine className={styles.emotion}/>
+                        </>
+                    }
                 </p>
             </div>
         </div>

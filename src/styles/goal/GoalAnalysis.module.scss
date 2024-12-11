@@ -3,22 +3,22 @@
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  //background: #f9f9f9;
+  text-align: center;
   border-radius: 10px;
-  //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
+  border-left: 1px solid #D9EAF7;
+  width: 50%;
 }
 
 .progressContainer {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .progressTitle {
   font-size: 1.2rem;
   font-weight: bold;
   color: #3137A8;
+  margin-top: 0;
 }
 
 .progressBar {
@@ -44,21 +44,28 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  height: 292px;
 }
 
 .chartTitle {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: #3137A8;
+  margin-bottom: 0;
 }
 
 .chart {
-  height: 250px;
+  width: 100%; /* 원하는 너비 설정 */
+  height: 216px; /* 원하는 높이 설정 */
   background: #ffffff;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  & > div {
+    width: 100%;
+    margin: 0 auto;
+  }
 }
 
 .tipsContainer {

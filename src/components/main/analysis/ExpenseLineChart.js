@@ -68,7 +68,7 @@ const ExpenseLineChart = () => {
     ];
 
     return (
-        <div style={{ height: '450px', width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
+        <div style={{ height: '450px', width: '100%'}}>
             <ResponsiveLine
                 data={transformedData}
                 margin={{ top: 50, right: 200, bottom: 100, left: 100 }}
@@ -107,9 +107,8 @@ const ExpenseLineChart = () => {
                             style={{
                                 background: 'white',
                                 padding: '10px',
-                                border: '1px solid #ccc',
-                                borderRadius: '4px',
-                                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                                // border: '1px solid #ccc',
+                                // borderRadius: '4px',
                             }}
                         >
                             <strong>{formattedDate}</strong> ({dayOfWeek})

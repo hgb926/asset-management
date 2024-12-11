@@ -67,13 +67,6 @@ const ExpenseLineChart = () => {
         },
     ];
 
-    // 요일 가져오기 함수
-    const getDayOfWeek = (dateString) => {
-        const date = new Date(dateString);
-        const days = ['일', '월', '화', '수', '목', '금', '토'];
-        return days[date.getDay()];
-    };
-
     return (
         <div style={{ height: '450px', width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <ResponsiveLine
@@ -104,11 +97,10 @@ const ExpenseLineChart = () => {
                 useMesh={true}
                 colors={{ scheme: 'tableau10' }}
                 tooltip={({ point }) => {
-                    // point.data.xFormatted 대신 point.data.x를 명확히 Date 객체로 변환
                     const date = new Date(point.data.x);
                     const days = ['일', '월', '화', '수', '목', '금', '토'];
-                    const formattedDate = date.toISOString().split('T')[0]; // YYYY-MM-DD 형식
-                    const dayOfWeek = days[date.getDay()]; // 요일 계산
+                    const formattedDate = date.toISOString().split('T')[0];
+                    const dayOfWeek = days[date.getDay()];
 
                     return (
                         <div

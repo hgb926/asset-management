@@ -1,0 +1,79 @@
+.analysisWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.progressContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.progressBar {
+  height: 20px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.5s ease;
+}
+
+.progressText {
+  font-size: 1rem;
+  color: #333;
+}
+
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chartTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff5722;
+}
+
+.chart {
+  height: 250px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tipsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tips {
+  font-size: 1rem;
+  color: #333;
+}
+
+.motivation {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #4caf50;
+}

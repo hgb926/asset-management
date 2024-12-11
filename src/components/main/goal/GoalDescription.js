@@ -4,6 +4,13 @@ import styles from '../../../styles/goal/GoalDescription.module.scss';
 const GoalDescription = ({ currentGoal }) => {
     const formattedStartDate = new Date(currentGoal.startDate).toLocaleDateString('ko-KR');
     const formattedEndDate = new Date(currentGoal.endDate).toLocaleDateString('ko-KR');
+    const today = new Date();
+    const endDate = new Date(currentGoal.endDate);
+    const remainingDays = Math.max(0, Math.ceil((endDate - today) / (1000 * 60 * 60 * 24)));
+    const dailyRequired = Math.max(
+        0,
+        ((currentGoal.targetAmount - currentGoal.influencedMoney) / remainingDays).toFixed(0)
+    );
 
     return (
         <div className={styles.desWrap}>
@@ -22,6 +29,12 @@ const GoalDescription = ({ currentGoal }) => {
                         {currentGoal.influencedMoney.toLocaleString('ko-KR')}원
                     </span>
                 </p>
+                {/* 추가 메시지 */}
+                <div className={styles.tipsContainer}>
+                    <p className={styles.tips}>
+                        목표까지 하루 평균 필요한 금액: <strong>{dailyRequired.toLocaleString('ko-KR')}원</strong>
+                    </p>
+                </div>
                 <p>
                     <strong>현재 진행률:</strong>
                     <span className={styles.progressHighlight}>{currentGoal.currentProgress}%</span>
@@ -29,8 +42,10 @@ const GoalDescription = ({ currentGoal }) => {
                 <p>
                     <strong>기간:</strong> {formattedStartDate} ~ {formattedEndDate}
                 </p>
-                <p className={currentGoal.achieved ? styles.achieved : styles.notAchieved}>
-                    {currentGoal.achieved ? "달성 완료 🎉" : "달성 중..."}
+                <p className={styles.motivation}>
+                    {currentGoal.currentProgress < 50
+                        ? '목표를 향해 꾸준히 나아가고 있어요! 조금만 더 힘내세요!'
+                        : '목표가 눈앞에 있습니다! 계속 달려봐요!'}
                 </p>
             </div>
         </div>

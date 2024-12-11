@@ -3,9 +3,10 @@
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  background: #f9f9f9;
+  //background: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  //box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
 }
 
 .progressContainer {
@@ -17,7 +18,7 @@
 .progressTitle {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #4caf50;
+  color: #3137A8;
 }
 
 .progressBar {
@@ -30,7 +31,7 @@
 
 .progress {
   height: 100%;
-  background: #4caf50;
+  background: #3137A8;
   transition: width 0.5s ease;
 }
 
@@ -48,14 +49,13 @@
 .chartTitle {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #ff5722;
+  color: #3137A8;
 }
 
 .chart {
   height: 250px;
   background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,6 +63,7 @@
 
 .tipsContainer {
   display: flex;
+
   flex-direction: column;
   gap: 8px;
 }

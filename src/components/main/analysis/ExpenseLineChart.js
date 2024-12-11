@@ -67,20 +67,26 @@ const ExpenseLineChart = () => {
         },
     ];
 
+    // 요일 가져오기 함수
+    const getDayOfWeek = (dateString) => {
+        const date = new Date(dateString);
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        return days[date.getDay()];
+    };
+
     return (
-        <div style={{height: '450px', width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'}}>
+        <div style={{ height: '450px', width: '100%', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}>
             <ResponsiveLine
                 data={transformedData}
-                margin={{top: 50, right: 200, bottom: 100, left: 100}}
-                xScale={{type: 'time', format: '%Y-%m-%d', precision: 'day'}}
-                yScale={{type: 'linear', min: 0, max: 'auto', stacked: false}}
+                margin={{ top: 50, right: 200, bottom: 100, left: 100 }}
+                xScale={{ type: 'time', format: '%Y-%m-%d', precision: 'day' }}
+                yScale={{ type: 'linear', min: 0, max: 'auto', stacked: false }}
                 axisBottom={{
-                    format: '%m-%d',
-                    tickValues: 'every 1 days',
+                    format: '%Y-%m-%d',
+                    tickValues: 'every 1 weeks', // 일주일 단위
                     legend: '날짜',
                     legendOffset: 36,
                     legendPosition: 'middle',
-                    legendItemHeight: "28"
                 }}
                 axisLeft={{
                     tickSize: 5,
@@ -89,15 +95,37 @@ const ExpenseLineChart = () => {
                     legend: '금액 (원)',
                     legendOffset: -40,
                     legendPosition: 'top',
-
                 }}
                 pointSize={6}
                 pointColor="white"
                 pointBorderWidth={2}
-                pointBorderColor={{from: 'serieColor'}}
+                pointBorderColor={{ from: 'serieColor' }}
                 enableSlices="x"
                 useMesh={true}
-                colors={{ scheme: "tableau10"}}
+                colors={{ scheme: 'tableau10' }}
+                tooltip={({ point }) => {
+                    // point.data.xFormatted 대신 point.data.x를 명확히 Date 객체로 변환
+                    const date = new Date(point.data.x);
+                    const days = ['일', '월', '화', '수', '목', '금', '토'];
+                    const formattedDate = date.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+                    const dayOfWeek = days[date.getDay()]; // 요일 계산
+
+                    return (
+                        <div
+                            style={{
+                                background: 'white',
+                                padding: '10px',
+                                border: '1px solid #ccc',
+                                borderRadius: '4px',
+                                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                            }}
+                        >
+                            <strong>{formattedDate}</strong> ({dayOfWeek})
+                            <br />
+                            <strong>{point.serieId}:</strong> {point.data.y.toLocaleString('ko-KR')} 원
+                        </div>
+                    );
+                }}
 
                 legends={[
                     {

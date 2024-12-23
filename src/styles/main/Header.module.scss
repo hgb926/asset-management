@@ -40,10 +40,11 @@
       scale: 1.1;
     }
 
-    .settings {
+    .notice {
       font-size: 1.4rem;
+      font-weight: 300;
     }
-    .settings:hover {
+    .notice:hover {
       font-weight: bold;
       scale: 1.1;
       cursor: pointer;

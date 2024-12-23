@@ -38,7 +38,7 @@ const Header = () => {
                             className={styles.notice}/>
                 </div>
             </div>
-            {modalOpen ? <NoticeModal/> : ""}
+            {modalOpen ? <NoticeModal onClose={() => setModalOpen(false)}/> : ""}
         </>
     );
 };

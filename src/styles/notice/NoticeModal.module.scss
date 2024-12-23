@@ -1,10 +1,22 @@
-.modalWrap {
-  width: 420px;
-  height: calc(100vh - 120px);
-  border: 1px solid black;
-  border-radius: 32px;
-  position: absolute;
-  background: white;
-  top: 120px;
-  right: 0;
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .modalWrap {
+    width: 420px;
+    height: calc(100vh - 120px);
+    border: 1px solid black;
+    border-radius: 32px;
+    position: absolute;
+    background: white;
+    top: 120px;
+    right: 0;
+  }
 }

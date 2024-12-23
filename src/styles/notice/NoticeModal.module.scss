@@ -1,0 +1,10 @@
+.modalWrap {
+  width: 420px;
+  height: calc(100vh - 120px);
+  border: 1px solid black;
+  border-radius: 32px;
+  position: absolute;
+  background: white;
+  top: 120px;
+  right: 0;
+}

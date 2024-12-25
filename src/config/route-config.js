@@ -5,6 +5,7 @@ import LoginForm from "../components/auth/login/LoginForm.js";
 import Analysis from "../components/main/analysis/Analysis.js";
 import Goal from "../components/main/goal/Goal";
 import Challenge from "../components/main/challenge/Challenge";
+import WriteForm from "../components/main/challenge/WriteForm";
 
 
 export const router = createBrowserRouter([
@@ -30,7 +31,13 @@ export const router = createBrowserRouter([
             },
             {
                 path: "challenge",
-                element: <Challenge/>
+                element: <Challenge/>,
+                // children: [
+                //     {
+                //         path: "write",
+                //         element: <WriteForm/>
+                //     }
+                // ]
             },
         ]
     }

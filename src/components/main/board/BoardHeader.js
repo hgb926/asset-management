@@ -18,15 +18,15 @@ const BoardHeader = () => {
                             <option value="oldest">오래된순</option>
                         </select>
                     </div>
-                    <div className={styles.categorySort}>
-                        <p className={styles.text}>타입</p>
-                        <select className={styles.select}>
-                            <option value="expense">지출</option>
-                            <option value="saving">저축</option>
-                        </select>
-                    </div>
                 </div>
                 <div className={styles.searchSection}>
+                    <div className={styles.categorySort}>
+                        <select className={styles.select}>
+                            <option value="title">제목</option>
+                            <option value="titleAndContent">제목+내용</option>
+                            <option value="author">작성자</option>
+                        </select>
+                    </div>
                     <input type="text" className={styles.searchInput} placeholder="검색어를 입력하세요"/>
                     <span className={styles.search}>검색</span>
                 </div>

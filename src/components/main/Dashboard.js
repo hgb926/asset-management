@@ -6,10 +6,10 @@ import {Link, useLocation} from "react-router-dom";
 const Dashboard = () => {
 
     const userData = useSelector(state => state.userInfo.userData);
-    const location = useLocation();
+    const {pathname} = useLocation();
 
     const getActiveClass = (targetLocation) => {
-        return location.pathname === targetLocation ? styles.active : ""; // 현재 상태와 비교하여 active 클래스 추가
+        return pathname === targetLocation ? styles.active : ""; // 현재 상태와 비교하여 active 클래스 추가
     };
 
 

@@ -1,0 +1,126 @@
+.boardWrap {
+
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 16px;
+
+  text-align: center;
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .boardList {
+    width: 100%;
+    margin-top: 10px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      background: #f4f6fa;
+      border-bottom: 2px solid #e2e6ea;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 10px 0;
+      color: #444;
+      text-align: center;
+
+      span {
+        flex: 1;
+        text-align: center;
+      }
+    }
+
+    .boardItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+      font-size: 14px;
+      color: #555;
+
+      &:hover {
+        background: #f9fafb;
+      }
+
+      span {
+        flex: 1;
+        text-align: center;
+      }
+
+      .itemTitle {
+        text-align: left;
+        flex: 2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+
+  .footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .btnWrap {
+      width: 50%;
+      margin: 0 auto;
+      display: flex; // flex 추가
+      gap: 5px;
+      justify-content: center;
+    }
+
+    .pageBtn {
+      background: #9DC6F3;
+      color: #060B83;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #357abd;
+      }
+    }
+  }
+
+}
+
+
+.writeButton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background-color: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #4f46e5;
+    transform: translateY(-3px);
+  }
+}

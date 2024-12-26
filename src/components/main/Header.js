@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styles from '../../styles/main/Header.module.scss'
 import {useDispatch} from "react-redux";
 import {userInfoActions} from "../store/user/UserInfoSlice";
 import {useNavigate} from "react-router-dom";
 import {GoBell} from "react-icons/go";
 import NoticeModal from "./notice/NoticeModal";
+import ReactDOM from "react-dom";
 
 const Header = () => {
 
     const navi = useNavigate();
     const dispatch = useDispatch();
+    const containerRef = useRef();
 
     const [modalOpen, setModalOpen] = useState(false)
 
@@ -23,9 +25,10 @@ const Header = () => {
     }
 
 
+
     return (
         <>
-            <div className={styles.container}>
+            <div className={styles.container} ref={containerRef}>
                 <div className={styles.left}></div>
                 <h1 className={styles.h1}>Asset Management</h1>
                 <div className={styles.right}>

@@ -1,34 +1,55 @@
 .container {
   width: 250px; /* 고정 너비 */
-  background: #cae0fd;
-  flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
-  display: flex;
-  justify-content: center;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+  height: calc(100vh - 40px); /* 화면 높이에서 여백을 고려 */
+  background: #ffffff; /* 흰색 배경 */
+  position: fixed; /* 화면에 고정 */
+  top: 20px; /* 상단 여백 */
+  left: 20px; /* 좌측 여백 */
 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  border-radius: 16px; /* 둥근 테두리 */
+  overflow: hidden; /* 내용이 넘치지 않도록 설정 */
 
   .subContainer {
+    margin-top: 150px;
     width: 100%; /* 가로 채우기 */
     padding: 20px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
+    overflow-y: auto; /* 스크롤 가능 */
+
+    .header {
+      width: 100%;
+      margin-bottom: 20px;
+
+      .showMore {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+    }
 
     .profile {
       text-align: center;
+      margin-bottom: 40px;
 
       .welcome {
         font-size: 1.2rem;
         font-weight: bold;
         color: #3137a8;
+        margin-bottom: 5px;
       }
 
       .greeting {
         font-size: 0.9rem;
         color: #555;
-        margin-bottom: 40px;
       }
     }
 
@@ -37,6 +58,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      .menuTitle {
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #888;
+        text-align: left;
+        width: 80%;
+      }
 
       .menuItem {
         text-decoration: none;
@@ -48,16 +78,18 @@
         cursor: pointer;
         text-align: center;
         width: 80%;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
 
         &:hover {
-          background-color: #a6ccfd;
+          background-color: #e8f0fe;
           color: #1c21ac;
           transform: translateY(-3px);
         }
       }
+
       .active {
-        background-color: #b9d8ff;
+        background-color: #d0e4ff;
+        font-weight: bold;
       }
     }
   }

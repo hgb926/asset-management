@@ -68,7 +68,7 @@ const ExpenseLineChart = () => {
     ];
 
     return (
-        <div style={{ height: '450px', width: '100%'}}>
+        <div style={{ height: '650px', width: '100%'}}>
             <ResponsiveLine
                 data={transformedData}
                 margin={{ top: 50, right: 200, bottom: 100, left: 100 }}

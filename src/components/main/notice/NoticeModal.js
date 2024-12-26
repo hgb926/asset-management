@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from '../../../styles/notice/NoticeModal.module.scss';
 import ReactDOM from "react-dom";
 

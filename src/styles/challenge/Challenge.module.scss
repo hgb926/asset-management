@@ -1,25 +1,6 @@
 .wrap {
-  border: 1px solid black;
-  width: 60%;
-  margin: 70px auto 0;
-  .header {
-    border: 1px solid black;
-    display: flex;
-    justify-content: space-around;
+  width: 85%;
+  margin: 35px auto 0;
+  text-align: center;
 
-    .sortSection {
-      border: 1px solid black;
-      display: flex;
-      justify-content: space-around;
-
-      .dateSort {
-        display: flex;
-        justify-content: space-around;
-      }
-      .categorySort {
-        display: flex;
-        justify-content: space-around;
-      }
-    }
-  }
 }

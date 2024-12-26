@@ -40,10 +40,10 @@ const Dashboard = () => {
                         목표
                     </Link>
                     <Link
-                        to={'/challenge'}
-                        className={`${styles.menuItem} ${getActiveClass("/challenge")}`}
+                        to={'/board'}
+                        className={`${styles.menuItem} ${getActiveClass("/board")}`}
                     >
-                        챌린지
+                        커뮤니티
                     </Link>
                 </nav>
             </div>

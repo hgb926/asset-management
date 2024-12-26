@@ -1,10 +1,14 @@
 import React from 'react';
-import styles from "../../../styles/challenge/ChallengeHeader.module.scss";
+import styles from "../../../styles/board/BoardHeader.module.scss";
 
-const ChallengeHeader = () => {
+const BoardHeader = () => {
     return (
         <>
-            <h1 className={styles.h1}>챌린지 게시판!</h1>
+            <h1 className={styles.h1}>💰 경제/재테크 커뮤니티</h1>
+            <p className={styles.description}>
+                경제 꿀팁을 공유하고 함께 성장해요!<br/>
+
+            </p>
             <div className={styles.header}>
                 <div className={styles.sortSection}>
                     <div className={styles.dateSort}>
@@ -31,4 +35,4 @@ const ChallengeHeader = () => {
     );
 };
 
-export default ChallengeHeader;
+export default BoardHeader;

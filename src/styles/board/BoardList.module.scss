@@ -12,12 +12,6 @@
     margin-bottom: 10px;
   }
 
-  .description {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-
   .boardList {
     width: 100%;
     margin-top: 10px;
@@ -118,6 +112,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
 
   &:hover {
     background-color: #4f46e5;

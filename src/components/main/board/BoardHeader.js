@@ -18,6 +18,14 @@ const BoardHeader = () => {
                             <option value="oldest">오래된순</option>
                         </select>
                     </div>
+                    <div className={styles.categorySort}>
+                        <p className={styles.text}>카테고리</p>
+                        <select className={styles.select}>
+                            <option value="qna">질문</option>
+                            <option value="tip">꿀팁</option>
+                            <option value="info">정보</option>
+                        </select>
+                    </div>
                 </div>
                 <div className={styles.searchSection}>
                     <div className={styles.categorySort}>

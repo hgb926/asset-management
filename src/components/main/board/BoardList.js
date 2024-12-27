@@ -34,6 +34,8 @@ const BoardList = () => {
         fetchBoardList();
     }, []);
 
+
+
     return (
         <>
             <div className={styles.boardWrap}>
@@ -51,7 +53,8 @@ const BoardList = () => {
                         return (
                             <div key={board.id} className={styles.boardItem}>
                                 <span className={styles.itemId}>{board.id}</span>
-                                <span className={styles.itemTitle}>{board.title} <FaRegCommentDots />{board.replyCount}</span>
+                                {/*<span className={styles.itemTitle}>{board.title} <FaRegCommentDots />{board.replyCount}</span>*/}
+                                <span className={styles.itemTitle}>{board.title} ({board.replyCount})</span>
                                 <span className={styles.itemAuthor}>{board.author}</span>
                                 <span className={styles.itemDate}>{formatRelativeTime(diffInMs)}</span>
                                 <span className={styles.itemViewCount}>{board.viewCount}</span>
@@ -72,4 +75,4 @@ const BoardList = () => {
     );
 };
 
-export default BoardList;
+export default  React.memo(BoardList);

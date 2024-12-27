@@ -3,14 +3,16 @@ import styles from "../../../styles/board/BoardDetail.module.scss";
 import { formatRelativeTime } from "../../../util/timeFormater";
 import {useSelector} from "react-redux";
 import {REPLY_URL} from "../../../config/host-config";
+import { addNotice } from '../../../util/noticeUtil'
 
-const ReplySection = ({ boardId, replies }) => {
+const ReplySection = ({ boardId, replies, userId }) => {
 
     const [localReplies, setLocalReplies] = useState(replies);
     const [active, setActive] = useState(false)
     const now = new Date()
     const { id, nickname } = useSelector(state => state.userInfo.userData);
     const contentRef = useRef();
+
 
     useEffect(() => {
         if (replies) {
@@ -45,6 +47,9 @@ const ReplySection = ({ boardId, replies }) => {
 
         // 입력창 비우기
         contentRef.current.value = '';
+
+        const result = addNotice(userId, `${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`);
+        console.log(result)
     }
 
     const activeHandler = () => {

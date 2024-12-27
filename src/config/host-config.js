@@ -23,6 +23,7 @@ const EXPENSE = "/expense"
 const GOAL = "/goal"
 const BOARD = '/board'
 const REPLY = '/reply'
+const NOTICE = '/notice'
 
 // export const BASE_URL = API_BASE_URL;
 export const AUTH_URL = API_BASE_URL + AUTH;
@@ -31,4 +32,5 @@ export const EXPENSE_URL = API_BASE_URL + EXPENSE;
 export const GOAL_URL = API_BASE_URL + GOAL;
 export const BOARD_URL = API_BASE_URL + BOARD;
 export const REPLY_URL = API_BASE_URL + REPLY;
+export const NOTICE_URL = API_BASE_URL + NOTICE;
 // export const ROOM_URL = API_BASE_URL + ROOM;

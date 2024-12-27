@@ -6,6 +6,7 @@ import Analysis from "../components/main/analysis/Analysis.js";
 import Goal from "../components/main/goal/Goal";
 import Board from "../components/main/board/Board";
 import WriteForm from "../components/main/board/WriteForm";
+import BoardDetail from "../components/main/board/BoardDetail";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
                     {
                         path: "write",
                         element: <WriteForm/>
+                    },
+                    {
+                        path: ":id",
+                        element: <BoardDetail/>
                     }
                 ]
             },

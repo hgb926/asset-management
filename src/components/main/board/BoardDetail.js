@@ -1,57 +1,76 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/board/BoardDetail.module.scss';
+import { useParams } from 'react-router-dom';
+import { BOARD_URL } from '../../../config/host-config';
+import { formatRelativeTime } from "../../../util/timeFormater";
 
 const BoardDetail = () => {
-    const data =  {
-        id: 7,
-        title: '재테크 꿀팁 공유합니다!',
-        content: '이번 달에 알게 된 재테크 팁을 공유합니다. 모두 함께 부자 되어봐요!',
-        author: '스윙스',
-        createdAt: '2024-12-27T12:34:57.064472',
-        viewCount: 123,
-        replyCount: 3,
-        replies: [
-            { id: 1, author: 'user1', content: '좋은 정보 감사합니다!', createdAt: '5분 전' },
-            { id: 2, author: 'user2', content: '더 자세히 알고 싶어요!', createdAt: '10분 전' },
-            { id: 3, author: 'user3', content: '재테크 초보인데 도움이 되네요.', createdAt: '30분 전' }
-        ]
+    const [boardData, setBoardData] = useState({ replies: [] }); // 초기값 설정
+    const params = useParams();
+    const boardId = params.id;
+    const now = new Date();
+
+    const getBoardDetail = async () => {
+        try {
+            const response = await fetch(`${BOARD_URL}/${boardId}`);
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch board detail');
+            }
+
+            const data = await response.json();
+            setBoardData(data);
+        } catch (error) {
+            console.error('Error fetching board detail:', error);
+        }
     };
+
+    useEffect(() => {
+        getBoardDetail();
+    }, [boardId]);
 
     return (
         <div className={styles.detailWrap}>
             {/* 게시글 정보 */}
             <div className={styles.header}>
-                <h1 className={styles.title}>{data.title}</h1>
+                <h1 className={styles.title}>{boardData.title || '제목 없음'}</h1>
                 <div className={styles.info}>
-                    <span>작성자: {data.author}</span>
-                    <span>작성일: {data.createdAt}</span>
-                    <span>조회수: {data.viewCount}</span>
+                    <span>작성자: {boardData.author || '알 수 없음'}</span>
+                    <span>{formatRelativeTime( now - new Date(boardData.createdAt)) || '알 수 없음'}</span>
+                    <span>조회수: {boardData.viewCount || 0}</span>
                 </div>
             </div>
 
             {/* 게시글 내용 */}
-            <div className={styles.content}>
-                <p>{data.content}</p>
+            <div className={styles.contentWrap}>
+                <p className={styles.content}>{boardData.content}</p>
             </div>
 
             {/* 댓글 섹션 */}
             <div className={styles.replySection}>
-                <h2>댓글 ({data.replyCount})</h2>
+                <h2>댓글 ({boardData.replyCount || 0})</h2>
                 <div className={styles.replyList}>
-                    {data.replies.map((reply) => (
-                        <div key={reply.id} className={styles.replyItem}>
-                            <div className={styles.replyHeader}>
-                                <span className={styles.replyAuthor}>{reply.author}</span>
-                                <span className={styles.replyDate}>{reply.createdAt}</span>
+                    {boardData.replies && boardData.replies.length > 0 ? (
+                        boardData.replies.map((reply) => (
+                            <div key={reply.id} className={styles.replyItem}>
+                                <div className={styles.replyHeader}>
+                                    <span className={styles.replyAuthor}>{reply.author || '익명'}</span>
+                                    <span className={styles.replyDate}>{reply.createdAt || '알 수 없음'}</span>
+                                </div>
+                                <p className={styles.replyContent}>{reply.content || '내용 없음'}</p>
                             </div>
-                            <p className={styles.replyContent}>{reply.content}</p>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className={styles.noReply}>댓글이 없습니다.</p>
+                    )}
                 </div>
 
                 {/* 댓글 입력 */}
                 <div className={styles.replyInput}>
-                    <textarea placeholder="댓글을 입력하세요" className={styles.inputField}></textarea>
+                    <textarea
+                        placeholder="댓글을 입력하세요"
+                        className={styles.inputField}
+                    ></textarea>
                     <button className={styles.submitButton}>댓글 작성</button>
                 </div>
             </div>

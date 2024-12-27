@@ -54,7 +54,7 @@ const BoardList = () => {
                             <div key={board.id} className={styles.boardItem}>
                                 <span className={styles.itemId}>{board.id}</span>
                                 {/*<span className={styles.itemTitle}>{board.title} <FaRegCommentDots />{board.replyCount}</span>*/}
-                                <span className={styles.itemTitle}>{board.title} ({board.replyCount})</span>
+                                <Link to={`/board/${board.id}`} className={styles.itemTitle}>{board.title} ({board.replyCount})</Link>
                                 <span className={styles.itemAuthor}>{board.author}</span>
                                 <span className={styles.itemDate}>{formatRelativeTime(diffInMs)}</span>
                                 <span className={styles.itemViewCount}>{board.viewCount}</span>

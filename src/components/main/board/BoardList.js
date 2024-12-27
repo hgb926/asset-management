@@ -8,8 +8,7 @@ import { formatRelativeTime }  from '../../../util/timeFormater'
 const BoardList = () => {
 
     const [boardList, setBoardList] = useState([]);
-
-
+    const now = new Date();
 
     const getBoardList = async () => {
         try {
@@ -48,7 +47,7 @@ const BoardList = () => {
                         <span>조회수</span>
                     </div>
                     {boardList.map((board) => {
-                        const diffInMs = new Date() - new Date(board.createdAt);
+                        const diffInMs = now - new Date(board.createdAt);
                         return (
                             <div key={board.id} className={styles.boardItem}>
                                 <span className={styles.itemId}>{board.id}</span>

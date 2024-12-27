@@ -7,6 +7,7 @@ import {REPLY_URL} from "../../../config/host-config";
 const ReplySection = ({ boardId, replies }) => {
 
     const [localReplies, setLocalReplies] = useState(replies);
+    const [active, setActive] = useState(false)
     const now = new Date()
     const { id, nickname } = useSelector(state => state.userInfo.userData);
     const contentRef = useRef();
@@ -46,11 +47,17 @@ const ReplySection = ({ boardId, replies }) => {
         contentRef.current.value = '';
     }
 
+    const activeHandler = () => {
+        if (contentRef.current.value.length > 1) setActive(true)
+        else setActive(false)
+
+    }
+
 
     return (
         <div className={styles.replySection}>
             <h2>댓글 ({localReplies.length || 0})</h2>
-            <div id={"replywrap"} className={styles.replyList}>
+            <div className={styles.replyList}>
                 { localReplies.length > 0 ? (
                     localReplies.map((reply) => (
                         <div key={reply.id} className={styles.replyItem}>
@@ -72,10 +79,11 @@ const ReplySection = ({ boardId, replies }) => {
                         ref={contentRef}
                         placeholder="댓글을 입력하세요"
                         className={styles.inputField}
+                        onChange={activeHandler}
                     ></textarea>
                 <div
                     onClick={replySubmitHandler}
-                    className={styles.submitButton}
+                    className={`${active ? styles.active : styles.noneActive}`}
                 >댓글 작성</div>
             </div>
         </div>

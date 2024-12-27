@@ -121,7 +121,7 @@
         }
       }
 
-      .submitButton {
+      .active {
         align-self: flex-end;
         padding: 8px 16px;
         background: #4f46e5;
@@ -136,6 +136,18 @@
         &:hover {
           background: #3730a3;
         }
+      }
+      .noneActive {
+        background: lightgray;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        align-self: flex-end;
+        padding: 8px 16px;
       }
     }
   }

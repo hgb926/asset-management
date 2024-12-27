@@ -3,6 +3,7 @@ import styles from '../../../styles/board/BoardDetail.module.scss';
 import { useParams } from 'react-router-dom';
 import { BOARD_URL } from '../../../config/host-config';
 import { formatRelativeTime } from "../../../util/timeFormater";
+import ReplySection from "./ReplySection";
 
 const BoardDetail = () => {
     const [boardData, setBoardData] = useState({ replies: [] }); // 초기값 설정
@@ -47,33 +48,9 @@ const BoardDetail = () => {
             </div>
 
             {/* 댓글 섹션 */}
-            <div className={styles.replySection}>
-                <h2>댓글 ({boardData.replyCount || 0})</h2>
-                <div className={styles.replyList}>
-                    {boardData.replies && boardData.replies.length > 0 ? (
-                        boardData.replies.map((reply) => (
-                            <div key={reply.id} className={styles.replyItem}>
-                                <div className={styles.replyHeader}>
-                                    <span className={styles.replyAuthor}>{reply.author || '익명'}</span>
-                                    <span className={styles.replyDate}>{reply.createdAt || '알 수 없음'}</span>
-                                </div>
-                                <p className={styles.replyContent}>{reply.content || '내용 없음'}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p className={styles.noReply}>댓글이 없습니다.</p>
-                    )}
-                </div>
-
-                {/* 댓글 입력 */}
-                <div className={styles.replyInput}>
-                    <textarea
-                        placeholder="댓글을 입력하세요"
-                        className={styles.inputField}
-                    ></textarea>
-                    <button className={styles.submitButton}>댓글 작성</button>
-                </div>
-            </div>
+           <ReplySection
+               replies={boardData.replies}
+           />
         </div>
     );
 };

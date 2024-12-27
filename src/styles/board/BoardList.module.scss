@@ -1,10 +1,9 @@
 .boardWrap {
-
   margin: 20px auto;
   background: #fff;
   border-radius: 16px;
-
   text-align: center;
+  overflow: hidden;
 
   .title {
     font-size: 24px;
@@ -16,64 +15,50 @@
     width: 100%;
     margin-top: 10px;
 
+    .header, .boardItem {
+      display: grid;
+      grid-template-columns: 1fr 3fr 1fr 2fr 1fr; // 비율로 나누기
+      align-items: center;
+      text-align: center;
+      padding: 20px 0;
+    }
+
     .header {
-      display: flex;
-      justify-content: space-between;
       background: #f4f6fa;
       border-bottom: 2px solid #e2e6ea;
       font-size: 14px;
       font-weight: bold;
-      padding: 10px 0;
       color: #444;
-      text-align: center;
-
-      span {
-        flex: 1;
-        text-align: center;
-      }
     }
 
     .boardItem {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #eee;
-      padding: 10px 0;
       font-size: 14px;
       color: #555;
+      border-bottom: 1px solid #eee;
 
       &:hover {
         background: #f9fafb;
       }
 
-      span {
-        flex: 1;
-        text-align: center;
-      }
-
       .itemTitle {
         text-align: left;
-        flex: 2;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        cursor: pointer;
       }
     }
   }
 
-
   .footer {
     margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
     .btnWrap {
-      width: 50%;
-      margin: 0 auto;
-      display: flex; // flex 추가
+      display: flex;
       gap: 5px;
-      justify-content: center;
     }
 
     .pageBtn {
@@ -91,9 +76,7 @@
       }
     }
   }
-
 }
-
 
 .writeButton {
   position: fixed;

@@ -49,6 +49,7 @@ const BoardDetail = () => {
 
             {/* 댓글 섹션 */}
            <ReplySection
+               boardId={boardData.id}
                replies={boardData.replies}
            />
         </div>

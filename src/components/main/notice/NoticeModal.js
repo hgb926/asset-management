@@ -3,13 +3,15 @@ import styles from '../../../styles/notice/NoticeModal.module.scss';
 import ReactDOM from "react-dom";
 import {useSelector} from "react-redux";
 import {NOTICE_URL} from "../../../config/host-config";
-import { formatRelativeTime } from "../../../util/timeFormater";
+import {formatRelativeTime} from "../../../util/timeFormater";
+import {useNavigate} from "react-router-dom";
 
-const NoticeModal = ({ onClose }) => {
+const NoticeModal = ({onClose}) => {
 
     const [noticeList, setNoticeList] = useState([])
     const now = new Date();
-    const { id } = useSelector(state => state.userInfo.userData);
+    const navi = useNavigate();
+    const {id} = useSelector(state => state.userInfo.userData);
 
     const getNoticeList = async () => {
         try {
@@ -24,11 +26,21 @@ const NoticeModal = ({ onClose }) => {
         }
     }
 
-    const clickHandler = async (id) => {
-        await fetch(`${NOTICE_URL}/${id}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" }
-        })
+    const clickHandler = async (id, flag, type, boardId, goalId) => {
+
+        if (!flag) {
+            await fetch(`${NOTICE_URL}/${id}`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"}
+            })
+        }
+        if (type === '커뮤니티') {
+            navi(`/board/${boardId}`)
+        } else if (type === '목표') {
+            navi('/goal')
+        }
+
+        onClose()
     }
 
     useEffect(() => {
@@ -56,16 +68,17 @@ const NoticeModal = ({ onClose }) => {
                     {noticeList.reverse().map((notice) => {
                         const diffInMs = now - new Date(notice.createdAt)
                         return (
-                        <div
-                            onClick={() => clickHandler(notice.id)}
-                            key={notice.id}
-                            className={`${styles.notificationItem} ${!notice.clicked ? styles.read : styles.unread}`}
-                        >
-                            <div className={styles.user}>{notice.user}</div>
-                            <div className={styles.message}>{notice.message}</div>
-                            <div className={styles.date}>{formatRelativeTime(diffInMs)}</div>
-                        </div>
-                    )})}
+                            <div
+                                onClick={() => clickHandler(notice.id, notice.clicked, notice.type, notice.boardId, notice.goalId)}
+                                key={notice.id}
+                                className={`${styles.notificationItem} ${!notice.clicked ? styles.read : styles.unread}`}
+                            >
+                                <div className={styles.user}>{notice.user}</div>
+                                <div className={styles.message}>{notice.message}</div>
+                                <div className={styles.date}>{formatRelativeTime(diffInMs)}</div>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         </div>,

@@ -51,7 +51,7 @@ const BoardDetail = () => {
            <ReplySection
                boardId={boardData.id}
                replies={boardData.replies}
-               userId={boardData.authorId}
+               userId={boardData.authorId} // 작성자 id
            />
         </div>
     );

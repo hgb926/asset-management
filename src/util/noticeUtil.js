@@ -12,7 +12,7 @@ export const addNotice = async (userId, message) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
     });
-    console.log(response)
+
     if (response.ok) {
         return await response.json();
     }

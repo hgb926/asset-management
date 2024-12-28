@@ -57,11 +57,26 @@ const NoticeModal = ({ onClose, getReadStatus }) => {
         onClose();
     };
 
+    const clickAllHandler = async () => {
+        await fetch(`${NOTICE_URL}/all/${id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        setNoticeList(prev =>
+            prev.map(n =>
+                !n.clicked ? { ...n, clicked: true } : n
+            )
+        );
+
+        getReadStatus(false); // 모든 알림이 읽혔음을 전달
+    };
+
     // SSE 연결 및 실시간 알림 수신
     useEffect(() => {
         const fetchNoticeList = async () => {
             const data = await getNoticeList();
-            setNoticeList(data);
+            setNoticeList(data || []);
         };
 
         fetchNoticeList();
@@ -96,6 +111,10 @@ const NoticeModal = ({ onClose, getReadStatus }) => {
                     <button onClick={onClose}>✖️</button>
                 </div>
                 <div className={styles.modalContent}>
+                    <p
+                        className={styles.allRead}
+                        onClick={clickAllHandler}
+                    >모두 읽기</p>
                     {noticeList
                         .slice() // 원본 배열 변경 방지
                         .reverse()

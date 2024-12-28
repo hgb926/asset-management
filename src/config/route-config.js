@@ -8,42 +8,41 @@ import Board from "../components/main/board/Board";
 import WriteForm from "../components/main/board/WriteForm";
 import BoardDetail from "../components/main/board/BoardDetail";
 
-
 export const router = createBrowserRouter([
+    {
+        path: "/login", // localhost:3000/login
+        element: <LoginForm />,
+    },
+    {
+        path: "/signup", // localhost:3000/signup
+        element: <SignUp />,
+    },
     {
         path: "/",
         element: <RootLayout />,
         children: [
             {
-                path: "login", // localhost:3000/login
-                element: <LoginForm />
-            },
-            {
-                path: "signup", // localhost:3000/signup
-                element: <SignUp />
-            },
-            {
                 path: "analysis",
-                element: <Analysis/>
+                element: <Analysis />,
             },
             {
                 path: "goal",
-                element: <Goal/>
+                element: <Goal />,
             },
             {
                 path: "board",
-                element: <Board/>,
+                element: <Board />,
                 children: [
                     {
                         path: "write",
-                        element: <WriteForm/>
+                        element: <WriteForm />,
                     },
                     {
                         path: ":id",
-                        element: <BoardDetail/>
-                    }
-                ]
+                        element: <BoardDetail />,
+                    },
+                ],
             },
-        ]
-    }
+        ],
+    },
 ]);

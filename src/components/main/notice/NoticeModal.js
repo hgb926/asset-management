@@ -3,10 +3,12 @@ import styles from '../../../styles/notice/NoticeModal.module.scss';
 import ReactDOM from "react-dom";
 import {useSelector} from "react-redux";
 import {NOTICE_URL} from "../../../config/host-config";
+import { formatRelativeTime } from "../../../util/timeFormater";
 
 const NoticeModal = ({ onClose }) => {
 
     const [noticeList, setNoticeList] = useState([])
+    const now = new Date();
 
     const { id } = useSelector(state => state.userInfo.userData);
 
@@ -30,7 +32,7 @@ const NoticeModal = ({ onClose }) => {
         }
         fetchNoticeList();
     }, []);
-    console.log(noticeList)
+
 
     return ReactDOM.createPortal(
         <div
@@ -43,16 +45,18 @@ const NoticeModal = ({ onClose }) => {
                     <button onClick={onClose}>✖️</button>
                 </div>
                 <div className={styles.modalContent}>
-                    {noticeList.map((data) => (
+                    {noticeList.reverse().map((notice) => {
+                        const diffInMs = now - new Date(notice.createdAt)
+                        return (
                         <div
-                            key={data.id}
-                            className={`${styles.notificationItem} ${!data.isClicked ? styles.read : styles.unread}`}
+                            key={notice.id}
+                            className={`${styles.notificationItem} ${!notice.isClicked ? styles.read : styles.unread}`}
                         >
-                            <div className={styles.user}>{data.user}</div>
-                            <div className={styles.message}>{data.message}</div>
-                            <div className={styles.date}>{data.createdAt}</div>
+                            <div className={styles.user}>{notice.user}</div>
+                            <div className={styles.message}>{notice.message}</div>
+                            <div className={styles.date}>{formatRelativeTime(diffInMs)}</div>
                         </div>
-                    ))}
+                    )})}
                 </div>
             </div>
         </div>,

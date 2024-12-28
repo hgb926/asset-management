@@ -79,6 +79,7 @@
     .week {
       display: flex;
       justify-content: space-between;
+      margin-bottom: 20px;
 
       span {
         width: calc(100% / 7 - 2px);

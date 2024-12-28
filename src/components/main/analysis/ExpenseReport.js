@@ -1,6 +1,7 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { useSelector } from "react-redux";
+import styles from "../../../styles/report/Report.module.scss";
 
 const ExpenseReport = () => {
     const userData = useSelector((state) => state.userInfo.userData);
@@ -26,6 +27,9 @@ const ExpenseReport = () => {
     const limitedData = pieData.slice(0, 4);
 
     return (
+        <>
+            {
+                expenseList.length ? (
         <div style={{ height: 240 }}>
             <ResponsivePie
                 data={limitedData}
@@ -75,7 +79,10 @@ const ExpenseReport = () => {
                     },
                 ]}
             />
-        </div>
+        </div>)
+                    :
+                    <h2 className={styles.none}>아직 그래프를 활성화할 지출이 없습니다.</h2>
+            }</>
     );
 };
 

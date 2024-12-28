@@ -1,88 +1,114 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/notice/NoticeModal.module.scss';
-import ReactDOM from "react-dom";
-import {useSelector} from "react-redux";
-import {NOTICE_URL} from "../../../config/host-config";
-import {formatRelativeTime} from "../../../util/timeFormater";
-import {useNavigate} from "react-router-dom";
+import ReactDOM from 'react-dom';
+import { useSelector } from 'react-redux';
+import {NOTICE_URL, SSE_URL} from '../../../config/host-config';
+import { formatRelativeTime } from '../../../util/timeFormater';
+import { useNavigate } from 'react-router-dom';
 
-const NoticeModal = ({onClose}) => {
 
-    const [noticeList, setNoticeList] = useState([])
+const NoticeModal = ({ onClose }) => {
+    const [noticeList, setNoticeList] = useState([]);
     const now = new Date();
     const navi = useNavigate();
-    const {id} = useSelector(state => state.userInfo.userData);
+    const { id } = useSelector(state => state.userInfo.userData);
 
+    // 알림 목록 가져오기
     const getNoticeList = async () => {
         try {
-            const response = await fetch(`${NOTICE_URL}/${id}`)
+            const response = await fetch(`${NOTICE_URL}/${id}`);
 
             if (!response.ok) {
-                throw new Error("Failed to fetch notice");
+                throw new Error('Failed to fetch notice');
             }
             return await response.json();
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-    }
+    };
 
-    const clickHandler = async (id, flag, type, boardId, goalId) => {
-
-        if (!flag) {
-            await fetch(`${NOTICE_URL}/${id}`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"}
-            })
+    // 알림 클릭 이벤트
+    const clickHandler = async (noticeId, clicked, type, boardId, goalId) => {
+        if (!clicked) {
+            await fetch(`${NOTICE_URL}/${noticeId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
         }
+
         if (type === '커뮤니티') {
-            navi(`/board/${boardId}`)
+            navi(`/board/${boardId}`);
         } else if (type === '목표') {
-            navi('/goal')
+            navi('/goal');
         }
 
-        onClose()
-    }
+        onClose();
+    };
 
+    // SSE 연결 및 실시간 알림 수신
     useEffect(() => {
         const fetchNoticeList = async () => {
-            const data = await getNoticeList()
+            const data = await getNoticeList();
             setNoticeList(data);
-        }
+        };
+
         fetchNoticeList();
-    }, []);
 
-    console.log(noticeList)
+        // SSE 연결
+        const eventSource = new EventSource(`${SSE_URL}/connect/${id}`);
 
+        eventSource.addEventListener('notice', (e) => {
+            try {
+                const newNotice = JSON.parse(e.data); // JSON 파싱
+                setNoticeList(prev => [...prev, newNotice]);
+            } catch (parseError) {
+                console.error("JSON Parsing Error:", parseError, e.data);
+            }
+        });
+
+        eventSource.onerror = (e) => {
+            console.error('SSE Error:', e);
+            eventSource.close();
+        };
+
+        return () => {
+            eventSource.close();
+        };
+    }, [id]);
 
     return ReactDOM.createPortal(
-        <div
-            className={styles.modalOverlay}
-            onClick={() => onClose()}
-        >
+        <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalWrap} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.modalHeader}>
                     <h2>알림</h2>
                     <button onClick={onClose}>✖️</button>
                 </div>
                 <div className={styles.modalContent}>
-                    {noticeList.reverse().map((notice) => {
-                        const diffInMs = now - new Date(notice.createdAt)
-                        return (
-                            <div
-                                onClick={() => clickHandler(notice.id, notice.clicked, notice.type, notice.boardId, notice.goalId)}
-                                key={notice.id}
-                                className={`${styles.notificationItem} ${!notice.clicked ? styles.read : styles.unread}`}
-                            >
-                                <div className={styles.user}>{notice.user}</div>
-                                <div className={styles.message}>{notice.message}</div>
-                                <div className={styles.date}>{formatRelativeTime(diffInMs)}</div>
-                            </div>
-                        )
-                    })}
+                    {noticeList
+                        .slice() // 원본 배열 변경 방지
+                        .reverse()
+                        .map((notice) => {
+                            const diffInMs = now - new Date(notice.createdAt);
+                            return (
+                                <div
+                                    onClick={() =>
+                                        clickHandler(notice.id, notice.clicked, notice.type, notice.boardId, notice.goalId)
+                                    }
+                                    key={notice.id}
+                                    className={`${styles.notificationItem} ${
+                                        !notice.clicked ? styles.read : styles.unread
+                                    }`}
+                                >
+                                    <div className={styles.user}>{notice.user || '시스템 알림'}</div>
+                                    <div className={styles.message}>{notice.message}</div>
+                                    <div className={styles.date}>{formatRelativeTime(diffInMs)}</div>
+                                </div>
+                            );
+                        })}
                 </div>
             </div>
         </div>,
-        document.getElementById("modal-root")
+        document.getElementById('modal-root')
     );
 };
 

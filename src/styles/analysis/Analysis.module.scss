@@ -4,7 +4,6 @@
   align-items: center;
   //padding: 2rem;
   //background: #f7faff;
-  min-height: 70vh;
 }
 
 .header {
@@ -14,6 +13,7 @@
     font-size: 2rem;
     color: #31337a;
   }
+
   p {
     font-size: 1rem;
     color: #4a4a6a;
@@ -27,4 +27,42 @@
   border: 1px solid #d9eaf7; /* 파란색 계열의 경계선 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 650px;
+}
+
+
+.noneWrap {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+
+
+  .none {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #3137a8;
+  }
+
+  .link {
+    padding: 10px 20px;
+    border: 2px solid #3137a8;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3137a8;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #3137a8;
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+  }
+
 }

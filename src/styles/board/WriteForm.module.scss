@@ -1,0 +1,111 @@
+.writeFormWrap {
+  width: 800px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #444;
+      }
+
+      .input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+
+        &:focus {
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 4px rgba(99, 102, 241, 0.3);
+        }
+      }
+
+      .select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        background: #fff;
+
+        &:focus {
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 4px rgba(99, 102, 241, 0.3);
+        }
+      }
+
+      .textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        height: 200px;
+        resize: none;
+
+        &:focus {
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 4px rgba(99, 102, 241, 0.3);
+        }
+      }
+    }
+
+    .buttonGroup {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      cursor: pointer;
+
+      .submitBtn {
+        background: #6466F1;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: #3336f3;
+        }
+      }
+
+      .cancelBtn {
+        background: #ccc;
+        color: #444;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        text-decoration: none;
+
+        &:hover {
+          background: #bbb;
+        }
+      }
+    }
+  }
+}

@@ -12,10 +12,20 @@ const BoardHeader = () => {
             <div className={styles.header}>
                 <div className={styles.sortSection}>
                     <div className={styles.dateSort}>
-                        <p className={styles.text}>날짜</p>
+                        <p className={styles.text}>정렬</p>
                         <select className={styles.select}>
                             <option value="latest">최신순</option>
                             <option value="oldest">오래된순</option>
+                            <option value="reply">댓글 많은 순</option>
+                            <option value="viewCount">조회수 많은 순</option>
+                        </select>
+                    </div>
+                    <div className={styles.categorySort}>
+                        <p className={styles.text}>카테고리</p>
+                        <select className={styles.select}>
+                            <option value="qna">질문</option>
+                            <option value="tip">꿀팁</option>
+                            <option value="info">정보</option>
                         </select>
                     </div>
                 </div>

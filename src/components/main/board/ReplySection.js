@@ -29,17 +29,17 @@ const ReplySection = ({ boardId, replies, userId }) => {
             boardId,
             content
         }
+        await fetch(`${REPLY_URL}`, {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload),
+        })
         const newReply = {
             id: Date.now(), // 임시 ID
             author: nickname || '익명',
             createdAt: new Date().toISOString(),
             content: content,
         };
-        await fetch(`${REPLY_URL}`, {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payload),
-        })
 
 
         // 새 댓글 추가
@@ -48,7 +48,7 @@ const ReplySection = ({ boardId, replies, userId }) => {
         // 입력창 비우기
         contentRef.current.value = '';
         // id 대조 검사를 하고 알림 전송 및 result변수에 받음
-        const result = (userId !== id) ? addNotice(userId, `${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`) : undefined
+        const result = (userId !== id) ? addNotice(userId, '커뮤니티',`${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`) : undefined
     }
 
     const activeHandler = () => {

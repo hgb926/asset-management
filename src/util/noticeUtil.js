@@ -1,10 +1,11 @@
 import {NOTICE_URL} from "../config/host-config";
 
 
-export const addNotice = async (userId, message) => {
+export const addNotice = async (userId, type, message) => {
     const payload = {
         userId,
-        message
+        message,
+        type
     }
 
     const response = await fetch(`${NOTICE_URL}`, {

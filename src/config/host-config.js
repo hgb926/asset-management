@@ -35,4 +35,3 @@ export const BOARD_URL = API_BASE_URL + BOARD;
 export const REPLY_URL = API_BASE_URL + REPLY;
 export const NOTICE_URL = API_BASE_URL + NOTICE;
 export const SSE_URL = API_BASE_URL + SSE;
-// export const ROOM_URL = API_BASE_URL + ROOM;

@@ -43,8 +43,13 @@ const Header = () => {
                         <span>/</span>
                         <span onClick={logoutHandler}>로그아웃</span>
                     </div>
-                    <GoBell onClick={() => setModalOpen(!modalOpen)}
-                            className={styles.notice}/>
+                    <div className={styles.noticeWrap}>
+                        <GoBell
+                            onClick={() => setModalOpen(!modalOpen)}
+                            className={styles.notice}
+                        />
+                        <span className={styles.noticeCircle}></span>
+                    </div>
                 </div>
             </div>
             {modalOpen ? <NoticeModal onClose={() => setModalOpen(false)}/> : ""}

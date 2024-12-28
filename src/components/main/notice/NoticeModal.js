@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/notice/NoticeModal.module.scss';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
-import { NOTICE_URL } from '../../../config/host-config';
+import {NOTICE_URL, SSE_URL} from '../../../config/host-config';
 import { formatRelativeTime } from '../../../util/timeFormater';
 import { useNavigate } from 'react-router-dom';
 
@@ -55,7 +55,7 @@ const NoticeModal = ({ onClose }) => {
         fetchNoticeList();
 
         // SSE 연결
-        const eventSource = new EventSource(`http://localhost:8888/sse/connect/${id}`);
+        const eventSource = new EventSource(`${SSE_URL}/connect/${id}`);
 
         eventSource.addEventListener('notice', (e) => {
             try {

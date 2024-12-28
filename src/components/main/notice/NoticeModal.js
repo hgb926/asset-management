@@ -9,7 +9,6 @@ const NoticeModal = ({ onClose }) => {
 
     const [noticeList, setNoticeList] = useState([])
     const now = new Date();
-
     const { id } = useSelector(state => state.userInfo.userData);
 
     const getNoticeList = async () => {
@@ -25,6 +24,13 @@ const NoticeModal = ({ onClose }) => {
         }
     }
 
+    const clickHandler = async (id) => {
+        await fetch(`${NOTICE_URL}/${id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        })
+    }
+
     useEffect(() => {
         const fetchNoticeList = async () => {
             const data = await getNoticeList()
@@ -32,6 +38,8 @@ const NoticeModal = ({ onClose }) => {
         }
         fetchNoticeList();
     }, []);
+
+    console.log(noticeList)
 
 
     return ReactDOM.createPortal(
@@ -49,8 +57,9 @@ const NoticeModal = ({ onClose }) => {
                         const diffInMs = now - new Date(notice.createdAt)
                         return (
                         <div
+                            onClick={() => clickHandler(notice.id)}
                             key={notice.id}
-                            className={`${styles.notificationItem} ${!notice.isClicked ? styles.read : styles.unread}`}
+                            className={`${styles.notificationItem} ${!notice.clicked ? styles.read : styles.unread}`}
                         >
                             <div className={styles.user}>{notice.user}</div>
                             <div className={styles.message}>{notice.message}</div>

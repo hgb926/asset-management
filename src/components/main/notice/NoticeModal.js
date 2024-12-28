@@ -7,7 +7,7 @@ import { formatRelativeTime } from '../../../util/timeFormater';
 import { useNavigate } from 'react-router-dom';
 
 
-const NoticeModal = ({ onClose }) => {
+const NoticeModal = ({ onClose, getReadStatus }) => {
     const [noticeList, setNoticeList] = useState([]);
     const now = new Date();
     const navi = useNavigate();
@@ -34,8 +34,20 @@ const NoticeModal = ({ onClose }) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             });
+
+            // 클릭된 알림 상태 업데이트
+            setNoticeList(prev =>
+                prev.map(notice =>
+                    notice.id === noticeId ? { ...notice, clicked: true } : notice
+                )
+            );
+
+            // 모든 알림이 클릭되었는지 확인
+            const allRead = noticeList.every(notice => notice.id === noticeId || notice.clicked);
+            getReadStatus(!allRead);
         }
 
+        // 알림 타입에 따라 페이지 이동
         if (type === '커뮤니티') {
             navi(`/board/${boardId}`);
         } else if (type === '목표') {

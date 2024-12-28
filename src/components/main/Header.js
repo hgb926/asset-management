@@ -66,29 +66,9 @@ const Header = () => {
         setIsGotNewNotice(hasUnreadNotice);
     }, [noticeList]);
 
-    const clickHandler = async (noticeId, clicked, type, boardId, goalId) => {
-        if (!clicked) {
-            await fetch(`${NOTICE_URL}/${noticeId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            // 클릭된 알림 상태 업데이트
-            setNoticeList(prev =>
-                prev.map(notice =>
-                    notice.id === noticeId ? { ...notice, clicked: true } : notice
-                )
-            );
-        }
-
-        if (type === '커뮤니티') {
-            navi(`/board/${boardId}`);
-        } else if (type === '목표') {
-            navi('/goal');
-        }
-
-
-    };
+    const getReadStatus = (flag) => {
+        setIsGotNewNotice(flag)
+    }
 
     const logoutHandler = () => {
         dispatch(userInfoActions.updateUser({ isEmpty : true}));
@@ -125,7 +105,10 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            {modalOpen ? <NoticeModal onClose={() => setModalOpen(false)}/> : ""}
+            {modalOpen ? <NoticeModal
+                getReadStatus={getReadStatus}
+                onClose={() => setModalOpen(false)}
+            /> : ""}
         </>
     );
 };

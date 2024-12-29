@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import styles from "../../../styles/board/BoardDetail.module.scss";
 import {formatRelativeTime} from "../../../util/timeFormater";
 import {useSelector} from "react-redux";
-import {REPLY_URL} from "../../../config/host-config";
+import {REACTION_URL, REPLY_URL} from "../../../config/host-config";
 import {addNotice} from '../../../util/noticeUtil'
 import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
 
@@ -55,9 +55,25 @@ const ReplySection = ({boardId, replies, userId}) => {
     const activeHandler = () => {
         if (contentRef.current.value.length > 1) setActive(true)
         else setActive(false)
-
     }
 
+    const reactionHandler = async (type, replyId) => {
+        const payload = {
+            boardId: 0,
+            replyId,
+            userId: id,
+            reactionType: type,
+            targetType: "REPLY"
+        }
+        console.log(payload)
+        await fetch(`${REACTION_URL}`, {
+            method: "POST",
+            headers: { "Content-Type" : "Application/json" },
+            body: JSON.stringify(payload)
+        })
+    }
+
+    console.log(localReplies[0])
 
     return (
         <div className={styles.replySection}>
@@ -79,12 +95,18 @@ const ReplySection = ({boardId, replies, userId}) => {
                                 </p>
                                 <div className={styles.replyActions}>
                                     <div className={styles.actionItem}>
-                                        <AiOutlineLike className={styles.actionIcon}/>
-                                        <span className={styles.actionCount}>0</span>
+                                        <AiOutlineLike
+                                            className={styles.actionIcon}
+                                            onClick={() => reactionHandler("LIKE", reply.id)}
+                                        />
+                                        <span className={styles.actionCount}>{reply.likeCount}</span>
                                     </div>
                                     <div className={styles.actionItem}>
-                                        <AiOutlineDislike className={styles.actionIcon}/>
-                                        <span className={styles.actionCount}>0</span>
+                                        <AiOutlineDislike
+                                            className={styles.actionIcon}
+                                            onClick={() => reactionHandler("DISLIKE", reply.id)}
+                                        />
+                                        <span className={styles.actionCount}>{reply.dislikeCount}</span>
                                     </div>
                                 </div>
                             </div>

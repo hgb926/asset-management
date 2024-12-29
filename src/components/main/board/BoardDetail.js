@@ -34,8 +34,6 @@ const BoardDetail = () => {
         }
     };
 
-    console.log(boardData)
-
     useEffect(() => {
         getBoardDetail();
     }, [boardId]);
@@ -48,7 +46,6 @@ const BoardDetail = () => {
             reactionType: type,
             targetType: "BOARD"
         }
-        console.log(payload)
         await fetch(`${REACTION_URL}`, {
             method: "POST",
             headers: { "Content-Type" : "Application/json" },

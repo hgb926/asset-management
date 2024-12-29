@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../../styles/board/BoardDetail.module.scss';
 import { useParams } from 'react-router-dom';
-import { BOARD_URL } from '../../../config/host-config';
+import {BOARD_URL, REACTION_URL} from '../../../config/host-config';
 import { formatRelativeTime } from "../../../util/timeFormater";
 import ReplySection from "./ReplySection";
 import {IoMdEye} from "react-icons/io";
 import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
+import {useSelector} from "react-redux";
 
 const BoardDetail = () => {
     const [boardData, setBoardData] = useState({ replies: [] }); // 초기값 설정
+    const [like, setLike] = useState(0)
+    const [dislike, setDislike] = useState(0)
     const params = useParams();
     const boardId = params.id;
     const now = new Date();
+    const { id } = useSelector(state => state.userInfo.userData);
 
     const getBoardDetail = async () => {
         try {
@@ -23,14 +27,43 @@ const BoardDetail = () => {
 
             const data = await response.json();
             setBoardData(data);
+            setLike(data.likeCount)
+            setDislike(data.dislikeCount)
         } catch (error) {
             console.error('Error fetching board detail:', error);
         }
     };
 
+    console.log(boardData)
+
     useEffect(() => {
         getBoardDetail();
     }, [boardId]);
+
+    const reactionHandler = async (type) => {
+        const payload = {
+            boardId,
+            replyId: 0,
+            userId: id,
+            reactionType: type,
+            targetType: "BOARD"
+        }
+        console.log(payload)
+        await fetch(`${REACTION_URL}`, {
+            method: "POST",
+            headers: { "Content-Type" : "Application/json" },
+            body: JSON.stringify(payload)
+        })
+
+        if (type === "LIKE") {
+            setLike(prev => prev + 1)
+            setDislike(prev => prev - 1)
+        } else if (type === "DISLIKE") {
+            setDislike(prev => prev + 1)
+            setLike(prev => prev - 1)
+        }
+    }
+
 
     return (
         <div className={styles.detailWrap}>
@@ -53,12 +86,18 @@ const BoardDetail = () => {
 
             <div className={styles.reactionContainer}>
                 <div className={styles.reactionGroup}>
-                    <AiOutlineLike className={styles.reaction}/>
-                    <span className={styles.count}>100</span>
+                    <AiOutlineLike
+                        className={styles.reaction}
+                        onClick={() => reactionHandler('LIKE')}
+                    />
+                    <span className={styles.count}>{like}</span>
                 </div>
                 <div className={styles.reactionGroup}>
-                    <AiOutlineDislike className={styles.reaction}/>
-                    <span className={styles.count}>12</span>
+                    <AiOutlineDislike
+                        className={styles.reaction}
+                        onClick={() => reactionHandler('DISLIKE')}
+                    />
+                    <span className={styles.count}>{dislike}</span>
                 </div>
             </div>
             {/* 댓글 섹션 */}

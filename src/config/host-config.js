@@ -25,6 +25,7 @@ const BOARD = '/board'
 const REPLY = '/reply'
 const NOTICE = '/notice'
 const SSE = '/sse'
+const REACTION = '/reaction'
 
 // export const BASE_URL = API_BASE_URL;
 export const AUTH_URL = API_BASE_URL + AUTH;
@@ -35,3 +36,4 @@ export const BOARD_URL = API_BASE_URL + BOARD;
 export const REPLY_URL = API_BASE_URL + REPLY;
 export const NOTICE_URL = API_BASE_URL + NOTICE;
 export const SSE_URL = API_BASE_URL + SSE;
+export const REACTION_URL = API_BASE_URL + REACTION;

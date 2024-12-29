@@ -5,6 +5,7 @@ import { BOARD_URL } from '../../../config/host-config';
 import { formatRelativeTime } from "../../../util/timeFormater";
 import ReplySection from "./ReplySection";
 import {IoMdEye} from "react-icons/io";
+import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
 
 const BoardDetail = () => {
     const [boardData, setBoardData] = useState({ replies: [] }); // 초기값 설정
@@ -50,12 +51,22 @@ const BoardDetail = () => {
                 <p className={styles.content}>{boardData.content}</p>
             </div>
 
+            <div className={styles.reactionContainer}>
+                <div className={styles.reactionGroup}>
+                    <AiOutlineLike className={styles.reaction}/>
+                    <span className={styles.count}>100</span>
+                </div>
+                <div className={styles.reactionGroup}>
+                    <AiOutlineDislike className={styles.reaction}/>
+                    <span className={styles.count}>12</span>
+                </div>
+            </div>
             {/* 댓글 섹션 */}
-           <ReplySection
-               boardId={boardData.id}
-               replies={boardData.replies}
-               userId={boardData.authorId} // 작성자 id
-           />
+            <ReplySection
+                boardId={boardData.id}
+                replies={boardData.replies}
+                userId={boardData.authorId} // 작성자 id
+            />
         </div>
     );
 };

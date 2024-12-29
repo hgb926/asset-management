@@ -103,6 +103,7 @@ const NoticeModal = ({ onClose, getReadStatus }) => {
         };
     }, [id]);
 
+    console.log(noticeList)
     return ReactDOM.createPortal(
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalWrap} onClick={(e) => e.stopPropagation()}>
@@ -130,7 +131,7 @@ const NoticeModal = ({ onClose, getReadStatus }) => {
                                         !notice.clicked ? styles.read : styles.unread
                                     }`}
                                 >
-                                    <div className={styles.user}>{notice.user || '시스템 알림'}</div>
+                                    <div className={styles.user}>{notice.type || '시스템 알림'}</div>
                                     <div className={styles.message}>{notice.message}</div>
                                     <div className={styles.date}>{formatRelativeTime(diffInMs)}</div>
                                 </div>

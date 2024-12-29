@@ -7,6 +7,7 @@ import ReplySection from "./ReplySection";
 import {IoMdEye} from "react-icons/io";
 import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
 import {useSelector} from "react-redux";
+import { addNotice } from '../../../util/noticeUtil'
 
 const BoardDetail = () => {
     const [boardData, setBoardData] = useState({replies: []}); // 초기값 설정
@@ -16,7 +17,7 @@ const BoardDetail = () => {
     const params = useParams();
     const boardId = params.id;
     const now = new Date();
-    const {id} = useSelector(state => state.userInfo.userData);
+    const {id, nickname} = useSelector(state => state.userInfo.userData);
 
     const getBoardDetail = async () => {
         try {
@@ -54,10 +55,13 @@ const BoardDetail = () => {
         });
 
         if (response.ok) {
+
+            const result = (id !== boardData.authorId) ? addNotice(boardData.authorId, '커뮤니티', boardId, `${nickname}님께서 회원님의 게시글을 ${type === "LIKE" ? "좋아" : "싫어"}합니다.`) : undefined
             if (type === "LIKE") {
                 setLike(prev => prev + 1)
                 // setDislike(prev => prev - 1)
             } else if (type === "DISLIKE") {
+
                 setDislike(prev => prev + 1)
                 // setLike(prev => prev - 1)
             }
@@ -87,6 +91,7 @@ const BoardDetail = () => {
             <div className={styles.reactionContainer}>
                 <div className={styles.reactionGroup}>
                     <AiOutlineLike
+                        // className={`${styles.reaction} ${id === boardData.reactions[0].userId ? styles.red : ""}`}
                         className={styles.reaction}
                         onClick={() => reactionHandler('LIKE')}
                     />
@@ -104,7 +109,7 @@ const BoardDetail = () => {
             <ReplySection
                 boardId={boardData.id}
                 replies={boardData.replies}
-                userId={boardData.authorId} // 작성자 id
+                authorId={boardData.authorId} // 작성자 id
             />
         </div>
     );

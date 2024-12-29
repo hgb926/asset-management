@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { BOARD_URL } from '../../../config/host-config';
 import { formatRelativeTime } from "../../../util/timeFormater";
 import ReplySection from "./ReplySection";
+import {IoMdEye} from "react-icons/io";
 
 const BoardDetail = () => {
     const [boardData, setBoardData] = useState({ replies: [] }); // 초기값 설정
@@ -36,9 +37,11 @@ const BoardDetail = () => {
             <div className={styles.header}>
                 <h1 className={styles.title}>{boardData.title || '제목 없음'}</h1>
                 <div className={styles.info}>
-                    <span>작성자: {boardData.author || '알 수 없음'}</span>
-                    <span>{formatRelativeTime( now - new Date(boardData.createdAt)) || '알 수 없음'}</span>
-                    <span>조회수: {boardData.viewCount || 0}</span>
+                    <div>
+                        <div className={styles.author}>글쓴이: {boardData.author || '알 수 없음'}</div>
+                        <span>{formatRelativeTime(now - new Date(boardData.createdAt)) || '알 수 없음'}</span></div>
+                    <span>{boardData.createdAt}</span>
+                    <span><IoMdEye className={styles.eyes}/> {boardData.viewCount || 0}</span>
                 </div>
             </div>
 

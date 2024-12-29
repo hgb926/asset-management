@@ -173,6 +173,11 @@
 
             .actionIcon {
               font-size: 18px;
+              transition: scale 0.3s;
+            }
+
+            .actionIcon:hover {
+              scale: 1.5;
             }
 
             .actionCount {

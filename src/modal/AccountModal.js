@@ -14,7 +14,6 @@ const AccountModal = ({selectedDate, incomeList, expenseList, onClose}) => {
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.userInfo.userData);
 
-    console.log(selectedDate)
     const [year, month, day] = selectedDate.split("-");
     const displayDate = `${year}년 ${month}월 ${day}일`;
 

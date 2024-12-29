@@ -102,7 +102,7 @@ const AddGoalModal = ({modalHandler}) => {
             endDate
         }
 
-        const response = await fetch(`${GOAL_URL}/goal`, {
+        const response = await fetch(`${GOAL_URL}`, {
             method: "POST",
             headers: { "Content-Type": "Application/json" },
             body: JSON.stringify(payload),

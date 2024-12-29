@@ -2,23 +2,30 @@ import React, {useEffect, useState} from 'react';
 import styles from '../../../styles/board/BoardList.module.scss';
 import {Link} from "react-router-dom";
 import {BOARD_URL} from "../../../config/host-config";
-import {FaRegCommentDots} from "react-icons/fa";
 import { formatRelativeTime }  from '../../../util/timeFormater'
 
 const BoardList = () => {
 
     const [boardList, setBoardList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0)
+    const [curSize, setCurSize] = useState(10)
+    const [totalPages, setTotalPages] = useState(0)
+    const [isLastPage, setIsLastPage] = useState(false)
     const now = new Date();
 
     const getBoardList = async () => {
         try {
-            const response = await fetch(BOARD_URL);
+            const response = await fetch(`${BOARD_URL}?page=${currentPage}&size=${curSize}`);
 
             if (!response.ok) {
                 throw new Error("Failed to fetch board list");
             }
 
             const data = await response.json();
+            // setBoardList(data.content);
+            setCurrentPage(data.number)//  현재 페이지 번호
+            setTotalPages(data.totalPages) // 전체 페이지 수
+            setIsLastPage(data.last) // 마지막 페이지 여부 (true or false)
             return data;
         } catch (error) {
             console.error("Error fetching board list:", error);
@@ -28,7 +35,7 @@ const BoardList = () => {
     useEffect(() => {
         const fetchBoardList = async () => {
             const data = await getBoardList();
-            setBoardList(data);
+            setBoardList(data.content);
         };
 
         fetchBoardList();
@@ -64,9 +71,9 @@ const BoardList = () => {
                 </div>
                 <div className={styles.footer}>
                     <div className={styles.btnWrap}>
-                        <button className={styles.pageBtn}>1</button>
-                        <button className={styles.pageBtn}>2</button>
-                        <button className={styles.pageBtn}>3</button>
+                        { Array.from(new Array(totalPages)).map((_, index) => (
+                            <div>{index+1}</div>
+                        )) }
                     </div>
                 </div>
             </div>

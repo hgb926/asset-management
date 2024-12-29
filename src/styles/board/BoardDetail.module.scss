@@ -138,6 +138,7 @@
           .replyDate {
             font-size: 12px;
             color: #888;
+            text-align: center;
           }
         }
 
@@ -146,6 +147,39 @@
           color: #555;
           line-height: 1.4;
           word-wrap: break-word;
+          margin-bottom: 10px;
+        }
+
+        /* 좋아요/싫어요 액션 섹션 */
+        .replyActions {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 10px; /* 좋아요와 싫어요 사이 간격 */
+          margin-top: 10px;
+
+          .actionItem {
+            display: flex;
+            align-items: center;
+            gap: 2px; /* 아이콘과 숫자 사이 간격 */
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: color 0.3s ease;
+
+            &:hover {
+              color: #4f46e5;
+            }
+
+            .actionIcon {
+              font-size: 18px;
+            }
+
+            .actionCount {
+              font-size: 14px;
+              font-weight: bold;
+            }
+          }
         }
       }
     }
@@ -203,4 +237,9 @@
       }
     }
   }
+}
+.bottomWrap {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }

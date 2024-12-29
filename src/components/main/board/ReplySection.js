@@ -73,14 +73,14 @@ const ReplySection = ({boardId, replies, userId}) => {
         })
     }
 
-    console.log(localReplies[0])
+    console.log(localReplies)
 
     return (
         <div className={styles.replySection}>
             <h2>댓글 ({localReplies.length || 0})</h2>
             <div className={styles.replyList}>
                 {localReplies.length > 0 ? (
-                    localReplies.map((reply) => (
+                    localReplies.slice().reverse().map((reply) => (
                         <div key={reply.id} className={styles.replyItem}>
                             <div className={styles.replyHeader}>
                                 <span className={styles.replyAuthor}>{reply.author || '익명'}</span>
@@ -99,14 +99,14 @@ const ReplySection = ({boardId, replies, userId}) => {
                                             className={styles.actionIcon}
                                             onClick={() => reactionHandler("LIKE", reply.id)}
                                         />
-                                        <span className={styles.actionCount}>{reply.likeCount}</span>
+                                        <span className={styles.actionCount}>{reply.likeCount || 0}</span>
                                     </div>
                                     <div className={styles.actionItem}>
                                         <AiOutlineDislike
                                             className={styles.actionIcon}
                                             onClick={() => reactionHandler("DISLIKE", reply.id)}
                                         />
-                                        <span className={styles.actionCount}>{reply.dislikeCount}</span>
+                                        <span className={styles.actionCount}>{reply.dislikeCount || 0}</span>
                                     </div>
                                 </div>
                             </div>

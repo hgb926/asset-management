@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from '../../../styles/board/BoardDetail.module.scss';
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {BOARD_URL, REACTION_URL} from '../../../config/host-config';
-import { formatRelativeTime } from "../../../util/timeFormater";
+import {formatRelativeTime} from "../../../util/timeFormater";
 import ReplySection from "./ReplySection";
 import {IoMdEye} from "react-icons/io";
 import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
 import {useSelector} from "react-redux";
 
 const BoardDetail = () => {
-    const [boardData, setBoardData] = useState({ replies: [] }); // 초기값 설정
+    const [boardData, setBoardData] = useState({replies: []}); // 초기값 설정
     const [like, setLike] = useState(0)
     const [dislike, setDislike] = useState(0)
+    const [isActioned, setIsActioned] = useState(false)
     const params = useParams();
     const boardId = params.id;
     const now = new Date();
-    const { id } = useSelector(state => state.userInfo.userData);
+    const {id} = useSelector(state => state.userInfo.userData);
 
     const getBoardDetail = async () => {
         try {
@@ -46,21 +47,23 @@ const BoardDetail = () => {
             reactionType: type,
             targetType: "BOARD"
         }
-        await fetch(`${REACTION_URL}`, {
+        const response = await fetch(`${REACTION_URL}`, {
             method: "POST",
-            headers: { "Content-Type" : "Application/json" },
+            headers: {"Content-Type": "Application/json"},
             body: JSON.stringify(payload)
-        })
+        });
 
-        if (type === "LIKE") {
-            setLike(prev => prev + 1)
-            setDislike(prev => prev - 1)
-        } else if (type === "DISLIKE") {
-            setDislike(prev => prev + 1)
-            setLike(prev => prev - 1)
+        if (response.ok) {
+            if (type === "LIKE") {
+                setLike(prev => prev + 1)
+                // setDislike(prev => prev - 1)
+            } else if (type === "DISLIKE") {
+                setDislike(prev => prev + 1)
+                // setLike(prev => prev - 1)
+            }
         }
-    }
 
+    }
 
     return (
         <div className={styles.detailWrap}>

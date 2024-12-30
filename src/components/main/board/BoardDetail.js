@@ -29,6 +29,7 @@ const BoardDetail = () => {
             }
 
             const data = await response.json();
+            console.log('data: ', data)
             data.reactions.forEach(r => {
                 if (r.userId === id) {
                     setIsActioned(true)

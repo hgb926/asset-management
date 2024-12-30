@@ -1,19 +1,17 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from "../../../styles/board/BoardDetail.module.scss";
-import {formatRelativeTime} from "../../../util/timeFormater";
-import {useSelector} from "react-redux";
-import {REACTION_URL, REPLY_URL} from "../../../config/host-config";
-import {addNotice} from '../../../util/noticeUtil'
-import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
+import { formatRelativeTime } from "../../../util/timeFormater";
+import { useSelector } from "react-redux";
+import { REACTION_URL, REPLY_URL } from "../../../config/host-config";
+import { addNotice } from '../../../util/noticeUtil';
+import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
 
-const ReplySection = ({boardId, replies, authorId}) => {
-
-    const [localReplies, setLocalReplies] = useState(replies);
-    const [active, setActive] = useState(false)
-    const now = new Date()
-    const {id, nickname} = useSelector(state => state.userInfo.userData);
+const ReplySection = ({ boardId, replies, authorId }) => {
+    const [localReplies, setLocalReplies] = useState(replies || []);
+    const [active, setActive] = useState(false);
+    const now = new Date();
+    const { id, nickname } = useSelector(state => state.userInfo.userData);
     const contentRef = useRef();
-
 
     useEffect(() => {
         if (replies) {
@@ -21,41 +19,46 @@ const ReplySection = ({boardId, replies, authorId}) => {
         }
     }, [replies]);
 
-
     const replySubmitHandler = async () => {
         const content = contentRef.current.value;
-        if (!content) return alert("댓글을 입력하세요")
+        if (!content) return alert("댓글을 입력하세요");
+
         const payload = {
             userId: id,
             boardId,
             content
-        }
-        await fetch(`${REPLY_URL}`, {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(payload),
-        })
-        const newReply = {
-            id: Date.now(), // 임시 ID
-            author: nickname || '익명',
-            createdAt: new Date().toISOString(),
-            content: content,
         };
 
+        const response = await fetch(`${REPLY_URL}`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
 
-        // 새 댓글 추가
-        setLocalReplies((prevReplies) => [...prevReplies, newReply]);
+        if (response.ok) {
+            const newReply = {
+                id: Date.now(),
+                author: nickname || '익명',
+                createdAt: new Date().toISOString(),
+                content: content,
+                likeCount: 0,
+                dislikeCount: 0,
+                reactions: []
+            };
 
-        // 입력창 비우기
-        contentRef.current.value = '';
-        // id 대조 검사를 하고 알림 전송 및 result변수에 받음
-        const result = (authorId !== id) ? addNotice(authorId, '커뮤니티', boardId, `${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`) : undefined
-    }
+            setLocalReplies(prevReplies => [...prevReplies, newReply]);
+            contentRef.current.value = '';
+
+            if (authorId !== id) {
+                addNotice(authorId, '커뮤니티', boardId, `${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`);
+            }
+        }
+    };
 
     const activeHandler = () => {
-        if (contentRef.current.value.length > 1) setActive(true)
-        else setActive(false)
-    }
+        if (contentRef.current.value.length > 1) setActive(true);
+        else setActive(false);
+    };
 
     const reactionHandler = async (type, replyId) => {
         const payload = {
@@ -64,15 +67,29 @@ const ReplySection = ({boardId, replies, authorId}) => {
             userId: id,
             reactionType: type,
             targetType: "REPLY"
-        }
-        console.log(payload)
-        await fetch(`${REACTION_URL}`, {
-            method: "POST",
-            headers: { "Content-Type" : "Application/json" },
-            body: JSON.stringify(payload)
-        })
-    }
+        };
 
+        const response = await fetch(`${REACTION_URL}`, {
+            method: "POST",
+            headers: { "Content-Type": "Application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            setLocalReplies(prevReplies =>
+                prevReplies.map(reply => {
+                    if (reply.id === replyId) {
+                        if (type === "LIKE") {
+                            return { ...reply, likeCount: reply.likeCount + 1 };
+                        } else {
+                            return { ...reply, dislikeCount: reply.dislikeCount + 1 };
+                        }
+                    }
+                    return reply;
+                })
+            );
+        }
+    };
 
     return (
         <div className={styles.replySection}>
@@ -84,28 +101,27 @@ const ReplySection = ({boardId, replies, authorId}) => {
                             <div className={styles.replyHeader}>
                                 <span className={styles.replyAuthor}>{reply.author || '익명'}</span>
                                 <div>
-                                    <div
-                                        className={styles.replyDate}>{formatRelativeTime(now - new Date(reply.createdAt)) || '알 수 없음'}
+                                    <div className={styles.replyDate}>
+                                        {formatRelativeTime(now - new Date(reply.createdAt)) || '알 수 없음'}
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.bottomWrap}>
-                                <p className={styles.replyContent}>{reply.content || '내용 없음'}
-                                </p>
+                                <p className={styles.replyContent}>{reply.content || '내용 없음'}</p>
                                 <div className={styles.replyActions}>
                                     <div className={styles.actionItem}>
                                         <AiOutlineLike
                                             className={styles.actionIcon}
                                             onClick={() => reactionHandler("LIKE", reply.id)}
                                         />
-                                        <span className={styles.actionCount}>{reply.likeCount || 0}</span>
+                                        <span className={styles.actionCount}>{reply.likeCount}</span>
                                     </div>
                                     <div className={styles.actionItem}>
                                         <AiOutlineDislike
                                             className={styles.actionIcon}
                                             onClick={() => reactionHandler("DISLIKE", reply.id)}
                                         />
-                                        <span className={styles.actionCount}>{reply.dislikeCount || 0}</span>
+                                        <span className={styles.actionCount}>{reply.dislikeCount}</span>
                                     </div>
                                 </div>
                             </div>
@@ -118,16 +134,17 @@ const ReplySection = ({boardId, replies, authorId}) => {
 
             {/* 댓글 입력 */}
             <div className={styles.replyInput}>
-                    <textarea
-                        ref={contentRef}
-                        placeholder="댓글을 입력하세요"
-                        className={styles.inputField}
-                        onChange={activeHandler}
-                    ></textarea>
+                <textarea
+                    ref={contentRef}
+                    placeholder="댓글을 입력하세요"
+                    className={styles.inputField}
+                    onChange={activeHandler}
+                ></textarea>
                 <div
                     onClick={replySubmitHandler}
                     className={`${active ? styles.active : styles.noneActive}`}
-                >댓글 작성
+                >
+                    댓글 작성
                 </div>
             </div>
         </div>

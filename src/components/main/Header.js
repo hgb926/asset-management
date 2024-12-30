@@ -47,8 +47,12 @@ const Header = () => {
         eventSource.addEventListener('notice', (e) => {
             const newNotice = JSON.parse(e.data);
 
-            setNoticeList(prev => [...prev, newNotice]); // 알림 목록에 추가
-            setIsGotNewNotice(true); // 새로운 알림이 오면 즉시 true로 설정
+            setNoticeList(prev => {
+                const updatedList = [...prev, newNotice];
+                const hasUnread = updatedList.some(notice => !notice.clicked);
+                setIsGotNewNotice(hasUnread);
+                return updatedList;
+            });
         });
 
         eventSource.onerror = (e) => {
@@ -101,7 +105,7 @@ const Header = () => {
                             onClick={() => setModalOpen(!modalOpen)}
                             className={styles.notice}
                         />
-                        { isGotNewNotice ? <span className={styles.noticeCircle}></span> : ""}
+                        {isGotNewNotice && <span className={styles.noticeCircle}></span>}
                     </div>
                 </div>
             </div>

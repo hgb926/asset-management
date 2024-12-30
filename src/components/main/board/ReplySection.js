@@ -1,16 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from "../../../styles/board/BoardDetail.module.scss";
-import { formatRelativeTime } from "../../../util/timeFormater";
+import {formatRelativeTime} from "../../../util/timeFormater";
 import {useSelector} from "react-redux";
-import {REPLY_URL} from "../../../config/host-config";
-import { addNotice } from '../../../util/noticeUtil'
+import {REACTION_URL, REPLY_URL} from "../../../config/host-config";
+import {addNotice} from '../../../util/noticeUtil'
+import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
 
-const ReplySection = ({ boardId, replies, userId }) => {
+const ReplySection = ({boardId, replies, authorId}) => {
 
     const [localReplies, setLocalReplies] = useState(replies);
     const [active, setActive] = useState(false)
     const now = new Date()
-    const { id, nickname } = useSelector(state => state.userInfo.userData);
+    const {id, nickname} = useSelector(state => state.userInfo.userData);
     const contentRef = useRef();
 
 
@@ -48,13 +49,28 @@ const ReplySection = ({ boardId, replies, userId }) => {
         // 입력창 비우기
         contentRef.current.value = '';
         // id 대조 검사를 하고 알림 전송 및 result변수에 받음
-        const result = (userId !== id) ? addNotice(userId, '커뮤니티', boardId,`${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`) : undefined
+        const result = (authorId !== id) ? addNotice(authorId, '커뮤니티', boardId, `${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`) : undefined
     }
 
     const activeHandler = () => {
         if (contentRef.current.value.length > 1) setActive(true)
         else setActive(false)
+    }
 
+    const reactionHandler = async (type, replyId) => {
+        const payload = {
+            boardId: 0,
+            replyId,
+            userId: id,
+            reactionType: type,
+            targetType: "REPLY"
+        }
+        console.log(payload)
+        await fetch(`${REACTION_URL}`, {
+            method: "POST",
+            headers: { "Content-Type" : "Application/json" },
+            body: JSON.stringify(payload)
+        })
     }
 
 
@@ -62,14 +78,37 @@ const ReplySection = ({ boardId, replies, userId }) => {
         <div className={styles.replySection}>
             <h2>댓글 ({localReplies.length || 0})</h2>
             <div className={styles.replyList}>
-                { localReplies.length > 0 ? (
-                    localReplies.map((reply) => (
+                {localReplies.length > 0 ? (
+                    localReplies.slice().reverse().map((reply) => (
                         <div key={reply.id} className={styles.replyItem}>
                             <div className={styles.replyHeader}>
                                 <span className={styles.replyAuthor}>{reply.author || '익명'}</span>
-                                <span className={styles.replyDate}>{formatRelativeTime(now - new Date(reply.createdAt)) || '알 수 없음'}</span>
+                                <div>
+                                    <div
+                                        className={styles.replyDate}>{formatRelativeTime(now - new Date(reply.createdAt)) || '알 수 없음'}
+                                    </div>
+                                </div>
                             </div>
-                            <p className={styles.replyContent}>{reply.content || '내용 없음'}</p>
+                            <div className={styles.bottomWrap}>
+                                <p className={styles.replyContent}>{reply.content || '내용 없음'}
+                                </p>
+                                <div className={styles.replyActions}>
+                                    <div className={styles.actionItem}>
+                                        <AiOutlineLike
+                                            className={styles.actionIcon}
+                                            onClick={() => reactionHandler("LIKE", reply.id)}
+                                        />
+                                        <span className={styles.actionCount}>{reply.likeCount || 0}</span>
+                                    </div>
+                                    <div className={styles.actionItem}>
+                                        <AiOutlineDislike
+                                            className={styles.actionIcon}
+                                            onClick={() => reactionHandler("DISLIKE", reply.id)}
+                                        />
+                                        <span className={styles.actionCount}>{reply.dislikeCount || 0}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ))
                 ) : (
@@ -88,7 +127,8 @@ const ReplySection = ({ boardId, replies, userId }) => {
                 <div
                     onClick={replySubmitHandler}
                     className={`${active ? styles.active : styles.noneActive}`}
-                >댓글 작성</div>
+                >댓글 작성
+                </div>
             </div>
         </div>
     );

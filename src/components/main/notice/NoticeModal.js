@@ -7,7 +7,7 @@ import { formatRelativeTime } from '../../../util/timeFormater';
 import { useNavigate } from 'react-router-dom';
 
 
-const NoticeModal = ({ onClose }) => {
+const NoticeModal = ({ onClose, getReadStatus }) => {
     const [noticeList, setNoticeList] = useState([]);
     const now = new Date();
     const navi = useNavigate();
@@ -34,8 +34,20 @@ const NoticeModal = ({ onClose }) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             });
+
+            // 클릭된 알림 상태 업데이트
+            setNoticeList(prev =>
+                prev.map(notice =>
+                    notice.id === noticeId ? { ...notice, clicked: true } : notice
+                )
+            );
+
+            // 모든 알림이 클릭되었는지 확인
+            const allRead = noticeList.every(notice => notice.id === noticeId || notice.clicked);
+            getReadStatus(!allRead);
         }
 
+        // 알림 타입에 따라 페이지 이동
         if (type === '커뮤니티') {
             navi(`/board/${boardId}`);
         } else if (type === '목표') {
@@ -45,11 +57,26 @@ const NoticeModal = ({ onClose }) => {
         onClose();
     };
 
+    const clickAllHandler = async () => {
+        await fetch(`${NOTICE_URL}/all/${id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        });
+
+        setNoticeList(prev =>
+            prev.map(n =>
+                !n.clicked ? { ...n, clicked: true } : n
+            )
+        );
+
+        getReadStatus(false); // 모든 알림이 읽혔음을 전달
+    };
+
     // SSE 연결 및 실시간 알림 수신
     useEffect(() => {
         const fetchNoticeList = async () => {
             const data = await getNoticeList();
-            setNoticeList(data);
+            setNoticeList(data || []);
         };
 
         fetchNoticeList();
@@ -76,6 +103,7 @@ const NoticeModal = ({ onClose }) => {
         };
     }, [id]);
 
+    console.log(noticeList)
     return ReactDOM.createPortal(
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalWrap} onClick={(e) => e.stopPropagation()}>
@@ -84,6 +112,10 @@ const NoticeModal = ({ onClose }) => {
                     <button onClick={onClose}>✖️</button>
                 </div>
                 <div className={styles.modalContent}>
+                    <p
+                        className={styles.allRead}
+                        onClick={clickAllHandler}
+                    >모두 읽기</p>
                     {noticeList
                         .slice() // 원본 배열 변경 방지
                         .reverse()
@@ -99,7 +131,7 @@ const NoticeModal = ({ onClose }) => {
                                         !notice.clicked ? styles.read : styles.unread
                                     }`}
                                 >
-                                    <div className={styles.user}>{notice.user || '시스템 알림'}</div>
+                                    <div className={styles.user}>{notice.type || '시스템 알림'}</div>
                                     <div className={styles.message}>{notice.message}</div>
                                     <div className={styles.date}>{formatRelativeTime(diffInMs)}</div>
                                 </div>

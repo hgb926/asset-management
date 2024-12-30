@@ -53,7 +53,7 @@
   }
 
   .footer {
-    margin-top: 20px;
+    margin-top: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,18 +64,23 @@
     }
 
     .pageBtn {
-      background: #6466F1;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      font-size: 14px;
-      border-radius: 4px;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      background-color: #fff;
       cursor: pointer;
-      transition: background 0.3s ease;
+      border-radius: 12px;
 
-      &:hover {
-        //background: #357abd;
+      &:disabled {
+        cursor: not-allowed;
+        background-color: #f0f0f0;
       }
+    }
+
+    .pageBtn.active {
+      background-color: #4a4ea6;
+      color: #fff;
+      font-weight: bold;
     }
   }
 }

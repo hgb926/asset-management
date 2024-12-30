@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../../styles/auth/LoginForm.module.scss";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { AUTH_URL } from "../../../config/host-config";
 import { useDispatch } from "react-redux";
 import { userInfoActions } from "../../store/user/UserInfoSlice";
@@ -12,6 +12,7 @@ const LoginForm = () => {
     const [autoLogin, setAutoLogin] = useState(false);
     const [error, setError] = useState("");
     const dispatch = useDispatch();
+
 
     const loginHandler = async () => {
         const payload = {
@@ -50,6 +51,12 @@ const LoginForm = () => {
         }
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            loginHandler()
+        }
+    }
+
     return (
         <div className={styles.wrap}>
             <h1 className={styles.h1}>Asset Management</h1>
@@ -70,6 +77,7 @@ const LoginForm = () => {
                         className={styles.input}
                         type="password"
                         placeholder="비밀번호를 입력하세요"
+                        onKeyDown={handleKeyPress}
                     />
                 </div>
                 <div className={styles.inputWrap}>

@@ -16,6 +16,7 @@ const GoalDescription = ({currentGoal}) => {
         ((currentGoal.targetAmount - currentGoal.influencedMoney) / remainingDays).toFixed(0)
     );
 
+
     return (
         <div className={styles.desWrap}>
             <h2 className={styles.goalCategory}>{currentGoal.category}</h2>
@@ -30,7 +31,7 @@ const GoalDescription = ({currentGoal}) => {
                         {currentGoal.type === "expense" ? "현재 사용 금액" : "현재 모은 금액"}:
                     </strong>
                     <span className={styles.amountHighlight}>
-                        {currentGoal.influencedMoney.toLocaleString('ko-KR')}원
+                        {/*{currentGoal.influencedMoney.toLocaleString('ko-KR')}원*/}
                     </span>
                 </p>
                 <p>

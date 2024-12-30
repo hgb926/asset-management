@@ -24,7 +24,7 @@ const WriteForm = () => {
             title,
             content,
         }
-        console.log(payload)
+
         const response = await fetch(`${BOARD_URL}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

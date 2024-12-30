@@ -53,6 +53,8 @@ const BoardDetail = () => {
     const reactionHandler = async (type) => {
         if (isActioned) {
             setIsActioned(false)
+            if (type === "LIKE") setLike(like - 1)
+            else setDislike(dislike - 1)
         } else {
             setIsActioned(true)
             setActionType(type)

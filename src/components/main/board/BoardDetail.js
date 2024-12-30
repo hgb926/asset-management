@@ -104,6 +104,14 @@ const BoardDetail = () => {
 
             {/* 게시글 내용 */}
             <div className={styles.contentWrap}>
+                <div className={styles.modifyAndDelete}>
+                    <span className={styles.modify}>
+                        수정
+                    </span>
+                    <span className={styles.delete}>
+                        삭제
+                    </span>
+                </div>
                 <p className={styles.content}>{boardData.content}</p>
             </div>
 

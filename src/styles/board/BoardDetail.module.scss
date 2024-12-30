@@ -9,7 +9,6 @@
   /* 📌 게시글 헤더 섹션 */
   .header {
     border-bottom: 1px solid #e2e6ea;
-    margin-bottom: 20px;
     padding-bottom: 10px;
     text-align: left;
 
@@ -59,6 +58,29 @@
     color: black;
     text-align: left;
     padding: 20px 0;
+
+    .modifyAndDelete {
+      text-align: right;
+      margin-top: 0;
+      color: #555;
+      font-size: 0.9rem;
+
+      .modify {
+        cursor: pointer;
+      }
+
+      .delete {
+        margin-left: 10px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      .modify:hover {
+        text-decoration: underline;
+      }
+      .delete:hover {
+        text-decoration: underline;
+      }
+    }
 
     .content {
 

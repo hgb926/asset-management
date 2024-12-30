@@ -55,6 +55,8 @@ const Header = () => {
             });
         });
 
+        // 좋아요처리 실시간알람 손봐야함
+
         eventSource.onerror = (e) => {
             console.error('SSE Error:', e);
             eventSource.close();

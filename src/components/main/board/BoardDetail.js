@@ -14,6 +14,7 @@ const BoardDetail = () => {
     const [like, setLike] = useState(0)
     const [dislike, setDislike] = useState(0)
     const [isActioned, setIsActioned] = useState(false)
+    const [actionType, setActionType] = useState('')
     const params = useParams();
     const boardId = params.id;
     const now = new Date();
@@ -28,6 +29,13 @@ const BoardDetail = () => {
             }
 
             const data = await response.json();
+            data.reactions.forEach(r => {
+                if (r.userId === id) {
+                    setIsActioned(true)
+                    setActionType(r.reactionType)
+                    return;
+                }
+            })
             setBoardData(data);
             setLike(data.likeCount)
             setDislike(data.dislikeCount)
@@ -40,7 +48,15 @@ const BoardDetail = () => {
         getBoardDetail();
     }, [boardId]);
 
+
+
     const reactionHandler = async (type) => {
+        if (isActioned) {
+            setIsActioned(false)
+        } else {
+            setIsActioned(true)
+            setActionType(type)
+        }
         const payload = {
             boardId,
             replyId: 0,
@@ -91,15 +107,14 @@ const BoardDetail = () => {
             <div className={styles.reactionContainer}>
                 <div className={styles.reactionGroup}>
                     <AiOutlineLike
-                        // className={`${styles.reaction} ${id === boardData.reactions[0].userId ? styles.red : ""}`}
-                        className={styles.reaction}
+                        className={`${styles.reaction} ${(isActioned && actionType === "LIKE") && styles.red}`}
                         onClick={() => reactionHandler('LIKE')}
                     />
                     <span className={styles.count}>{like}</span>
                 </div>
                 <div className={styles.reactionGroup}>
                     <AiOutlineDislike
-                        className={styles.reaction}
+                        className={`${styles.reaction} ${(isActioned && actionType === "DISLIKE") && styles.blue}`}
                         onClick={() => reactionHandler('DISLIKE')}
                     />
                     <span className={styles.count}>{dislike}</span>

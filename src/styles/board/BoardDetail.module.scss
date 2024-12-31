@@ -59,6 +59,12 @@
     text-align: left;
     padding: 20px 0;
 
+    .modified {
+      margin: 0;
+      color: #555;
+      font-size: 0.8rem;
+    }
+
     .modifyAndDelete {
       text-align: right;
       margin-top: 0;

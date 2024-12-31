@@ -62,25 +62,38 @@
     .modified {
       margin: 0;
       color: #555;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .modifyAndDelete {
-      text-align: right;
-      margin-top: 0;
+      display: flex;
+      width: 100%;
+      margin: 0 auto;
+      justify-content: space-between;
       color: #555;
       font-size: 0.9rem;
+
 
       .modify {
         cursor: pointer;
         text-decoration: none;
         color: #555;
+        border: 1px solid #555;
+        padding: 2px 5px;
+        border-radius: 8px;
       }
 
       .delete {
         margin-left: 10px;
         margin-right: 10px;
         cursor: pointer;
+        border: 1px solid #555;
+        padding: 2px 5px;
+        border-radius: 8px;
       }
       .modify:hover {
         text-decoration: underline;
@@ -288,11 +301,7 @@
 }
 
 .modifyAndDelete {
-  text-align: right;
 
-  margin-top: 10px;
-  color: #555;
-  font-size: 0.9rem;
 
   .modify {
     cursor: pointer;

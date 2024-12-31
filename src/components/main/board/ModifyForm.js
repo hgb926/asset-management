@@ -1,5 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from "../../../styles/board/WriteForm.module.scss";
+import {BOARD_URL} from "../../../config/host-config";
 
 
 const ModifyForm = ({ cancelHandler, data }) => {
@@ -17,8 +18,19 @@ const ModifyForm = ({ cancelHandler, data }) => {
 
     console.log(data)
 
-    const boardModifyHandler = () => {
-
+    const boardModifyHandler = async () => {
+       const payload = {
+           id : data.id,
+           category,
+           title,
+           content
+       }
+       await fetch(`${BOARD_URL}`, {
+           method: "PATCH",
+           headers: { "Content-Type" : "Application/json" },
+           body: JSON.stringify(payload)
+       })
+        cancelHandler()
     }
 
     return (

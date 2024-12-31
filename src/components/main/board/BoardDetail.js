@@ -120,21 +120,23 @@ const BoardDetail = () => {
 
                 {/* 게시글 내용 */}
                 <div className={styles.contentWrap}>
-                    { boardData.modified && <p className={styles.modified}>*{boardData.modifiedAt}에 수정*</p>}
-                    {boardData.authorId === id && <div className={styles.modifyAndDelete}>
-                    <span
-                        className={styles.modify}
-                        onClick={() => setModifyMode(true)}
-                    >
-                        수정
-                    </span>
-                        <span
-                            className={styles.delete}
-                            onClick={() => deleteHandler("board", boardId)}
-                        >
-                        삭제
-                    </span>
-                    </div>}
+                    <div className={styles.modifyAndDelete}>
+                        {boardData.modified ? <p className={styles.modified}>*{boardData.modifiedAt}에 수정</p> : <div></div>}
+                        {boardData.authorId === id && <div>
+                            <span
+                                className={styles.modify}
+                                onClick={() => setModifyMode(true)}
+                            >
+                            수정
+                            </span>
+                            <span
+                                className={styles.delete}
+                                onClick={() => deleteHandler("board", boardId)}
+                            >
+                            삭제
+                            </span>
+                        </div>}
+                    </div>
                     <p className={styles.content}>{boardData.content}</p>
                 </div>
 

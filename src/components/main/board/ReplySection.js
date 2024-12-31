@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from "../../../styles/board/BoardDetail.module.scss";
-import { formatRelativeTime } from "../../../util/timeFormater";
-import { useSelector } from "react-redux";
-import { REACTION_URL, REPLY_URL } from "../../../config/host-config";
-import { addNotice } from '../../../util/noticeUtil';
-import { AiOutlineDislike, AiOutlineLike } from "react-icons/ai";
+import {formatRelativeTime} from "../../../util/timeFormater";
+import {useSelector} from "react-redux";
+import {REACTION_URL, REPLY_URL} from "../../../config/host-config";
+import {addNotice} from '../../../util/noticeUtil';
+import {AiOutlineDislike, AiOutlineLike} from "react-icons/ai";
 
-const ReplySection = ({ boardId, replies, authorId }) => {
+const ReplySection = ({boardId, replies, authorId, deleteHandler}) => {
     const [localReplies, setLocalReplies] = useState(replies || []);
     const [active, setActive] = useState(false);
     const now = new Date();
-    const { id, nickname } = useSelector(state => state.userInfo.userData);
+    const {id, nickname} = useSelector(state => state.userInfo.userData);
     const contentRef = useRef();
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const ReplySection = ({ boardId, replies, authorId }) => {
 
         const response = await fetch(`${REPLY_URL}`, {
             method: 'POST',
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(payload),
         });
 
@@ -71,7 +71,7 @@ const ReplySection = ({ boardId, replies, authorId }) => {
 
         const response = await fetch(`${REACTION_URL}`, {
             method: "POST",
-            headers: { "Content-Type": "Application/json" },
+            headers: {"Content-Type": "Application/json"},
             body: JSON.stringify(payload)
         });
 
@@ -80,9 +80,9 @@ const ReplySection = ({ boardId, replies, authorId }) => {
                 prevReplies.map(reply => {
                     if (reply.id === replyId) {
                         if (type === "LIKE") {
-                            return { ...reply, likeCount: reply.likeCount + 1 };
+                            return {...reply, likeCount: reply.likeCount + 1};
                         } else {
-                            return { ...reply, dislikeCount: reply.dislikeCount + 1 };
+                            return {...reply, dislikeCount: reply.dislikeCount + 1};
                         }
                     }
                     return reply;
@@ -91,6 +91,7 @@ const ReplySection = ({ boardId, replies, authorId }) => {
         }
     };
 
+    console.log(localReplies[0])
     return (
         <div className={styles.replySection}>
             <h2>댓글 ({localReplies.length || 0})</h2>
@@ -104,6 +105,14 @@ const ReplySection = ({ boardId, replies, authorId }) => {
                                     <div className={styles.replyDate}>
                                         {formatRelativeTime(now - new Date(reply.createdAt)) || '알 수 없음'}
                                     </div>
+                                    {reply.authorId === id && <div className={styles.modifyAndDelete}>
+                                        <span
+                                            className={styles.delete}
+                                            onClick={() => deleteHandler("reply", reply.id, boardId)}
+                                        >
+                                            삭제
+                                        </span>
+                                    </div>}
                                 </div>
                             </div>
                             <div className={styles.bottomWrap}>

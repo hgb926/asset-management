@@ -67,6 +67,8 @@
 
       .modify {
         cursor: pointer;
+        text-decoration: none;
+        color: #555;
       }
 
       .delete {
@@ -277,4 +279,28 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+
+.modifyAndDelete {
+  text-align: right;
+
+  margin-top: 10px;
+  color: #555;
+  font-size: 0.9rem;
+
+  .modify {
+    cursor: pointer;
+  }
+
+  .delete {
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .modify:hover {
+    text-decoration: underline;
+  }
+  .delete:hover {
+    text-decoration: underline;
+  }
 }

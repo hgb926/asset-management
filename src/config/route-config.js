@@ -7,6 +7,7 @@ import Goal from "../components/main/goal/Goal";
 import Board from "../components/main/board/Board";
 import WriteForm from "../components/main/board/WriteForm";
 import BoardDetail from "../components/main/board/BoardDetail";
+import ModifyForm from "../components/main/board/ModifyForm";
 
 export const router = createBrowserRouter([
     {

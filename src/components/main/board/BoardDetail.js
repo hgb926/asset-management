@@ -162,6 +162,7 @@ const BoardDetail = () => {
                 />
             </div>) : <ModifyForm
                 cancelHandler={cancelHandler}
+                data={boardData}
             />}
         </>
     );

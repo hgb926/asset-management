@@ -1,15 +1,21 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from "../../../styles/board/WriteForm.module.scss";
-import {Link, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
 
-const ModifyForm = ({ cancelHandler }) => {
-    let { id } = useSelector(state => state.userInfo.userData);
-    const categoryRef = useRef();
-    const titleRef = useRef();
-    const contentRef = useRef();
-    const navi = useNavigate();
-    console.log("boardModify!")
+
+const ModifyForm = ({ cancelHandler, data }) => {
+    const [category, setCategory] = useState('');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+
+    useEffect(() => {
+        if (data) {
+            setCategory(data.category || '');
+            setTitle(data.title || '');
+            setContent(data.content || '');
+        }
+    }, [data]);
+
+    console.log(data)
 
     const boardModifyHandler = () => {
 
@@ -17,13 +23,18 @@ const ModifyForm = ({ cancelHandler }) => {
 
     return (
         <div className={styles.writeFormWrap}>
-            <h2 className={styles.title}>게시글 작성</h2>
+            <h2 className={styles.title}>게시글 수정</h2>
             <form className={styles.form}>
 
                 {/* 카테고리 선택 */}
                 <div className={styles.formGroup}>
                     <label htmlFor="category">카테고리</label>
-                    <select id="category" ref={categoryRef} className={styles.select}>
+                    <select
+                        id="category"
+                        className={styles.select}
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                    >
                         <option value="QNA">질문</option>
                         <option value="TIP">꿀팁</option>
                         <option value="INFO">정보</option>
@@ -34,9 +45,10 @@ const ModifyForm = ({ cancelHandler }) => {
                 <div className={styles.formGroup}>
                     <label htmlFor="title">제목</label>
                     <input
-                        ref={titleRef}
                         type="text"
                         id="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         placeholder="제목을 입력하세요"
                         className={styles.input}
                     />
@@ -45,7 +57,8 @@ const ModifyForm = ({ cancelHandler }) => {
                 <div className={styles.formGroup}>
                     <label htmlFor="content">내용</label>
                     <textarea
-                        ref={contentRef}
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
                         id="content"
                         placeholder="내용을 입력하세요"
                         className={styles.textarea}

@@ -91,7 +91,7 @@ const ReplySection = ({boardId, replies, authorId, deleteHandler}) => {
         }
     };
 
-    console.log(localReplies[0])
+
     return (
         <div className={styles.replySection}>
             <h2>댓글 ({localReplies.length || 0})</h2>

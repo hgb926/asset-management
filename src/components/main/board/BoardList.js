@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/board/BoardList.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BOARD_URL } from "../../../config/host-config";
 import { formatRelativeTime } from '../../../util/timeFormater';
 import {
@@ -11,11 +11,20 @@ import {
 } from "react-icons/md";
 
 const BoardList = () => {
-    const [boardList, setBoardList] = useState([]); // 게시글 리스트
-    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
-    const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
-    const [isLastPage, setIsLastPage] = useState(false); // 마지막 페이지 여부
+    const [boardList, setBoardList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [isLastPage, setIsLastPage] = useState(false);
     const now = new Date();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // 현재 URL에서 페이지 번호 추출
+    const getPageFromQuery = () => {
+        const queryParams = new URLSearchParams(location.search);
+        return parseInt(queryParams.get('page')) || 0;
+    };
 
     // 게시글 목록을 가져오는 함수
     const getBoardList = async (page = 0) => {
@@ -27,34 +36,34 @@ const BoardList = () => {
             }
 
             const data = await response.json();
-            setBoardList(data.content); // content 배열만 상태로 저장
-            setCurrentPage(data.number); // 현재 페이지 번호
-            setTotalPages(data.totalPages); // 전체 페이지 수
-            setIsLastPage(data.last); // 마지막 페이지 여부
+            setBoardList(data.content);
+            setCurrentPage(data.number);
+            setTotalPages(data.totalPages);
+            setIsLastPage(data.last);
         } catch (error) {
             console.error("Error fetching board list:", error);
         }
     };
 
-    // 컴포넌트 마운트 시 게시글 목록 불러오기
+    // URL의 페이지 번호를 기준으로 데이터 불러오기
     useEffect(() => {
-        getBoardList();
-    }, []);
+        const page = getPageFromQuery();
+        getBoardList(page);
+    }, [location.search]);
 
-    // 페이지 변경 핸들러
+    // 페이지 변경 핸들러 (URL 업데이트)
     const changePage = (page) => {
         if (page >= 0 && page < totalPages) {
-            getBoardList(page);
+            navigate(`?page=${page}`);
         }
     };
 
     // 페이지네이션 범위 계산
     const getPageRange = () => {
-        const PAGE_GROUP = 5; // 한 번에 보여줄 페이지 수
+        const PAGE_GROUP = 5;
         let startPage = Math.floor(currentPage / PAGE_GROUP) * PAGE_GROUP;
         let endPage = startPage + PAGE_GROUP;
 
-        // 마지막 페이지를 초과하지 않도록 조정
         if (endPage > totalPages) {
             endPage = totalPages;
         }
@@ -97,7 +106,6 @@ const BoardList = () => {
                             disabled={currentPage === 0}
                         >
                             <MdKeyboardDoubleArrowLeft />
-
                         </div>
                         <div
                             className={styles.pageBtn}
@@ -105,7 +113,6 @@ const BoardList = () => {
                             disabled={currentPage === 0}
                         >
                             <MdKeyboardArrowLeft />
-
                         </div>
 
                         {getPageRange().map((page) => (
@@ -124,15 +131,13 @@ const BoardList = () => {
                             disabled={isLastPage}
                         >
                             <MdKeyboardArrowRight />
-
                         </div>
                         <div
                             className={styles.pageBtn}
-                            onClick={() => changePage(totalPages-1)}
+                            onClick={() => changePage(totalPages - 1)}
                             disabled={isLastPage}
                         >
                             <MdKeyboardDoubleArrowRight />
-
                         </div>
                     </div>
                 </div>

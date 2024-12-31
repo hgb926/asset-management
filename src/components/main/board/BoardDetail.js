@@ -120,7 +120,7 @@ const BoardDetail = () => {
 
                 {/* 게시글 내용 */}
                 <div className={styles.contentWrap}>
-                    { boardData.modified && <p className={styles.modified}>*수정됨</p>}
+                    { boardData.modified && <p className={styles.modified}>*{boardData.modifiedAt}에 수정*</p>}
                     {boardData.authorId === id && <div className={styles.modifyAndDelete}>
                     <span
                         className={styles.modify}

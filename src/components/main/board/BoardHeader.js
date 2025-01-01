@@ -1,20 +1,39 @@
 import React from 'react';
 import styles from "../../../styles/board/BoardHeader.module.scss";
 
-const BoardHeader = ({ boardList }) => {
-    console.log(boardList)
+const BoardHeader = ({ boardList, sortHandler }) => {
+
+    const handleSortChange = (e) => {
+        const value = e.target.value;
+        switch (value) {
+            case "latest":
+                sortHandler("desc");
+                break;
+            case "oldest":
+                sortHandler("asc");
+                break;
+            case "reply":
+                sortHandler("replyCount,desc");
+                break;
+            case "viewCount":
+                sortHandler("viewCount,desc");
+                break;
+            default:
+                sortHandler("desc");
+        }
+    };
+
     return (
         <>
             <h1 className={styles.h1}>💰 경제/재테크 커뮤니티</h1>
             <p className={styles.description}>
                 경제 꿀팁을 공유하고 함께 성장해요!<br/>
-
             </p>
             <div className={styles.header}>
                 <div className={styles.sortSection}>
                     <div className={styles.dateSort}>
                         <p className={styles.text}>정렬</p>
-                        <select className={styles.select}>
+                        <select className={styles.select} onChange={handleSortChange}>
                             <option value="latest">최신순</option>
                             <option value="oldest">오래된순</option>
                             <option value="reply">댓글 많은 순</option>

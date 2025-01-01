@@ -51,6 +51,12 @@ const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
         categoryHandler(selectedCategory);
     };
 
+    const enterKeyHandler = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch()
+        }
+    }
+
     return (
         <>
             <h1 className={styles.h1}>💰 경제/재테크 커뮤니티</h1>
@@ -96,6 +102,7 @@ const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
                         placeholder="검색어를 입력하세요"
                         value={keyword}
                         onChange={handleKeywordChange}
+                        onKeyDown={enterKeyHandler}
                     />
                     <div className={styles.search} onClick={handleSearch}>검색</div>
                 </div>

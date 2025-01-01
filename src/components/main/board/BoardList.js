@@ -23,6 +23,7 @@ const BoardList = ({boardList, currentPage, totalPages, isLastPage, changePage})
         }
         return Array.from({length: endPage - startPage}, (_, index) => startPage + index);
     };
+    console.log(boardList)
 
     return (
         <>
@@ -30,7 +31,7 @@ const BoardList = ({boardList, currentPage, totalPages, isLastPage, changePage})
               <div className={styles.boardWrap}>
         <div className={styles.boardList}>
             <div className={styles.header}>
-                <span>번호</span>
+                <span>카테고리</span>
                 <span>제목</span>
                 <span>작성자</span>
                 <span>작성일</span>
@@ -40,7 +41,7 @@ const BoardList = ({boardList, currentPage, totalPages, isLastPage, changePage})
                 const diffInMs = now - new Date(board.createdAt);
                 return (
                     <div key={board.id} className={styles.boardItem}>
-                        <span className={styles.itemId}>{board.id}</span>
+                        <span className={styles.itemId}>{board.category}</span>
                         <Link to={`/board/${board.id}`} className={styles.itemTitle}>
                             {board.title} ({board.replyCount})
                         </Link>

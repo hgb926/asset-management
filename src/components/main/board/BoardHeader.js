@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styles from "../../../styles/board/BoardHeader.module.scss";
 
-const BoardHeader = ({ sortHandler, searchHandler }) => {
+const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
     const [keyword, setKeyword] = useState('');
     const [searchType, setSearchType] = useState('title');
+    const [category, setCategory] = useState('');
 
     // 정렬 변경 핸들러
     const handleSortChange = (e) => {
@@ -41,6 +42,15 @@ const BoardHeader = ({ sortHandler, searchHandler }) => {
         searchHandler(keyword, searchType);
     };
 
+
+
+    // 카테고리 변경 핸들러
+    const handleCategoryChange = (e) => {
+        const selectedCategory = e.target.value;
+        setCategory(selectedCategory);
+        categoryHandler(selectedCategory);
+    };
+
     return (
         <>
             <h1 className={styles.h1}>💰 경제/재테크 커뮤니티</h1>
@@ -57,6 +67,16 @@ const BoardHeader = ({ sortHandler, searchHandler }) => {
                             <option value="oldest">오래된순</option>
                             <option value="reply">댓글 많은 순</option>
                             <option value="viewCount">조회수 많은 순</option>
+                        </select>
+                    </div>
+                    {/* 카테고리 섹션 */}
+                    <div className={styles.categorySort}>
+                        <p className={styles.text}>카테고리</p>
+                        <select className={styles.select} onChange={handleCategoryChange} value={category}>
+                            <option value="">전체</option>
+                            <option value="qna">질문</option>
+                            <option value="tip">꿀팁</option>
+                            <option value="info">정보</option>
                         </select>
                     </div>
                 </div>

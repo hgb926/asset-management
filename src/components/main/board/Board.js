@@ -15,27 +15,27 @@ const Board = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // URL 쿼리 파라미터 추출
+    // URL 파라미터 추출 함수
     const getQueryParam = (key) => {
         const queryParams = new URLSearchParams(location.search);
         return queryParams.get(key) || null;
     };
 
-    // 게시글 목록을 가져오는 함수
+    // 게시글 목록 가져오기
     const fetchBoardList = async () => {
         const page = getQueryParam('page') || 0;
         const sort = getQueryParam('sort') || 'desc';
         const order = getQueryParam('order') || 'createdAt';
+        const category = getQueryParam('category') || '';
         const keyword = getQueryParam('keyword') || '';
         const searchType = getQueryParam('searchType') || 'title';
 
         try {
-            const url = `${BOARD_URL}?page=${page}&size=10&sort=${sort}&order=${order}&keyword=${keyword}&searchType=${searchType}`;
+            const url = `${BOARD_URL}?page=${page}&size=10&sort=${sort}&order=${order}&category=${category}&keyword=${keyword}&searchType=${searchType}`;
             console.log(`Fetching: ${url}`);
             const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error("Failed to fetch board list");
-            }
+            if (!response.ok) throw new Error("Failed to fetch board list");
+
             const data = await response.json();
             setBoardList(data.content);
             setCurrentPage(data.number);
@@ -46,20 +46,29 @@ const Board = () => {
         }
     };
 
+    // 페이지 로드 시 목록 가져오기
     useEffect(() => {
         fetchBoardList();
     }, [location.search]);
 
+    // 페이지 변경 핸들러
     const changePage = (page) => {
         navigate(`?page=${page}&sort=${getQueryParam('sort') || 'desc'}&order=${getQueryParam('order') || 'createdAt'}`);
     };
 
+    // 정렬 변경 핸들러
     const sortHandler = (sort, order) => {
         navigate(`?page=0&sort=${sort}&order=${order}`);
     };
 
+    // 검색 핸들러
     const searchHandler = (keyword, searchType) => {
         navigate(`?page=0&sort=${getQueryParam('sort') || 'desc'}&order=${getQueryParam('order') || 'createdAt'}&keyword=${keyword}&searchType=${searchType}`);
+    };
+
+    // 카테고리 변경 핸들러
+    const categoryHandler = (category) => {
+        navigate(`?page=0&category=${category}`);
     };
 
     return (
@@ -67,7 +76,11 @@ const Board = () => {
             <Routes>
                 <Route index element={
                     <>
-                        <BoardHeader sortHandler={sortHandler} searchHandler={searchHandler} />
+                        <BoardHeader
+                            sortHandler={sortHandler}
+                            searchHandler={searchHandler}
+                            categoryHandler={categoryHandler}
+                        />
                         <BoardList
                             boardList={boardList}
                             currentPage={currentPage}

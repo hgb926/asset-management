@@ -22,10 +22,12 @@ const Board = () => {
     };
 
     // 게시글 목록을 가져오는 함수
-    const fetchBoardList = async (page = 0, sort) => {
+    const fetchBoardList = async (page = 0, sort, order) => {
         try {
             let host = `${BOARD_URL}?page=${page}&size=10`
             if (sort) host = host + `&sort=${sort}`
+            if (order) host = host + `&order=${order}`
+            console.log(host)
             const response = await fetch(host);
             if (!response.ok) {
                 throw new Error("Failed to fetch board list");
@@ -53,10 +55,9 @@ const Board = () => {
         }
     };
 
-    const sortHandler = (sort) => {
+    const sortHandler = (sort, order) => {
         const page = getPageFromQuery();
-        console.log(sort, page)
-        fetchBoardList(page, sort)
+        fetchBoardList(page, sort, order)
     }
 
     return (

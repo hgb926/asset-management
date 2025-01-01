@@ -7,19 +7,19 @@ const BoardHeader = ({ boardList, sortHandler }) => {
         const value = e.target.value;
         switch (value) {
             case "latest":
-                sortHandler("desc");
+                sortHandler("desc", 'createdAt');
                 break;
             case "oldest":
-                sortHandler("asc");
+                sortHandler("asc", "createdAt");
                 break;
             case "reply":
-                sortHandler("replyCount,desc");
+                sortHandler("desc", "replyCount");
                 break;
             case "viewCount":
-                sortHandler("viewCount,desc");
+                sortHandler("desc", "viewCount");
                 break;
             default:
-                sortHandler("desc");
+                sortHandler("desc", "createdAt");
         }
     };
 

@@ -15,20 +15,24 @@ const Board = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // 현재 URL에서 페이지 번호 추출
-    const getPageFromQuery = () => {
+    // URL 쿼리 파라미터 추출
+    const getQueryParam = (key) => {
         const queryParams = new URLSearchParams(location.search);
-        return parseInt(queryParams.get('page')) || 0;
+        return queryParams.get(key) || null;
     };
 
     // 게시글 목록을 가져오는 함수
-    const fetchBoardList = async (page = 0, sort, order) => {
+    const fetchBoardList = async () => {
+        const page = getQueryParam('page') || 0;
+        const sort = getQueryParam('sort') || 'desc';
+        const order = getQueryParam('order') || 'createdAt';
+        const keyword = getQueryParam('keyword') || '';
+        const searchType = getQueryParam('searchType') || 'title';
+
         try {
-            let host = `${BOARD_URL}?page=${page}&size=10`
-            if (sort) host = host + `&sort=${sort}`
-            if (order) host = host + `&order=${order}`
-            console.log(host)
-            const response = await fetch(host);
+            const url = `${BOARD_URL}?page=${page}&size=10&sort=${sort}&order=${order}&keyword=${keyword}&searchType=${searchType}`;
+            console.log(`Fetching: ${url}`);
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error("Failed to fetch board list");
             }
@@ -42,34 +46,28 @@ const Board = () => {
         }
     };
 
-    // 페이지 번호가 변경될 때마다 데이터 로드
     useEffect(() => {
-        const page = getPageFromQuery();
-        fetchBoardList(page);
+        fetchBoardList();
     }, [location.search]);
 
-    // 페이지 변경 핸들러
     const changePage = (page) => {
-        if (page >= 0 && page < totalPages) {
-            navigate(`?page=${page}`);
-        }
+        navigate(`?page=${page}&sort=${getQueryParam('sort') || 'desc'}&order=${getQueryParam('order') || 'createdAt'}`);
     };
 
     const sortHandler = (sort, order) => {
-        const page = getPageFromQuery();
-        fetchBoardList(page, sort, order)
-    }
+        navigate(`?page=0&sort=${sort}&order=${order}`);
+    };
+
+    const searchHandler = (keyword, searchType) => {
+        navigate(`?page=0&sort=${getQueryParam('sort') || 'desc'}&order=${getQueryParam('order') || 'createdAt'}&keyword=${keyword}&searchType=${searchType}`);
+    };
 
     return (
         <div className={styles.wrap}>
             <Routes>
-                {/* 메인 게시판 화면 */}
                 <Route index element={
                     <>
-                        <BoardHeader
-                            boardList={boardList}
-                            sortHandler={sortHandler}
-                        />
+                        <BoardHeader sortHandler={sortHandler} searchHandler={searchHandler} />
                         <BoardList
                             boardList={boardList}
                             currentPage={currentPage}

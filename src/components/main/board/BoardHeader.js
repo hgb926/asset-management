@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from "../../../styles/board/BoardHeader.module.scss";
 
-const BoardHeader = () => {
+const BoardHeader = ({ boardList }) => {
+    console.log(boardList)
     return (
         <>
             <h1 className={styles.h1}>💰 경제/재테크 커뮤니티</h1>

@@ -1,6 +1,7 @@
 
 
 export const formatRelativeTime = (diffInMs) => {
+    if (isNaN(diffInMs)) return "방금 전"
     const seconds = Math.floor(diffInMs / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);

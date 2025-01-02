@@ -58,6 +58,7 @@ const Board = () => {
 
     // 정렬 변경 핸들러
     const sortHandler = (sort, order) => {
+        console.log(`Sort: ${sort}, Order: ${order}`);
         navigate(`?page=0&sort=${sort}&order=${order}`);
     };
 

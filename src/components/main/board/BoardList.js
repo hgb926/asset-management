@@ -12,6 +12,7 @@ import {formatRelativeTime} from '../../../util/timeFormater';
 const BoardList = ({boardList, currentPage, totalPages, isLastPage, changePage}) => {
     const now = new Date();
 
+
     // 페이지네이션 범위 계산
     const getPageRange = () => {
         const PAGE_GROUP = 5;
@@ -56,12 +57,12 @@ const BoardList = ({boardList, currentPage, totalPages, isLastPage, changePage})
         {/* 페이지네이션 */}
         <div className={styles.footer}>
             <div className={styles.btnWrap}>
-                <div onClick={() => changePage(0)} disabled={currentPage === 0}>
+                { currentPage ? <div className={styles.pageBtn} onClick={() => changePage(0)} disabled={currentPage === 0}>
                     <MdKeyboardDoubleArrowLeft/>
-                </div>
-                <div onClick={() => changePage(currentPage - 1)} disabled={currentPage === 0}>
+                </div> : undefined}
+                { currentPage ? <div className={styles.pageBtn} onClick={() => changePage(currentPage - 1)} disabled={currentPage === 0}>
                     <MdKeyboardArrowLeft/>
-                </div>
+                </div> : undefined}
 
                 {getPageRange().map((page) => (
                     <div
@@ -73,12 +74,12 @@ const BoardList = ({boardList, currentPage, totalPages, isLastPage, changePage})
                     </div>
                 ))}
 
-                <div onClick={() => changePage(currentPage + 1)} disabled={isLastPage}>
+                {!isLastPage && <div className={styles.pageBtn} onClick={() => changePage(currentPage + 1)} disabled={isLastPage}>
                     <MdKeyboardArrowRight/>
-                </div>
-                <div onClick={() => changePage(totalPages - 1)} disabled={isLastPage}>
+                </div>}
+                {!isLastPage && <div className={styles.pageBtn} onClick={() => changePage(totalPages - 1)} disabled={isLastPage}>
                     <MdKeyboardDoubleArrowRight/>
-                </div>
+                </div>}
             </div>
         </div>
         </div>) : (<div className={styles.noResult}>검색결과가 없습니다.</div>) }

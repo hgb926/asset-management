@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "../../../styles/board/BoardHeader.module.scss";
 
 const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
     const [keyword, setKeyword] = useState('');
     const [searchType, setSearchType] = useState('title');
     const [category, setCategory] = useState('');
+    const [sort, setSort] = useState('latest'); // 정렬 상태 추가
 
     // 정렬 변경 핸들러
     const handleSortChange = (e) => {
         const value = e.target.value;
+        setSort(value); // 상태 업데이트
+        console.log('Selected sort value:', value);
         switch (value) {
             case "latest":
                 sortHandler("desc", "createdAt");
@@ -42,8 +45,6 @@ const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
         searchHandler(keyword, searchType);
     };
 
-
-
     // 카테고리 변경 핸들러
     const handleCategoryChange = (e) => {
         const selectedCategory = e.target.value;
@@ -51,11 +52,17 @@ const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
         categoryHandler(selectedCategory);
     };
 
+    // Enter 키로 검색 실행
     const enterKeyHandler = (e) => {
         if (e.key === 'Enter') {
-            handleSearch()
+            handleSearch();
         }
-    }
+    };
+
+    // Debugging: 상태 확인
+    useEffect(() => {
+        console.log(`Sort State: ${sort}`);
+    }, [sort]);
 
     return (
         <>
@@ -68,7 +75,11 @@ const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
                 <div className={styles.sortSection}>
                     <div className={styles.dateSort}>
                         <p className={styles.text}>정렬</p>
-                        <select className={styles.select} onChange={handleSortChange}>
+                        <select
+                            className={styles.select}
+                            value={sort}
+                            onChange={handleSortChange}
+                        >
                             <option value="latest">최신순</option>
                             <option value="oldest">오래된순</option>
                             <option value="reply">댓글 많은 순</option>
@@ -78,7 +89,11 @@ const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
                     {/* 카테고리 섹션 */}
                     <div className={styles.categorySort}>
                         <p className={styles.text}>카테고리</p>
-                        <select className={styles.select} onChange={handleCategoryChange} value={category}>
+                        <select
+                            className={styles.select}
+                            onChange={handleCategoryChange}
+                            value={category}
+                        >
                             <option value="">전체</option>
                             <option value="qna">질문</option>
                             <option value="tip">꿀팁</option>
@@ -90,7 +105,10 @@ const BoardHeader = ({ sortHandler, searchHandler, categoryHandler }) => {
                 {/* 검색 섹션 */}
                 <div className={styles.searchSection}>
                     <div className={styles.categorySort}>
-                        <select className={styles.select} onChange={handleSearchTypeChange}>
+                        <select
+                            className={styles.select}
+                            onChange={handleSearchTypeChange}
+                        >
                             <option value="title">제목</option>
                             <option value="titleAndContent">제목+내용</option>
                             <option value="author">작성자</option>

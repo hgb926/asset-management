@@ -109,44 +109,68 @@
   }
 
   .reactionContainer {
-    width: 30%;
-    margin: 0 auto 30px;
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 20px;
     align-items: center;
     text-align: center;
 
     .reactionGroup {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 8px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #e2e6ea;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
 
       .reaction {
-        width: 30px;
-        height: 30px;
-        font-weight: 300;
-        cursor: pointer;
-        transition: scale 0.5s;
+        font-size: 24px;
+        transition: transform 0.2s ease;
       }
 
       .reaction:hover {
-        color: black;
-        scale: 1.1;
-      }
-
-      .red {
-        color: red;
-      }
-
-      .blue {
-        color: blue;
+        transform: scale(1.2);
       }
 
       .count {
-        font-size: 1.2rem;
-        font-weight: 300;
+        font-size: 16px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      /* 좋아요 버튼 활성화 */
+      &.likeActive {
+        border-color: #ff6b6b;
+        background: #fff5f5;
+        .reaction {
+          color: #ff6b6b;
+        }
+        .count {
+          color: #ff6b6b;
+        }
+      }
+
+      /* 싫어요 버튼 활성화 */
+      &.dislikeActive {
+        border-color: #4d8aff;
+        background: #f0f7ff;
+        .reaction {
+          color: #4d8aff;
+        }
+        .count {
+          color: #4d8aff;
+        }
       }
     }
   }

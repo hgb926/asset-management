@@ -141,18 +141,18 @@ const BoardDetail = () => {
                 </div>
 
                 <div className={styles.reactionContainer}>
-                    <div className={styles.reactionGroup}>
-                        <AiOutlineLike
-                            className={`${styles.reaction} ${(isActioned && actionType === "LIKE") && styles.red}`}
-                            onClick={() => reactionHandler('LIKE')}
-                        />
+                    <div
+                        className={`${styles.reactionGroup} ${(isActioned && actionType === "LIKE") ? styles.likeActive : ''}`}
+                        onClick={() => reactionHandler('LIKE')}
+                    >
+                        <AiOutlineLike className={styles.reaction}/>
                         <span className={styles.count}>{like}</span>
                     </div>
-                    <div className={styles.reactionGroup}>
-                        <AiOutlineDislike
-                            className={`${styles.reaction} ${(isActioned && actionType === "DISLIKE") && styles.blue}`}
-                            onClick={() => reactionHandler('DISLIKE')}
-                        />
+                    <div
+                        className={`${styles.reactionGroup} ${(isActioned && actionType === "DISLIKE") ? styles.dislikeActive : ''}`}
+                        onClick={() => reactionHandler('DISLIKE')}
+                    >
+                        <AiOutlineDislike className={styles.reaction}/>
                         <span className={styles.count}>{dislike}</span>
                     </div>
                 </div>

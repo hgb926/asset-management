@@ -53,6 +53,7 @@ const ReplySection = ({boardId, replies, authorId, deleteHandler}) => {
                 addNotice(authorId, '커뮤니티', boardId, `${nickname}님께서 회원님의 게시글에 댓글을 남겼습니다.`);
             }
         }
+        setActive(false)
     };
 
     const activeHandler = () => {
@@ -97,7 +98,7 @@ const ReplySection = ({boardId, replies, authorId, deleteHandler}) => {
             <h2>댓글 ({localReplies.length || 0})</h2>
             <div className={styles.replyList}>
                 {localReplies.length > 0 ? (
-                    localReplies.slice().reverse().map((reply) => (
+                    localReplies.map((reply) => (
                         <div key={reply.id} className={styles.replyItem}>
                             <div className={styles.replyHeader}>
                                 <span className={styles.replyAuthor}>{reply.author || '익명'}</span>
